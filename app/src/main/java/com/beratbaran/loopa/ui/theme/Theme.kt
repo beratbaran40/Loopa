@@ -1,4 +1,4 @@
-package com.example.aaaa.ui.theme
+package com.beratbaran.loopa.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -10,13 +10,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.aaaa"
+    namespace = "com.beratbaran.loopa"
     compileSdk = 35
 
     android.buildFeatures.buildConfig = true
 
     defaultConfig {
-        applicationId = "com.example.aaaa"
+        applicationId = "com.beratbaran.loopa"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -28,7 +28,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

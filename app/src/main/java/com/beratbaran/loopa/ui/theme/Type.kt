@@ -1,4 +1,4 @@
-package com.example.aaaa.ui.theme
+package com.beratbaran.loopa.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

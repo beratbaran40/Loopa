@@ -1,4 +1,4 @@
-package com.example.aaaa
+package com.beratbaran.loopa
 
 import org.junit.Test
 
