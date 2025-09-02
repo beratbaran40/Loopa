@@ -29,5 +29,8 @@ replay_pid*
 # gradle
 .gradle
 
+#idea
+.idea
+
 # firebase
 /app/google-services.json
