@@ -5,7 +5,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.beratbaran.loopa.R
 
@@ -83,8 +82,6 @@ val Typography = Typography(
         lineHeight = 24.sp
 
     )
-
-    // EN SON TYPOGRAPHY AYARLANDI. (FONTWEIGHT EKLENECEK) / DATA OLUŞTURULACAK. 02.09.2025 -> 03.09.2025
 )
 
 val LabelLargeFilterTags = Typography.labelLarge
@@ -132,5 +129,6 @@ val BodyMediumDetailScreenOverviewDetails = Typography.bodyMedium
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,     // detay ekranındaki uzun açıklama yazısı
         lineHeight = 16.sp
-
     )
+
+// EN SON TYPOGRAPHY AYARLANDI, LINEHEIGT VERİLDİ.  / DATA OLUŞTURULACAK. 03.09.2025 - 12.40
