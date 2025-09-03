@@ -131,4 +131,4 @@ val BodyMediumDetailScreenOverviewDetails = Typography.bodyMedium
         lineHeight = 16.sp
     )
 
-// EN SON TYPOGRAPHY AYARLANDI, LINEHEIGT VERİLDİ.  / DATA OLUŞTURULACAK. 03.09.2025 - 12.40
+// EN SON TYPOGRAPHY AYARLANDI, LINEHEIGHT VERİLDİ.  / DATA OLUŞTURULACAK. 03.09.2025 - 12.40
