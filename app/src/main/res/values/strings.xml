@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Loopa</string>
     <string name="onboarding_salute_message">Plan Your Journey Anywhere Anytime</string>
-    <string name="onboarding_description">Discover beautiful places, book flights and hotels with ease — all in one app.</string>
+    <string name="onboarding_description">“Your personal travel companion: discover, plan, and explore the world with confidence.” — all in one app.</string>
     <string name="onboarding_button_text">Get Started</string>
     <string name="onboarding_login_text">Already have an account? Login</string>
 </resources>
