@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.ui
+package com.beratbaran.loopa.ui.onboarding
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
@@ -23,11 +23,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,14 +33,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.common.collectWithLifecycle
+import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiAction
+import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
+import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
 import com.beratbaran.loopa.ui.theme.MyappTheme
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun OnboardingScreen(
-    onRegisterClicked: () -> Unit,
-    onLoginClicked: () -> Unit
+    uiState: UiState,
+    uiEffect: Flow<UiEffect>,
+    onAction: (UiAction) -> Unit,
+    onNavigateToRegister: () -> Unit,
+    onNavigateToLogin: () -> Unit,
 ) {
+    uiEffect.collectWithLifecycle { uiEffect ->
+        when (uiEffect) {
+            UiEffect.NavigateToLogin -> onNavigateToLogin()
+            UiEffect.NavigateToRegister -> onNavigateToRegister()
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,16 +68,7 @@ fun OnboardingScreen(
             R.drawable.serengeti_onboarding_img4
         )
 
-        var bgIndex by remember { mutableIntStateOf(0) }
-
-        LaunchedEffect(bgImages) {
-            while (true) {
-                delay(2000)
-                bgIndex = (bgIndex + 1) % bgImages.size
-            }
-        }
-
-        Crossfade(targetState = bgIndex, label = "onboarding-bg") { idx ->
+        Crossfade(targetState = uiState.bgIndex, label = "onboarding-bg") { idx ->
             Image(
                 painter = painterResource(id = bgImages[idx]),
                 contentDescription = null,
@@ -99,7 +100,7 @@ fun OnboardingScreen(
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Dots(selected = bgIndex)
+            Dots(selected = uiState.bgIndex)
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -131,7 +132,7 @@ fun OnboardingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = onRegisterClicked,
+                onClick = { onAction(UiAction.OnRegisterClick) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -151,7 +152,7 @@ fun OnboardingScreen(
 
             Text(
                 text = stringResource(R.string.onboarding_login_text),
-                modifier = Modifier.clickable { onLoginClicked() },
+                modifier = Modifier.clickable { onAction(UiAction.OnLoginClick) },
                 style = MaterialTheme.typography.bodySmall,
                 color = Color.White
             )
@@ -192,8 +193,11 @@ private fun Dots(selected: Int) {
 private fun OnboardingScreenPreview() {
     MyappTheme {
         OnboardingScreen(
-            onRegisterClicked = {},
-            onLoginClicked = {}
+            uiState = UiState(),
+            uiEffect = emptyFlow(),
+            onAction = {},
+            onNavigateToRegister = {},
+            onNavigateToLogin = {}
         )
     }
 }
