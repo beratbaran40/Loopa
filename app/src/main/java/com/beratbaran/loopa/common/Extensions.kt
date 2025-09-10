@@ -8,13 +8,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun <T> Flow<T>.collectWithLifecycle(
+fun <T> Flow<T>.CollectWithLifecycle(
     collect: suspend (T) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(this, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            this@collectWithLifecycle.collect { effect ->
+            this@CollectWithLifecycle.collect { effect ->
                 collect(effect)
             }
         }
