@@ -35,6 +35,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.collectWithLifecycle
@@ -212,10 +213,12 @@ private fun Dots(selected: Int) {
 
 @Composable
 @Preview(showBackground = true)
-private fun OnboardingScreenPreview() {
+private fun OnboardingScreenPreview(
+    @PreviewParameter(OnboardingScreenPreviewProvider::class) uiState: UiState,
+) {
     MyappTheme {
         OnboardingScreen(
-            uiState = UiState(),
+            uiState = uiState,
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToRegister = {},
