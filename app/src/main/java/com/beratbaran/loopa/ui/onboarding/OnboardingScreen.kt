@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.common.collectWithLifecycle
+import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiAction
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
@@ -54,7 +54,7 @@ fun OnboardingScreen(
     onNavigateToRegister: () -> Unit,
     onNavigateToLogin: () -> Unit,
 ) {
-    uiEffect.collectWithLifecycle { effect ->
+    uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToLogin -> onNavigateToLogin()
             UiEffect.NavigateToRegister -> onNavigateToRegister()
@@ -65,6 +65,8 @@ fun OnboardingScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
+            .navigationBarsPadding()
+
     ) {
         val bgImages = listOf(
             R.drawable.eiffel_tower_onboarding_img1,
@@ -107,7 +109,6 @@ fun OnboardingScreen(
                     colors = listOf(Color(0xFFCDFF85), Color.White)
                 )
             )
-
         )
 
         Column(
@@ -143,7 +144,6 @@ fun OnboardingScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .navigationBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -170,10 +170,10 @@ fun OnboardingScreen(
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(color = Color.White)) {
-                        append("Already have an account?")
+                        append(stringResource(R.string.onboarding_account_text_span))
                     }
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                        append(" Login")
+                        append(stringResource(R.string.onboarding_login_text_span))
                     }
                 },
                 modifier = Modifier.clickable { onAction(UiAction.OnLoginClick) },
@@ -191,6 +191,8 @@ private fun Dots(selected: Int) {
     ) {
         repeat(4) { index ->
             val isSelected = index == selected
+            val bgColor =
+                if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray.copy(alpha = 0.5f)
 
             Spacer(modifier = Modifier.width(4.dp))
 
@@ -198,13 +200,9 @@ private fun Dots(selected: Int) {
                 modifier = Modifier
                     .height(8.dp)
                     .width(if (isSelected) 18.dp else 8.dp)
-                    .background(
-                        color = if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray.copy(
-                            alpha = 0.5f
-                        ),
-                        shape = CircleShape
-                    )
+                    .background(color = bgColor, shape = CircleShape)
             )
+
 
             Spacer(modifier = Modifier.width(4.dp))
         }

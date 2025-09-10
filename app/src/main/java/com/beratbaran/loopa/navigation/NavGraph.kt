@@ -12,19 +12,17 @@ import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
 
 @Composable
-fun AppNavHost(
+fun NavGraph(
     navController: NavHostController,
-    startDestination: String,
+    startDestination: Screen,
     modifier: Modifier = Modifier
 ) {
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
     ) {
-        composable(route = Route.Onboarding.path) {
-
+        composable<Screen.Onboarding> {
             val viewModel = hiltViewModel<OnboardingViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -33,29 +31,29 @@ fun AppNavHost(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
                 onNavigateToRegister = {
-                    navController.navigate(Route.Register.path) {
-                        popUpTo(Route.Onboarding.path) {
-                            inclusive = false
-                        } // inclusive = true olacak ama şimdilik test etme amacıyla false yaptım.
+                    navController.navigate(Screen.Register) {
+                        popUpTo(Screen.Onboarding) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },
                 onNavigateToLogin = {
-                    navController.navigate(Route.Login.path) {
-                        popUpTo(Route.Onboarding.path) {
-                            inclusive = false
-                        } // inclusive = true olacak ama şimdilik test etme amacıyla(uygulamayı sürekli yeniden başlatmamak için) false yaptım.
+                    navController.navigate(Screen.Login) {
+                        popUpTo(Screen.Onboarding) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        composable(route = Route.Register.path) {
+        composable<Screen.Register> {
 
         }
 
-        composable(route = Route.Login.path) {
+        composable<Screen.Login> {
 
         }
     }
