@@ -69,10 +69,10 @@ fun OnboardingScreen(
 
     ) {
         val bgImages = listOf(
-            R.drawable.eiffel_tower_onboarding_img1,
-            R.drawable.northen_lights_onboarding_img2,
-            R.drawable.maidens_onboarding_img3,
-            R.drawable.africa_onboarding_img4
+            R.drawable.onboarding_img1,
+            R.drawable.onboarding_img2,
+            R.drawable.onboarding_img3,
+            R.drawable.onboarding_img4
         )
 
         Crossfade(targetState = uiState.bgIndex, label = "onboarding-bg") { idx ->
