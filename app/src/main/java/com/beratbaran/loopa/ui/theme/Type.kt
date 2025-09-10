@@ -24,7 +24,7 @@ val Typography = Typography(
     displayLarge = TextStyle(
         fontFamily = JakartaFont,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 40.sp,
+        fontSize = 36.sp,
         lineHeight = 48.sp
     ),
 
@@ -93,4 +93,5 @@ val Typography = Typography(
     ),
 )
 
-// TYPOGRAPHY DAHA DOĞRU BİR HALE GETİRİLDİ, VERİLER TAMAMLANIYOR... [20/100]. (03.09.2025 - 19.07)
+
+// compositionlocalprovider araştır !!!!

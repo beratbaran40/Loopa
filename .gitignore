@@ -34,3 +34,9 @@ replay_pid*
 
 # firebase
 /app/google-services.json
+
+# local properties
+/local.properties
+
+# build
+/build
