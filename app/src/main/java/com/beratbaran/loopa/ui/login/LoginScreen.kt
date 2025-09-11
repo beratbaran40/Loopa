@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.ui.login
 
+import android.util.Patterns
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,7 +67,6 @@ fun LoginScreen(
     onAction: (UiAction) -> Unit,
     onClickedToLogin: () -> Unit
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             LoginContract.UiEffect.NavigateToHomePage -> onClickedToLogin()
@@ -142,6 +143,8 @@ fun LoginScreen(
         ) {
             val focusManager = LocalFocusManager.current
             val keyboardController = LocalSoftwareKeyboardController.current
+            var emailEdited by rememberSaveable { mutableStateOf(false) }
+            var submitAttempted by rememberSaveable { mutableStateOf(false) }
             var showPassword by remember { mutableStateOf(false) }
 
             Column(
@@ -154,12 +157,16 @@ fun LoginScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 16.dp, top = 16.dp),
                     value = uiState.email,
-                    onValueChange = { onAction(UiAction.EmailChanged(it)) },
-                    label = { stringResource(R.string.login_label_mail_text) },
-                    placeholder = { stringResource(R.string.login_placeholder_mail_example) },
+                    onValueChange = {
+                        onAction(UiAction.EmailChanged(it))
+                        emailEdited = true
+                    },
+                    label = { Text(text = stringResource(R.string.login_label_mail_text)) },
+                    placeholder = { Text(text = stringResource(R.string.login_placeholder_mail_example)) },
                     singleLine = true,
+                    isError = submitAttempted && !isValidEmail(uiState.email),
                     leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -172,10 +179,16 @@ fun LoginScreen(
                     colors = TextFieldDefaults.colors(
                         focusedPlaceholderColor = Color.White,
                         unfocusedContainerColor = Color.Black.copy(alpha = 0.5f),
-                    )
+                    ),
+                    supportingText = {
+                        if (submitAttempted && !isValidEmail(uiState.email)) {
+                            Text(
+                                text = stringResource(R.string.login_errorText_mail),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -183,8 +196,8 @@ fun LoginScreen(
                         .padding(bottom = 16.dp),
                     value = uiState.password,
                     onValueChange = { onAction(UiAction.PasswordChanged(it)) },
-                    label = { stringResource(R.string.login_label_password) },
-                    placeholder = { stringResource(R.string.login_placeholder_password_example) },
+                    label = { Text(text = stringResource(R.string.login_label_password)) },
+                    placeholder = { Text(text = stringResource(R.string.login_placeholder_password_example)) },
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
                     visualTransformation = if (showPassword) VisualTransformation.None else
@@ -203,6 +216,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
+                            submitAttempted = true
                             keyboardController?.hide()
                             onAction(UiAction.ClickedToLogin)
                         }
@@ -220,7 +234,14 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    onClick = { onAction(UiAction.ClickedToLogin) },
+                    onClick = {
+                        submitAttempted = true
+                        if (isValidEmail(uiState.email)) {
+                            onAction(UiAction.ClickedToLogin)
+                        } else {
+                            focusManager.clearFocus()
+                        }
+                    },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -234,11 +255,12 @@ fun LoginScreen(
                     )
                 }
             }
-
         }
-
     }
 }
+
+private fun isValidEmail(email: String): Boolean =
+    email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
 @Preview(showBackground = true)
 @Composable
