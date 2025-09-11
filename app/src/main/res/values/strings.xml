@@ -10,7 +10,8 @@
     <string name="login_label_mail_text">Email</string>
     <string name="login_placeholder_mail_example">loopa123@mail.com</string>
     <string name="login_label_password">Password</string>
-    <string name="login_placeholder_password_example">🤫</string>
+    <string name="login_placeholder_password_example">👀</string>
+    <string name="login_errorText_mail">Enter a valid Email</string>
 
 
 </resources>
