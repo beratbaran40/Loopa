@@ -16,7 +16,6 @@ class LoginScreenPreviewProvider : PreviewParameterProvider<LoginContract.UiStat
                 password = "123456",
                 isLoading = false,
                 errorMessages = null,
-
             ),
             LoginContract.UiState(
                 email = "test@example.com",
