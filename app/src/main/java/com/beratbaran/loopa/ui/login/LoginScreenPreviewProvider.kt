@@ -10,28 +10,25 @@ class LoginScreenPreviewProvider : PreviewParameterProvider<LoginContract.UiStat
                 password = "",
                 isLoading = false,
                 errorMessages = null,
-                bgIndex = 0,
             ),
             LoginContract.UiState(
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
                 errorMessages = null,
-                bgIndex = 1,
+
             ),
             LoginContract.UiState(
                 email = "test@example.com",
                 password = "123456",
                 isLoading = true,
                 errorMessages = null,
-                bgIndex = 2,
             ),
             LoginContract.UiState(
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
                 errorMessages = "Error",
-                bgIndex = 3,
             ),
         )
 }
