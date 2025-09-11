@@ -6,4 +6,11 @@
     <string name="onboarding_login_text">Already have an account? Login</string>
     <string name="onboarding_account_text_span">Already have an account?</string>
     <string name="onboarding_login_text_span">Login</string>
+    <string name="loginScreen_loginButton_text">Login</string>
+    <string name="login_label_mail_text">Email</string>
+    <string name="login_placeholder_mail_example">loopa123@mail.com</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_errorText_mail">Enter a valid Email</string>
+
+
 </resources>
