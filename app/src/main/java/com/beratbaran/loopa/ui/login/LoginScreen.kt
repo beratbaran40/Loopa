@@ -1,7 +1,6 @@
 package com.beratbaran.loopa.ui.login
 
 import android.util.Patterns
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -82,26 +81,18 @@ fun LoginScreen(
             .navigationBarsPadding()
 
     ) {
-        val bgImages = listOf(
-            R.drawable.onboarding_img1,
-            R.drawable.onboarding_img2,
-            R.drawable.onboarding_img3,
-            R.drawable.onboarding_img4
-        )
 
-        Crossfade(targetState = uiState.bgIndex, label = "loading-bg") { idx ->
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = bgImages[idx]),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(id = R.drawable.login_img),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.5f))
+                .background(color = Color.Black.copy(alpha = 0.6f))
         )
 
         Image(
@@ -172,7 +163,6 @@ fun LoginScreen(
                         emailEdited = true
                     },
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
-                    placeholder = { Text(text = stringResource(R.string.login_placeholder_mail_example)) },
                     singleLine = true,
                     isError = submitAttempted && !isValidEmail(uiState.email),
                     leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
@@ -253,7 +243,14 @@ fun LoginScreen(
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = (Color.Black)
+                        contentColor = (Color.Black),
+                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                        disabledContentColor = Color.Black.copy(alpha = 0.8f)
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 3.dp,
+                        pressedElevation = 6.dp,
+                        disabledElevation = 2.dp
                     ),
                     enabled = uiState.email.isNotBlank() && uiState.password.isNotBlank()
                 ) {
