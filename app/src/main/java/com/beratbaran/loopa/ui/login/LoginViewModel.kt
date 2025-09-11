@@ -20,7 +20,7 @@ class LoginViewModel : ViewModel() {
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
 
     private val _uiEffect = MutableSharedFlow<UiEffect>(
-        replay = 1,
+        replay = 0,
         extraBufferCapacity = 1
     )
     val uiEffect: Flow<UiEffect> = _uiEffect
