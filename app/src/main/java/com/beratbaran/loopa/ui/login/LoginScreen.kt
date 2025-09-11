@@ -92,7 +92,7 @@ fun LoginScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.6f))
+                .background(color = Color.Black.copy(alpha = 0.3f))
         )
 
         Image(
@@ -195,7 +195,6 @@ fun LoginScreen(
                     value = uiState.password,
                     onValueChange = { onAction(UiAction.PasswordChanged(it)) },
                     label = { Text(text = stringResource(R.string.login_label_password)) },
-                    placeholder = { Text(text = stringResource(R.string.login_placeholder_password_example)) },
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
                     visualTransformation = if (showPassword) VisualTransformation.None else
@@ -245,7 +244,7 @@ fun LoginScreen(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = (Color.Black),
                         disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                        disabledContentColor = Color.Black.copy(alpha = 0.8f)
+                        disabledContentColor = Color.White.copy(alpha = 0.8f)
                     ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 3.dp,
