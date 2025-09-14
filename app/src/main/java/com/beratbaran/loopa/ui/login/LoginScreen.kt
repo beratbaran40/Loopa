@@ -130,6 +130,8 @@ fun LoginScreen(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
                     },
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
