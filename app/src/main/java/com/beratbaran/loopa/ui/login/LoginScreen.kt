@@ -1,6 +1,5 @@
 package com.beratbaran.loopa.ui.login
 
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,11 +31,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -66,11 +61,15 @@ fun LoginScreen(
     uiState: LoginContract.UiState,
     uiEffect: Flow<LoginContract.UiEffect>,
     onAction: (UiAction) -> Unit,
-    onClickedToLogin: () -> Unit
+    onNavigateToHomepage: () -> Unit
+
 ) {
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            LoginContract.UiEffect.NavigateToHomePage -> onClickedToLogin()
+            LoginContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
         }
     }
 
@@ -79,9 +78,7 @@ fun LoginScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-
     ) {
-
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.login_img),
@@ -92,7 +89,7 @@ fun LoginScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.3f))
+                .background(color = Color.Black.copy(alpha = 0.6f))
         )
 
         Image(
@@ -101,8 +98,7 @@ fun LoginScreen(
                 .padding(top = 16.dp),
             painter = painterResource(id = R.drawable.loopa),
             contentDescription = null,
-
-            )
+        )
 
         Text(
             modifier = Modifier
@@ -120,25 +116,11 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 160.dp)
-                .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-        }
-
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 75.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val focusManager = LocalFocusManager.current
-            val keyboardController = LocalSoftwareKeyboardController.current
-            var emailEdited by rememberSaveable { mutableStateOf(false) }
-            var submitAttempted by rememberSaveable { mutableStateOf(false) }
-            var showPassword by remember { mutableStateOf(false) }
 
             Column(
                 modifier = Modifier
@@ -148,7 +130,6 @@ fun LoginScreen(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        focusManager.clearFocus()
                     },
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -159,12 +140,11 @@ fun LoginScreen(
                         .padding(bottom = 16.dp, top = 16.dp),
                     value = uiState.email,
                     onValueChange = {
-                        onAction(UiAction.EmailChanged(it))
-                        emailEdited = true
+                        onAction(UiAction.OnEmailChange(it))
                     },
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
                     singleLine = true,
-                    isError = submitAttempted && !isValidEmail(uiState.email),
+                    isError = uiState.supportingText != null,
                     leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -175,13 +155,20 @@ fun LoginScreen(
                     ),
                     shape = RoundedCornerShape(12.dp),
                     colors = TextFieldDefaults.colors(
-                        focusedPlaceholderColor = Color.White,
-                        unfocusedContainerColor = Color.Black.copy(alpha = 0.5f),
+                        focusedTextColor = Color.White,
+                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        errorContainerColor = Color.Transparent,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                        cursorColor = Color.White
                     ),
                     supportingText = {
-                        if (submitAttempted && !isValidEmail(uiState.email)) {
+                        uiState.supportingText?.let {
                             Text(
-                                text = stringResource(R.string.login_errorText_mail),
+                                text = it,
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
@@ -193,17 +180,17 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                     value = uiState.password,
-                    onValueChange = { onAction(UiAction.PasswordChanged(it)) },
+                    onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
                     label = { Text(text = stringResource(R.string.login_label_password)) },
                     singleLine = true,
                     leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
-                    visualTransformation = if (showPassword) VisualTransformation.None else
+                    visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                         PasswordVisualTransformation(),
                     trailingIcon = {
-                        IconButton(onClick = { showPassword = !showPassword }) {
+                        IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                             Icon(
-                                imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
-                                contentDescription = if (showPassword) "Hide password" else "Show password"
+                                imageVector = if (uiState.showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                             )
                         }
                     },
@@ -213,15 +200,22 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            submitAttempted = true
+                            onAction(UiAction.OnSubmitAttempted)
                             keyboardController?.hide()
-                            onAction(UiAction.ClickedToLogin)
+                            onAction(UiAction.OnLoginClicked)
                         }
                     ),
                     shape = RoundedCornerShape(12.dp),
                     colors = TextFieldDefaults.colors(
-                        focusedPlaceholderColor = Color.White,
-                        unfocusedContainerColor = Color.Black.copy(alpha = 0.5f),
+                        focusedTextColor = Color.White,
+                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        errorContainerColor = Color.Transparent,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                        cursorColor = Color.White
                     )
                 )
 
@@ -232,12 +226,8 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     onClick = {
-                        submitAttempted = true
-                        if (isValidEmail(uiState.email)) {
-                            onAction(UiAction.ClickedToLogin)
-                        } else {
-                            focusManager.clearFocus()
-                        }
+                        onAction(UiAction.OnSubmitAttempted)
+                        onAction(UiAction.OnLoginClicked)
                     },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -263,9 +253,6 @@ fun LoginScreen(
     }
 }
 
-private fun isValidEmail(email: String): Boolean =
-    email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview(
@@ -276,7 +263,7 @@ fun LoginScreenPreview(
             uiState = uiState,
             uiEffect = emptyFlow(),
             onAction = {},
-            onClickedToLogin = {}
+            onNavigateToHomepage = {}
         )
     }
 }
