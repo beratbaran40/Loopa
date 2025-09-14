@@ -20,7 +20,7 @@ class LoginViewModel : ViewModel() {
             password = "",
             showPassword = false,
             submitAttempted = false,
-            isEmailValid = true
+            isEmailValid = true,
             )
     )
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
@@ -34,6 +34,10 @@ class LoginViewModel : ViewModel() {
             !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address"
             else -> null
         }
+    }
+
+    private fun canLogin(email: String, password: String): Boolean {
+        return email.isNotBlank() && password.isNotBlank()
     }
 
     fun onAction(uiAction: UiAction) {
@@ -56,11 +60,17 @@ class LoginViewModel : ViewModel() {
             }
 
             is UiAction.OnEmailChange -> _uiState.update {
-                it.copy(email = uiAction.email)
+                it.copy(
+                    email = uiAction.email,
+                    isLoginEnabled = canLogin(uiAction.email, it.password)
+                )
             }
 
             is UiAction.OnPasswordChange -> _uiState.update {
-                it.copy(password = uiAction.password)
+                it.copy(
+                    password = uiAction.password,
+                    isLoginEnabled = canLogin(it.email, uiAction.password)
+                )
             }
 
             is UiAction.OnSubmitAttempted -> _uiState.update { state ->
