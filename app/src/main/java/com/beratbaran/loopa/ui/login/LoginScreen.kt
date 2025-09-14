@@ -243,7 +243,7 @@ fun LoginScreen(
                         pressedElevation = 6.dp,
                         disabledElevation = 2.dp
                     ),
-                    enabled = uiState.email.isNotBlank() && uiState.password.isNotBlank()
+                    enabled = uiState.isLoginEnabled
                 ) {
                     Text(
                         text = stringResource(R.string.loginScreen_loginButton_text),
