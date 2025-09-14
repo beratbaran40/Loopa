@@ -21,7 +21,7 @@ class LoginViewModel : ViewModel() {
             showPassword = false,
             submitAttempted = false,
             isEmailValid = true,
-            )
+        )
     )
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
 
@@ -36,6 +36,14 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+    private fun validatePassword(password: String): String? {
+        return when {
+            password.isBlank() -> "Password cannot be blank"
+            password.length < 8 -> "Password must be at least 8 characters long"
+            else -> null
+        }
+    }
+
     private fun canLogin(email: String, password: String): Boolean {
         return email.isNotBlank() && password.isNotBlank()
     }
@@ -45,14 +53,17 @@ class LoginViewModel : ViewModel() {
             UiAction.OnLoginClicked -> {
                 val current = _uiState.value
                 val emailError = validateEmail(current.email)
-                if (emailError == null) {
+                val passwordError = validatePassword(current.password)
+                if (emailError == null && passwordError == null) {
                     _uiEffect.trySend(UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
                             submitAttempted = true,
-                            supportingText = emailError,
+                            supportingTextEmail = emailError,
+                            supportingTextPassword = passwordError,
                             isEmailValid = false,
+                            isPasswordValid = false,
                             isLoading = false
                         )
                     }
@@ -75,9 +86,11 @@ class LoginViewModel : ViewModel() {
 
             is UiAction.OnSubmitAttempted -> _uiState.update { state ->
                 val emailError = validateEmail(state.email)
+                val passwordError = validatePassword(state.password)
                 state.copy(
                     submitAttempted = true,
-                    supportingText = emailError,
+                    supportingTextEmail = emailError,
+                    supportingTextPassword = passwordError,
                     isEmailValid = (emailError == null)
                 )
             }
