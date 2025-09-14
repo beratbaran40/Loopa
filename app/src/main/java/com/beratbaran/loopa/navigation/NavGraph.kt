@@ -63,14 +63,14 @@ fun NavGraph(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
-                onClickedToLogin = {
+                onNavigateToHomepage = {
                     navController.navigate(Screen.Homepage) {
-                        popUpTo(Screen.Homepage) {
+                        popUpTo(Screen.Login) {
                             inclusive = true
                         }
                         launchSingleTop = true
                     }
-                }
+                },
             )
         }
 
