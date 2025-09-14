@@ -8,6 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.beratbaran.loopa.ui.login.LoginScreen
+import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
 
@@ -54,6 +56,25 @@ fun NavGraph(
         }
 
         composable<Screen.Login> {
+            val viewModel = hiltViewModel<LoginViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LoginScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+                onNavigateToHomepage = {
+                    navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.Login) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+
+        composable<Screen.Homepage> {
 
         }
     }
