@@ -10,7 +10,9 @@ object LoginContract {
         val submitAttempted: Boolean = false,
         val showPassword: Boolean = false,
         val isEmailValid: Boolean = true,
-        val supportingText: String? = null,
+        val isPasswordValid: Boolean = true,
+        val supportingTextEmail: String? = null,
+        val supportingTextPassword: String? = null,
         val isLoginEnabled: Boolean = false
     )
 
