@@ -11,14 +11,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -72,7 +75,8 @@ fun LoginScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
-    val bringIntoViewRequester = BringIntoViewRequester()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val scrollState = rememberScrollState()
 
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
@@ -99,34 +103,34 @@ fun LoginScreen(
                 .background(color = Color.Black.copy(alpha = 0.6f))
         )
 
-        Image(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 16.dp),
-            painter = painterResource(id = R.drawable.loopa),
-            contentDescription = null,
-        )
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 16.dp)
-                .padding(horizontal = 24.dp),
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.displaySmall.copy(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFFCDFF85), Color.White)
-                )
-            )
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
+                .imePadding()
                 .padding(24.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Text(
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .padding(horizontal = 24.dp),
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.displaySmall.copy(
+                    brush = Brush.linearGradient(
+                        colors = listOf(Color(0xFFCDFF85), Color.White)
+                    )
+                )
+            )
+
+            Image(
+                modifier = Modifier
+                    .padding(top = 2.dp),
+                painter = painterResource(id = R.drawable.loopa),
+                contentDescription = null,
+            )
 
             Column(
                 modifier = Modifier
@@ -139,13 +143,14 @@ fun LoginScreen(
                         focusManager.clearFocus()
                         keyboardController?.hide()
                     },
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, top = 16.dp)
+                        .bringIntoViewRequester(bringIntoViewRequester)
                         .onFocusEvent { event ->
                             if (event.isFocused) {
                                 coroutineScope.launch {
@@ -159,7 +164,7 @@ fun LoginScreen(
                     },
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
                     singleLine = true,
-                    isError = uiState.supportingText != null,
+                    isError = uiState.supportingTextEmail != null,
                     leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
@@ -181,7 +186,7 @@ fun LoginScreen(
                         cursorColor = Color.White
                     ),
                     supportingText = {
-                        uiState.supportingText?.let {
+                        uiState.supportingTextEmail?.let {
                             Text(
                                 text = it,
                                 color = MaterialTheme.colorScheme.error
@@ -193,11 +198,20 @@ fun LoginScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 16.dp)
+                        .bringIntoViewRequester(bringIntoViewRequester)
+                        .onFocusEvent { event ->
+                            if (event.isFocused) {
+                                coroutineScope.launch {
+                                    bringIntoViewRequester.bringIntoView()
+                                }
+                            }
+                        },
                     value = uiState.password,
                     onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
                     label = { Text(text = stringResource(R.string.login_label_password)) },
                     singleLine = true,
+                    isError = uiState.supportingTextPassword != null,
                     leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
                     visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                         PasswordVisualTransformation(),
@@ -231,7 +245,15 @@ fun LoginScreen(
                         focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                         unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
                         cursorColor = Color.White
-                    )
+                    ),
+                    supportingText = {
+                        uiState.supportingTextPassword?.let {
+                            Text(
+                                text = it,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
