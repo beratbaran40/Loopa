@@ -3,37 +3,77 @@ package com.beratbaran.loopa.ui.login
 import androidx.lifecycle.ViewModel
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.login.LoginContract.UiEffect
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
 class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginContract.UiState(
             isLoading = false,
-            errorMessages = null
-        )
+            errorMessage = "",
+            email = "",
+            password = "",
+            showPassword = false,
+            submitAttempted = false,
+            isEmailValid = true
+            )
     )
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
 
-    private val _uiEffect = MutableSharedFlow<UiEffect>(
-        replay = 0,
-        extraBufferCapacity = 1
-    )
-    val uiEffect: Flow<UiEffect> = _uiEffect
+    private val _uiEffect by lazy { Channel<UiEffect>() }
+    val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
+
+    private fun validateEmail(email: String): String? {
+        return when {
+            email.isBlank() -> "Email cannot be blank"
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address"
+            else -> null
+        }
+    }
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
-            UiAction.ClickedToLogin -> _uiEffect.tryEmit(UiEffect.NavigateToHomePage)
-            is UiAction.EmailChanged -> _uiState.update {
+            UiAction.OnLoginClicked -> {
+                val current = _uiState.value
+                val emailError = validateEmail(current.email)
+                if (emailError == null) {
+                    _uiEffect.trySend(UiEffect.NavigateToHomePage)
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            submitAttempted = true,
+                            supportingText = emailError,
+                            isEmailValid = false,
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+
+            is UiAction.OnEmailChange -> _uiState.update {
                 it.copy(email = uiAction.email)
             }
 
-            is UiAction.PasswordChanged -> _uiState.update {
+            is UiAction.OnPasswordChange -> _uiState.update {
                 it.copy(password = uiAction.password)
+            }
+
+            is UiAction.OnSubmitAttempted -> _uiState.update { state ->
+                val emailError = validateEmail(state.email)
+                state.copy(
+                    submitAttempted = true,
+                    supportingText = emailError,
+                    isEmailValid = (emailError == null)
+                )
+            }
+
+            UiAction.OnToggleShowPassword -> _uiState.update {
+                it.copy(showPassword = !it.showPassword)
             }
         }
     }
