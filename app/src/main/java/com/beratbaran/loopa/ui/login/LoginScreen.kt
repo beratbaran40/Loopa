@@ -70,7 +70,6 @@ fun LoginScreen(
     uiEffect: Flow<LoginContract.UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit
-
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
