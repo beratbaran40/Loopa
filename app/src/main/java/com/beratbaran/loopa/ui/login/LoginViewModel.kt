@@ -20,7 +20,6 @@ class LoginViewModel : ViewModel() {
             password = "",
             showPassword = false,
             submitAttempted = false,
-            isEmailValid = true,
         )
     )
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
