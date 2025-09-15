@@ -98,6 +98,10 @@ class RegisterViewmodel : ViewModel() {
         }
     }
 
+    private fun canRegister(name: String, surname: String, email: String, password: String): Boolean {
+        return name.isNotBlank() && surname.isNotBlank() && email.isNotBlank() && password.isNotBlank()
+    }
+
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
             UiAction.OnRegisterClicked -> {
@@ -129,21 +133,27 @@ class RegisterViewmodel : ViewModel() {
             is UiAction.OnNameChange -> _uiState.update {
                 it.copy(
                     name = uiAction.name,
-                    isNameValid = validateName(uiAction.name) == null
+                    isRegisterEnabled = canRegister(
+                        uiAction.name, it.surname, it.email, it.password
+                    )
                 )
             }
 
             is UiAction.OnSurnameChange -> _uiState.update {
                 it.copy(
                     surname = uiAction.surname,
-                    isSurnameValid = validateSurname(uiAction.surname) == null
+                    isRegisterEnabled = canRegister(
+                        it.name, uiAction.surname, it.email, it.password
+                    )
                 )
             }
 
             is UiAction.OnEmailChange -> _uiState.update {
                 it.copy(
                     email = uiAction.email,
-                    isEmailValid = validateEmail(uiAction.email) == null
+                    isRegisterEnabled = canRegister(
+                        it.name, it.surname, uiAction.email, it.password
+                    )
                 )
             }
 
@@ -152,6 +162,7 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(
                     password = newPassword,
                     isPasswordValid = validatePassword(newPassword) == null,
+                    isRegisterEnabled = canRegister(it.name, it.surname, it.email, newPassword),
                     passwordStrength = computePasswordStrength(newPassword)
                 )
             }
