@@ -22,7 +22,8 @@ object RegisterContract {
         val errorMessage: String? = null,
         val submitAttempted: Boolean = false,
         val showPassword: Boolean = false,
-        val passwordStrength: PasswordStrength? = null
+        val passwordStrength: PasswordStrength? = null,
+        val passwordStrengthProgress: Float = 0f
     )
 
     sealed interface UiAction {
