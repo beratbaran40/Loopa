@@ -1,0 +1,179 @@
+package com.beratbaran.loopa.ui.register
+
+import androidx.lifecycle.ViewModel
+import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
+import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+
+class RegisterViewmodel : ViewModel() {
+    private val _uiState = MutableStateFlow(
+        RegisterContract.UiState(
+            name = "",
+            surname = "",
+            email = "",
+            password = "",
+            isLoading = false,
+            errorMessage = "",
+            showPassword = false,
+            submitAttempted = false,
+            isEmailValid = true,
+            passwordStrength = PasswordStrength.WEAK
+        )
+    )
+
+    val uiState: StateFlow<RegisterContract.UiState> = _uiState.asStateFlow()
+
+    private val _uiEffect by lazy { Channel<RegisterContract.UiEffect>() }
+    val uiEffect: Flow<RegisterContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
+
+    private fun validateName(name: String): String? {
+        val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
+        return when {
+            name.isBlank() -> "Name cannot be blank"
+            name.length < 2 -> "Name must be at least 2 characters long"
+            name.trim() != name -> "Name cannot start or end with a space"
+            !regex.matches(name) -> "Name can only contain letters"
+            else -> null
+        }
+    }
+
+    private fun validateSurname(surname: String): String? {
+        val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
+        return when {
+            surname.isBlank() -> "Surname cannot be blank"
+            surname.length < 2 -> "Surname must be at least 2 characters long"
+            surname.trim() != surname -> "Surname cannot start or end with a space"
+            !regex.matches(surname) -> "Surname can only contain letters"
+            else -> null
+        }
+    }
+
+    private fun validateEmail(email: String): String? {
+        return when {
+            email.isBlank() -> "Email cannot be blank"
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address"
+            else -> null
+        }
+    }
+
+    private fun validatePassword(password: String): String? {
+        return when {
+            password.isBlank() -> "Password cannot be blank"
+            password.length < 8 -> "Password must be at least 8 characters long"
+            else -> null
+        }
+    }
+
+    private fun computePasswordStrength(password: String): PasswordStrength? {
+        if (password.isBlank()) return null
+
+        var score = 0
+        val length = password.length
+        val hasLower = password.any { it.isLowerCase() }
+        val hasUpper = password.any { it.isUpperCase() }
+        val hasDigit = password.any { it.isDigit() }
+        val hasSpecial = password.any { !it.isLetterOrDigit() }
+
+        score += when {
+            length >= 12 -> 2
+            length >= 8 -> 1
+            else -> 0
+        }
+
+        if (hasLower) score++
+        if (hasUpper) score++
+        if (hasDigit) score++
+        if (hasSpecial) score++
+
+        return when {
+            score >= 5 -> PasswordStrength.STRONG
+            score >= 3 -> PasswordStrength.MEDIUM
+            else -> PasswordStrength.WEAK
+        }
+    }
+
+    fun onAction(uiAction: UiAction) {
+        when (uiAction) {
+            UiAction.OnRegisterClicked -> {
+                val current = _uiState.value
+                val nameError = validateName(current.name)
+                val surnameError = validateSurname(current.surname)
+                val emailError = validateEmail(current.email)
+                val passwordError = validatePassword(current.password)
+                if (nameError == null && surnameError == null && emailError == null && passwordError == null) {
+                    _uiEffect.trySend(RegisterContract.UiEffect.NavigateToHomePage)
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            submitAttempted = true,
+                            isNameValid = false,
+                            isSurnameValid = false,
+                            isEmailValid = false,
+                            isPasswordValid = false,
+                            isLoading = false,
+                            supportingTextName = nameError,
+                            supportingTextSurname = surnameError,
+                            supportingTextEmail = emailError,
+                            supportingTextPassword = passwordError
+                        )
+                    }
+                }
+            }
+
+            is UiAction.OnNameChange -> _uiState.update {
+                it.copy(
+                    name = uiAction.name,
+                    isNameValid = validateName(uiAction.name) == null
+                )
+            }
+
+            is UiAction.OnSurnameChange -> _uiState.update {
+                it.copy(
+                    surname = uiAction.surname,
+                    isSurnameValid = validateSurname(uiAction.surname) == null
+                )
+            }
+
+            is UiAction.OnEmailChange -> _uiState.update {
+                it.copy(
+                    email = uiAction.email,
+                    isEmailValid = validateEmail(uiAction.email) == null
+                )
+            }
+
+            is UiAction.OnPasswordChange -> _uiState.update {
+                val newPassword = uiAction.password
+                it.copy(
+                    password = newPassword,
+                    isPasswordValid = validatePassword(newPassword) == null,
+                    passwordStrength = computePasswordStrength(newPassword)
+                )
+            }
+
+            UiAction.OnToggleShowPassword -> _uiState.update {
+                it.copy(showPassword = !it.showPassword)
+            }
+
+            is UiAction.OnSubmitAttempted -> _uiState.update { state ->
+                val nameError = validateName(state.name)
+                val surnameError = validateSurname(state.surname)
+                val emailError = validateEmail(state.email)
+                val passwordError = validatePassword(state.password)
+                state.copy(
+                    submitAttempted = true,
+                    supportingTextName = nameError,
+                    supportingTextSurname = surnameError,
+                    supportingTextEmail = emailError,
+                    supportingTextPassword = passwordError,
+                    isEmailValid = (emailError == null)
+                )
+            }
+        }
+    }
+}
