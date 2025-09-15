@@ -98,7 +98,12 @@ class RegisterViewmodel : ViewModel() {
         }
     }
 
-    private fun canRegister(name: String, surname: String, email: String, password: String): Boolean {
+    private fun canRegister(
+        name: String,
+        surname: String,
+        email: String,
+        password: String
+    ): Boolean {
         return name.isNotBlank() && surname.isNotBlank() && email.isNotBlank() && password.isNotBlank()
     }
 
