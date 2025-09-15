@@ -15,4 +15,7 @@
     <string name="registerScreen_name_text">Name</string>
     <string name="registerScreen_surname_text">Surname</string>"
     <string name="register_background_info">St. Basil Cathedral - Moscow, Russia 🇷🇺</string>
+    <string name="register_password_strength_WEAK">Your password is too weak</string>
+    <string name="register_password_strength_MEDIUM">Your password is medium</string>
+    <string name="register_password_strength_STRONG">Your password is strong</string>
 </resources>
