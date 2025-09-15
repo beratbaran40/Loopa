@@ -5,8 +5,7 @@ object LoginContract {
         val email: String = "",
         val password: String = "",
         val isLoading: Boolean = false,
-        val errorMessage: String?,
-        val emailEdited: Boolean = false,
+        val errorMessage: String? = null,
         val submitAttempted: Boolean = false,
         val showPassword: Boolean = false,
         val isEmailValid: Boolean = true,
@@ -26,6 +25,5 @@ object LoginContract {
 
     sealed interface UiEffect {
         data object NavigateToHomePage : UiEffect
-
     }
 }
