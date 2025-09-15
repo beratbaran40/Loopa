@@ -107,7 +107,7 @@ fun LoginScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .imePadding()
-                .padding(24.dp, vertical = 24.dp),
+                .padding(horizontal = 24.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -285,6 +285,23 @@ fun LoginScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    modifier = Modifier
+                        .background(
+                            color = Color.Black.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .align(Alignment.CenterHorizontally),
+
+                    text = stringResource(R.string.login_background_info),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = Color.White.copy(alpha = 0.7f)
+                    ),
+                )
             }
         }
     }
