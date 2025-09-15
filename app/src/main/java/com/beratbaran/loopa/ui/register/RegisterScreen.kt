@@ -320,7 +320,7 @@ fun RegisterScreen(
                     trailingIcon = {
                         IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                             Icon(
-                                imageVector = if (uiState.showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                             )
                         }
