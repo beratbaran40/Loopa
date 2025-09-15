@@ -23,7 +23,7 @@ class RegisterViewmodel : ViewModel() {
             showPassword = false,
             submitAttempted = false,
             isEmailValid = true,
-            passwordStrength = PasswordStrength.WEAK
+            passwordStrength = null
         )
     )
 
