@@ -82,8 +82,6 @@ fun RegisterScreen(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val scrollState = rememberScrollState()
 
-
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             RegisterContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
