@@ -12,6 +12,8 @@ import com.beratbaran.loopa.ui.login.LoginScreen
 import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
+import com.beratbaran.loopa.ui.register.RegisterScreen
+import com.beratbaran.loopa.ui.register.RegisterViewmodel
 
 @Composable
 fun NavGraph(
@@ -52,7 +54,22 @@ fun NavGraph(
         }
 
         composable<Screen.Register> {
+            val viewModel = hiltViewModel<RegisterViewmodel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            RegisterScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+                onNavigateToHomepage = {
+                    navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.Register) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+            )
         }
 
         composable<Screen.Login> {
