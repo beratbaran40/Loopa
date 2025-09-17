@@ -1,6 +1,10 @@
 package com.beratbaran.loopa.ui.register
 
 import androidx.lifecycle.ViewModel
+import com.beratbaran.loopa.common.validateName
+import com.beratbaran.loopa.common.validateSurname
+import com.beratbaran.loopa.common.validateEmail
+import com.beratbaran.loopa.common.validatePassword
 import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import kotlinx.coroutines.channels.Channel
@@ -14,16 +18,6 @@ import kotlinx.coroutines.flow.update
 class RegisterViewmodel : ViewModel() {
     private val _uiState = MutableStateFlow(
         RegisterContract.UiState(
-            name = "",
-            surname = "",
-            email = "",
-            password = "",
-            isLoading = false,
-            errorMessage = "",
-            showPassword = false,
-            submitAttempted = false,
-            isEmailValid = true,
-            passwordStrength = null
         )
     )
 
@@ -31,44 +25,6 @@ class RegisterViewmodel : ViewModel() {
 
     private val _uiEffect by lazy { Channel<RegisterContract.UiEffect>() }
     val uiEffect: Flow<RegisterContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
-
-    private fun validateName(name: String): String? {
-        val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
-        return when {
-            name.isBlank() -> "Name cannot be blank"
-            name.length < 2 -> "Name must be at least 2 characters long"
-            name.trim() != name -> "Name cannot start or end with a space"
-            !regex.matches(name) -> "Name can only contain letters"
-            else -> null
-        }
-    }
-
-    private fun validateSurname(surname: String): String? {
-        val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
-        return when {
-            surname.isBlank() -> "Surname cannot be blank"
-            surname.length < 2 -> "Surname must be at least 2 characters long"
-            surname.trim() != surname -> "Surname cannot start or end with a space"
-            !regex.matches(surname) -> "Surname can only contain letters"
-            else -> null
-        }
-    }
-
-    private fun validateEmail(email: String): String? {
-        return when {
-            email.isBlank() -> "Email cannot be blank"
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address"
-            else -> null
-        }
-    }
-
-    private fun validatePassword(password: String): String? {
-        return when {
-            password.isBlank() -> "Password cannot be blank"
-            password.length < 8 -> "Password must be at least 8 characters long"
-            else -> null
-        }
-    }
 
     private fun computePasswordStrength(password: String): PasswordStrength? {
         if (password.isBlank()) return null
@@ -98,7 +54,7 @@ class RegisterViewmodel : ViewModel() {
         }
     }
 
-    private fun canRegister(
+    private fun checkRegisterState(
         name: String,
         surname: String,
         email: String,
@@ -109,18 +65,18 @@ class RegisterViewmodel : ViewModel() {
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
-            UiAction.OnRegisterClicked -> {
-                val current = _uiState.value
-                val nameError = validateName(current.name)
-                val surnameError = validateSurname(current.surname)
-                val emailError = validateEmail(current.email)
-                val passwordError = validatePassword(current.password)
+            UiAction.OnRegisterClick -> {
+                val currentState = _uiState.value
+                val nameError = currentState.name.validateName()
+                val surnameError = currentState.surname.validateSurname()
+                val emailError = currentState.email.validateEmail()
+                val passwordError = currentState.password.validatePassword()
                 if (nameError == null && surnameError == null && emailError == null && passwordError == null) {
                     _uiEffect.trySend(RegisterContract.UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
-                            submitAttempted = true,
+                            submitClick = true,
                             isNameValid = false,
                             isSurnameValid = false,
                             isEmailValid = false,
@@ -138,7 +94,7 @@ class RegisterViewmodel : ViewModel() {
             is UiAction.OnNameChange -> _uiState.update {
                 it.copy(
                     name = uiAction.name,
-                    isRegisterEnabled = canRegister(
+                    isRegisterEnabled = checkRegisterState(
                         uiAction.name, it.surname, it.email, it.password
                     )
                 )
@@ -147,7 +103,7 @@ class RegisterViewmodel : ViewModel() {
             is UiAction.OnSurnameChange -> _uiState.update {
                 it.copy(
                     surname = uiAction.surname,
-                    isRegisterEnabled = canRegister(
+                    isRegisterEnabled = checkRegisterState(
                         it.name, uiAction.surname, it.email, it.password
                     )
                 )
@@ -156,7 +112,7 @@ class RegisterViewmodel : ViewModel() {
             is UiAction.OnEmailChange -> _uiState.update {
                 it.copy(
                     email = uiAction.email,
-                    isRegisterEnabled = canRegister(
+                    isRegisterEnabled = checkRegisterState(
                         it.name, it.surname, uiAction.email, it.password
                     )
                 )
@@ -166,8 +122,8 @@ class RegisterViewmodel : ViewModel() {
                 val newPassword = uiAction.password
                 it.copy(
                     password = newPassword,
-                    isPasswordValid = validatePassword(newPassword) == null,
-                    isRegisterEnabled = canRegister(it.name, it.surname, it.email, newPassword),
+                    isPasswordValid = newPassword.validatePassword() == null,
+                    isRegisterEnabled = checkRegisterState(it.name, it.surname, it.email, newPassword),
                     passwordStrength = computePasswordStrength(newPassword)
                 )
             }
@@ -176,13 +132,13 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(showPassword = !it.showPassword)
             }
 
-            is UiAction.OnSubmitAttempted -> _uiState.update { state ->
-                val nameError = validateName(state.name)
-                val surnameError = validateSurname(state.surname)
-                val emailError = validateEmail(state.email)
-                val passwordError = validatePassword(state.password)
+            is UiAction.OnSubmitClick -> _uiState.update { state ->
+                val nameError = state.name.validateName()
+                val surnameError = state.surname.validateSurname()
+                val emailError = state.email.validateEmail()
+                val passwordError = state.password.validatePassword()
                 state.copy(
-                    submitAttempted = true,
+                    submitClick = true,
                     supportingTextName = nameError,
                     supportingTextSurname = surnameError,
                     supportingTextEmail = emailError,
