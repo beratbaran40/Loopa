@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -23,8 +24,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -165,7 +164,13 @@ fun LoginScreen(
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
                     singleLine = true,
                     isError = uiState.supportingTextEmail != null,
-                    leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_selected_home),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -212,7 +217,13 @@ fun LoginScreen(
                     label = { Text(text = stringResource(R.string.login_label_password)) },
                     singleLine = true,
                     isError = uiState.supportingTextPassword != null,
-                    leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_filter),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                         PasswordVisualTransformation(),
                     trailingIcon = {
