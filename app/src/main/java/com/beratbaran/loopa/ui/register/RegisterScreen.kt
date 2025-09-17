@@ -24,14 +24,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.CoPresent
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -171,7 +168,13 @@ fun RegisterScreen(
                     singleLine = true,
                     enabled = !uiState.isLoading,
                     isError = uiState.supportingTextName != null,
-                    leadingIcon = { Icon(Icons.Filled.AccountBox, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_selected_profile),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -221,7 +224,13 @@ fun RegisterScreen(
                     singleLine = true,
                     enabled = !uiState.isLoading,
                     isError = uiState.supportingTextSurname != null,
-                    leadingIcon = { Icon(Icons.Filled.CoPresent, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_selected_profile),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -271,7 +280,13 @@ fun RegisterScreen(
                     singleLine = true,
                     enabled = !uiState.isLoading,
                     isError = uiState.supportingTextEmail != null,
-                    leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_selected_home),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -319,7 +334,13 @@ fun RegisterScreen(
                     singleLine = true,
                     enabled = !uiState.isLoading,
                     isError = uiState.supportingTextPassword != null,
-                    leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_filter),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                         PasswordVisualTransformation(),
                     trailingIcon = {
@@ -452,7 +473,7 @@ fun RegisterScreen(
                     enabled = uiState.isRegisterEnabled && !uiState.isLoading
                 ) {
                     if (uiState.isLoading) {
-                        androidx.compose.material3.CircularProgressIndicator(
+                        CircularProgressIndicator(
                             modifier = Modifier.size(22.dp),
                             strokeWidth = 2.dp
                         )
