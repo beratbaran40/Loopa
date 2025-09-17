@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,10 +42,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -70,7 +74,8 @@ fun RegisterScreen(
     uiState: RegisterContract.UiState,
     uiEffect: Flow<RegisterContract.UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToHomepage: () -> Unit
+    onNavigateToHomepage: () -> Unit,
+    onNavigateToBack: () -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -82,6 +87,7 @@ fun RegisterScreen(
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             RegisterContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
+            RegisterContract.UiEffect.NavigateToBack -> onNavigateToBack()
         }
     }
 
@@ -123,386 +129,425 @@ fun RegisterScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(horizontal = 20.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Text(
+                Row(
                     modifier = Modifier
-                        .padding(top = 4.dp),
-                    text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.displaySmall.copy(
-                        brush = Brush.linearGradient(
-                            colors = listOf(Color(0xFFCDFF85), Color.White)
-                        )
-                    )
-                )
+                        .fillMaxSize()
+                        .padding(top = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
 
-                Image(
-                    modifier = Modifier
-                        .size(285.dp)
-                        .padding(bottom = 8.dp),
-                    painter = painterResource(id = R.drawable.loopa),
-                    contentDescription = null,
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .bringIntoViewRequester(bringIntoViewRequester)
-                        .onFocusEvent { event ->
-                            if (event.isFocused) {
-                                coroutineScope.launch {
-                                    bringIntoViewRequester.bringIntoView()
-                                }
-                            }
-                        },
-                    value = uiState.name,
-                    onValueChange = {
-                        onAction(UiAction.OnNameChange(it))
-                    },
-                    label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
-                    singleLine = true,
-                    enabled = !uiState.isLoading,
-                    isError = uiState.supportingTextName != null,
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_name),
-                            contentDescription = null,
-                            modifier = Modifier.size(25.dp)
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                        cursorColor = Color.White
-                    ),
-                    supportingText = {
-                        uiState.supportingTextName?.let {
-                            Text(
-                                text = it,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .bringIntoViewRequester(bringIntoViewRequester)
-                        .onFocusEvent { event ->
-                            if (event.isFocused) {
-                                coroutineScope.launch {
-                                    bringIntoViewRequester.bringIntoView()
-                                }
-                            }
-                        },
-                    value = uiState.surname,
-                    onValueChange = {
-                        onAction(UiAction.OnSurnameChange(it))
-                    },
-                    label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
-                    singleLine = true,
-                    enabled = !uiState.isLoading,
-                    isError = uiState.supportingTextSurname != null,
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_surname),
-                            contentDescription = null,
-                            modifier = Modifier.size(35.dp)
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                        cursorColor = Color.White
-                    ),
-                    supportingText = {
-                        uiState.supportingTextSurname?.let {
-                            Text(
-                                text = it,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .bringIntoViewRequester(bringIntoViewRequester)
-                        .onFocusEvent { event ->
-                            if (event.isFocused) {
-                                coroutineScope.launch {
-                                    bringIntoViewRequester.bringIntoView()
-                                }
-                            }
-                        },
-                    value = uiState.email,
-                    onValueChange = {
-                        onAction(UiAction.OnEmailChange(it))
-                    },
-                    label = { Text(text = stringResource(R.string.login_label_mail_text)) },
-                    singleLine = true,
-                    enabled = !uiState.isLoading,
-                    isError = uiState.supportingTextEmail != null,
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_email),
-                            contentDescription = null,
-                            modifier = Modifier.size(25.dp)
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                        cursorColor = Color.White
-                    ),
-                    supportingText = {
-                        uiState.supportingTextEmail?.let {
-                            Text(
-                                text = it,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
-                        .bringIntoViewRequester(bringIntoViewRequester)
-                        .onFocusEvent { event ->
-                            if (event.isFocused) {
-                                coroutineScope.launch {
-                                    bringIntoViewRequester.bringIntoView()
-                                }
-                            }
-                        },
-                    value = uiState.password,
-                    onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
-                    label = { Text(text = stringResource(R.string.login_label_password)) },
-                    singleLine = true,
-                    enabled = !uiState.isLoading,
-                    isError = uiState.supportingTextPassword != null,
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_password),
-                            contentDescription = null,
-                            modifier = Modifier.size(25.dp)
-                        )
-                    },
-                    visualTransformation = if (uiState.showPassword) VisualTransformation.None else
-                        PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
-                            Icon(
-                                imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
-                            )
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (!uiState.isLoading) {
-                                onAction(UiAction.OnSubmitClick)
-                                keyboardController?.hide()
-                                onAction(UiAction.OnRegisterClick)
-                            }
-                        }
-                    ),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.White,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        errorContainerColor = Color.Transparent,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                        cursorColor = Color.White
-                    ),
-                    supportingText = {
-                        uiState.supportingTextPassword?.let {
-                            Text(
-                                text = it,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                )
-
-                uiState.passwordStrength?.let { strength ->
-                    val (progress, color, label) = when (strength) {
-                        RegisterContract.PasswordStrength.STRONG -> Triple(
-                            1f,
-                            Color.Green,
-                            stringResource(R.string.register_password_strength_STRONG)
-                        )
-
-                        RegisterContract.PasswordStrength.MEDIUM -> Triple(
-                            0.66f,
-                            Color.Yellow,
-                            stringResource(R.string.register_password_strength_MEDIUM)
-                        )
-
-                        RegisterContract.PasswordStrength.WEAK -> Triple(
-                            0.33f,
-                            Color.Red,
-                            stringResource(R.string.register_password_strength_WEAK)
-                        )
-                    }
-
-                    Column(
+                ) {
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        horizontalAlignment = Alignment.Start
+                            .fillMaxSize()
+                            .weight(1f),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        LinearProgressIndicator(
-                            progress = { progress },
-                            color = color,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.bodySmall.copy(color = color),
-                            modifier = Modifier.padding(top = 2.dp)
+
+                        Icon(
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .size(24.dp)
+                                .clickable { onNavigateToBack() }
+                                .graphicsLayer(alpha = 0.99f)
+                                .drawWithCache {
+                                    val brush = Brush.linearGradient(
+                                        colors = listOf(Color(0xFFCDFF85), Color.White)
+                                    )
+                                    onDrawWithContent {
+                                        drawContent()
+                                        drawRect(brush, blendMode = BlendMode.SrcAtop)
+                                    }
+                                },
+                            painter = painterResource(id = R.drawable.ic_back),
+                            contentDescription = null,
+                            tint = Color.White
                         )
                     }
-                }
+                    Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
 
-                if (uiState.errorMessage.isNotBlank()) {
-                    androidx.compose.animation.AnimatedVisibility(visible = true) {
                         Text(
-                            text = uiState.errorMessage,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.12f),
-                                    shape = RoundedCornerShape(12.dp)
+                                .padding(top = 4.dp),
+                            text = stringResource(R.string.app_name),
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                brush = Brush.linearGradient(
+                                    colors = listOf(Color(0xFFCDFF85), Color.White)
                                 )
-                                .padding(horizontal = 12.dp, vertical = 12.dp),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.error
                             )
                         )
                     }
-                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Spacer(modifier = Modifier.weight(1f))
                 }
+            }
 
-                Spacer(modifier = Modifier.height(6.dp))
+            Image(
+                modifier = Modifier
+                    .size(285.dp)
+                    .padding(bottom = 8.dp),
+                painter = painterResource(id = R.drawable.loopa),
+                contentDescription = null,
+            )
 
-                Button(
-                    modifier = Modifier
-                        .bringIntoViewRequester(bringIntoViewRequester)
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    onClick = {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+                    .bringIntoViewRequester(bringIntoViewRequester)
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
+                            coroutineScope.launch {
+                                bringIntoViewRequester.bringIntoView()
+                            }
+                        }
+                    },
+                value = uiState.name,
+                onValueChange = {
+                    onAction(UiAction.OnNameChange(it))
+                },
+                label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
+                singleLine = true,
+                enabled = !uiState.isLoading,
+                isError = uiState.supportingTextName != null,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_name),
+                        contentDescription = null,
+                        modifier = Modifier.size(25.dp)
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                    cursorColor = Color.White
+                ),
+                supportingText = {
+                    uiState.supportingTextName?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+                    .bringIntoViewRequester(bringIntoViewRequester)
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
+                            coroutineScope.launch {
+                                bringIntoViewRequester.bringIntoView()
+                            }
+                        }
+                    },
+                value = uiState.surname,
+                onValueChange = {
+                    onAction(UiAction.OnSurnameChange(it))
+                },
+                label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
+                singleLine = true,
+                enabled = !uiState.isLoading,
+                isError = uiState.supportingTextSurname != null,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_surname),
+                        contentDescription = null,
+                        modifier = Modifier.size(35.dp)
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                    cursorColor = Color.White
+                ),
+                supportingText = {
+                    uiState.supportingTextSurname?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+                    .bringIntoViewRequester(bringIntoViewRequester)
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
+                            coroutineScope.launch {
+                                bringIntoViewRequester.bringIntoView()
+                            }
+                        }
+                    },
+                value = uiState.email,
+                onValueChange = {
+                    onAction(UiAction.OnEmailChange(it))
+                },
+                label = { Text(text = stringResource(R.string.login_label_mail_text)) },
+                singleLine = true,
+                enabled = !uiState.isLoading,
+                isError = uiState.supportingTextEmail != null,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_email),
+                        contentDescription = null,
+                        modifier = Modifier.size(25.dp)
+                    )
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                    cursorColor = Color.White
+                ),
+                supportingText = {
+                    uiState.supportingTextEmail?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            )
+
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp)
+                    .bringIntoViewRequester(bringIntoViewRequester)
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
+                            coroutineScope.launch {
+                                bringIntoViewRequester.bringIntoView()
+                            }
+                        }
+                    },
+                value = uiState.password,
+                onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
+                label = { Text(text = stringResource(R.string.login_label_password)) },
+                singleLine = true,
+                enabled = !uiState.isLoading,
+                isError = uiState.supportingTextPassword != null,
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_password),
+                        contentDescription = null,
+                        modifier = Modifier.size(25.dp)
+                    )
+                },
+                visualTransformation = if (uiState.showPassword) VisualTransformation.None else
+                    PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
+                        Icon(
+                            imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
                         if (!uiState.isLoading) {
                             onAction(UiAction.OnSubmitClick)
+                            keyboardController?.hide()
                             onAction(UiAction.OnRegisterClick)
                         }
-                    },
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = (Color.Black),
-                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                        disabledContentColor = Color.White.copy(alpha = 0.8f)
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 3.dp,
-                        pressedElevation = 6.dp,
-                        disabledElevation = 2.dp
-                    ),
-                    enabled = uiState.isRegisterEnabled && !uiState.isLoading
-                ) {
-                    if (uiState.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(22.dp),
-                            strokeWidth = 2.dp
-                        )
-                    } else {
+                    }
+                ),
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    errorContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
+                    cursorColor = Color.White
+                ),
+                supportingText = {
+                    uiState.supportingTextPassword?.let {
                         Text(
-                            text = stringResource(R.string.registerScreen_registerButton_text),
-                            style = MaterialTheme.typography.bodyLarge
+                            text = it,
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
+            )
 
-                Spacer(modifier = Modifier.height(6.dp))
+            uiState.passwordStrength?.let { strength ->
+                val (progress, color, label) = when (strength) {
+                    RegisterContract.PasswordStrength.STRONG -> Triple(
+                        1f,
+                        Color.Green,
+                        stringResource(R.string.register_password_strength_STRONG)
+                    )
 
-                Text(
+                    RegisterContract.PasswordStrength.MEDIUM -> Triple(
+                        0.66f,
+                        Color.Yellow,
+                        stringResource(R.string.register_password_strength_MEDIUM)
+                    )
+
+                    RegisterContract.PasswordStrength.WEAK -> Triple(
+                        0.33f,
+                        Color.Red,
+                        stringResource(R.string.register_password_strength_WEAK)
+                    )
+                }
+
+                Column(
                     modifier = Modifier
-                        .background(
-                            color = Color.Black.copy(alpha = 0.1f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                        .align(Alignment.CenterHorizontally),
-
-                    text = stringResource(R.string.register_background_info),
-                    maxLines = 1,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = Color.White.copy(alpha = 0.7f)
-                    ),
-                )
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    LinearProgressIndicator(
+                        progress = { progress },
+                        color = color,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.bodySmall.copy(color = color),
+                        modifier = Modifier.padding(top = 2.dp)
+                    )
+                }
             }
+
+            if (uiState.errorMessage.isNotBlank()) {
+                androidx.compose.animation.AnimatedVisibility(visible = true) {
+                    Text(
+                        text = uiState.errorMessage,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = MaterialTheme.colorScheme.error.copy(alpha = 0.12f),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 12.dp),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Button(
+                modifier = Modifier
+                    .bringIntoViewRequester(bringIntoViewRequester)
+                    .fillMaxWidth()
+                    .height(56.dp),
+                onClick = {
+                    if (!uiState.isLoading) {
+                        onAction(UiAction.OnSubmitClick)
+                        onAction(UiAction.OnRegisterClick)
+                    }
+                },
+                shape = RoundedCornerShape(28.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = (Color.Black),
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                    disabledContentColor = Color.White.copy(alpha = 0.8f)
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 3.dp,
+                    pressedElevation = 6.dp,
+                    disabledElevation = 2.dp
+                ),
+                enabled = uiState.isRegisterEnabled && !uiState.isLoading
+            ) {
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.registerScreen_registerButton_text),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                modifier = Modifier
+                    .background(
+                        color = Color.Black.copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .align(Alignment.CenterHorizontally),
+
+                text = stringResource(R.string.register_background_info),
+                maxLines = 1,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = Color.White.copy(alpha = 0.7f)
+                ),
+            )
         }
     }
 }
@@ -517,7 +562,8 @@ fun RegisterScreenPreview(
             uiState = uiState,
             uiEffect = emptyFlow(),
             onAction = {},
-            onNavigateToHomepage = {}
+            onNavigateToHomepage = {},
+            onNavigateToBack = {}
         )
     }
 }
