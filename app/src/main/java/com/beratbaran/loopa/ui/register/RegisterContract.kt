@@ -20,6 +20,7 @@ object RegisterContract {
         val isLoading: Boolean = false,
         val isRegisterEnabled: Boolean = false,
         val errorMessage: String = "",
+        val navigateBack: Boolean = false,
         val submitClick: Boolean = false,
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
@@ -34,9 +35,13 @@ object RegisterContract {
         data class OnPasswordChange(val password: String) : UiAction
         data object OnToggleShowPassword : UiAction
         data object OnSubmitClick : UiAction
+        data object OnBackClick : UiAction
+
+
     }
 
     sealed interface UiEffect {
         data object NavigateToHomePage : UiEffect
+        data object NavigateToBack : UiEffect
     }
 }
