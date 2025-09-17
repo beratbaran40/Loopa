@@ -146,6 +146,8 @@ class RegisterViewmodel : ViewModel() {
                     isEmailValid = (emailError == null)
                 )
             }
+
+            UiAction.OnBackClick -> _uiEffect.trySend(RegisterContract.UiEffect.NavigateToBack)
         }
     }
 }
