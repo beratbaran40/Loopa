@@ -1,6 +1,8 @@
 package com.beratbaran.loopa.ui.login
 
 import androidx.lifecycle.ViewModel
+import com.beratbaran.loopa.common.validateEmail
+import com.beratbaran.loopa.common.validatePassword
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.login.LoginContract.UiEffect
 import kotlinx.coroutines.channels.Channel
@@ -14,34 +16,12 @@ import kotlinx.coroutines.flow.update
 class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         LoginContract.UiState(
-            isLoading = false,
-            errorMessage = "",
-            email = "",
-            password = "",
-            showPassword = false,
-            submitAttempted = false,
         )
     )
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
 
     private val _uiEffect by lazy { Channel<UiEffect>() }
     val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
-
-    private fun validateEmail(email: String): String? {
-        return when {
-            email.isBlank() -> "Email cannot be blank"
-            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> "Invalid email address"
-            else -> null
-        }
-    }
-
-    private fun validatePassword(password: String): String? {
-        return when {
-            password.isBlank() -> "Password cannot be blank"
-            password.length < 8 -> "Password must be at least 8 characters long"
-            else -> null
-        }
-    }
 
     private fun canLogin(email: String, password: String): Boolean {
         return email.isNotBlank() && password.isNotBlank()
@@ -50,15 +30,15 @@ class LoginViewModel : ViewModel() {
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
             UiAction.OnLoginClicked -> {
-                val current = _uiState.value
-                val emailError = validateEmail(current.email)
-                val passwordError = validatePassword(current.password)
+                val currentState = _uiState.value
+                val emailError = currentState.email.validateEmail()
+                val passwordError = currentState.password.validatePassword()
                 if (emailError == null && passwordError == null) {
                     _uiEffect.trySend(UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
-                            submitAttempted = true,
+                            submitClick = true,
                             supportingTextEmail = emailError,
                             supportingTextPassword = passwordError,
                             isEmailValid = false,
@@ -83,11 +63,11 @@ class LoginViewModel : ViewModel() {
                 )
             }
 
-            is UiAction.OnSubmitAttempted -> _uiState.update { state ->
-                val emailError = validateEmail(state.email)
-                val passwordError = validatePassword(state.password)
+            is UiAction.OnSubmitClick -> _uiState.update { state ->
+                val emailError = state.email.validateEmail()
+                val passwordError = state.password.validatePassword()
                 state.copy(
-                    submitAttempted = true,
+                    submitClick = true,
                     supportingTextEmail = emailError,
                     supportingTextPassword = passwordError,
                     isEmailValid = (emailError == null)
