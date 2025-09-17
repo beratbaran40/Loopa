@@ -229,7 +229,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            onAction(UiAction.OnSubmitAttempted)
+                            onAction(UiAction.OnSubmitClick)
                             keyboardController?.hide()
                             onAction(UiAction.OnLoginClicked)
                         }
@@ -264,7 +264,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     onClick = {
-                        onAction(UiAction.OnSubmitAttempted)
+                        onAction(UiAction.OnSubmitClick)
                         onAction(UiAction.OnLoginClicked)
                     },
                     shape = RoundedCornerShape(28.dp),
