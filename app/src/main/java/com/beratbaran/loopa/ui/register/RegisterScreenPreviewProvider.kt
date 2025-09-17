@@ -12,6 +12,7 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 password = "",
                 isLoading = false,
                 errorMessage = "",
+                isRegisterEnabled = false,
             ),
             RegisterContract.UiState(
                 name = "John",
@@ -20,6 +21,7 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 password = "123456",
                 isLoading = false,
                 errorMessage = "",
+                isRegisterEnabled = true,
             ),
             RegisterContract.UiState(
                 name = "John",
@@ -28,6 +30,7 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 password = "123456",
                 isLoading = true,
                 errorMessage = "",
+                isRegisterEnabled = false,
             ),
             RegisterContract.UiState(
                 name = "John",
@@ -35,7 +38,8 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
-                errorMessage = "Error",
+                errorMessage = "Example Register Error",
+                isRegisterEnabled = true,
             ),
         )
 }
