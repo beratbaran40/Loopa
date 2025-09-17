@@ -123,23 +123,6 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(top = 4.dp),
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.displaySmall.copy(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Color(0xFFCDFF85), Color.White)
-                    )
-                )
-            )
-
-            Image(
-                modifier = Modifier
-                    .size(300.dp),
-                painter = painterResource(id = R.drawable.loopa),
-                contentDescription = null,
-            )
 
             Column(
                 modifier = Modifier
@@ -148,6 +131,26 @@ fun RegisterScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                Text(
+                    modifier = Modifier
+                        .padding(top = 4.dp),
+                    text = stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.displaySmall.copy(
+                        brush = Brush.linearGradient(
+                            colors = listOf(Color(0xFFCDFF85), Color.White)
+                        )
+                    )
+                )
+
+                Image(
+                    modifier = Modifier
+                        .size(285.dp)
+                        .padding(bottom = 8.dp),
+                    painter = painterResource(id = R.drawable.loopa),
+                    contentDescription = null,
+                )
+
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
