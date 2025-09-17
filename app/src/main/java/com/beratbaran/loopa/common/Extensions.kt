@@ -20,3 +20,39 @@ fun <T> Flow<T>.CollectWithLifecycle(
         }
     }
 }
+
+fun String.validateName(): String? {
+    val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
+    return when {
+        isBlank() -> "Name cannot be blank"
+        length < 2 -> "Name must be at least 2 characters long"
+        trim() != this -> "Name cannot start or end with a space"
+        !regex.matches(this) -> "Name can only contain letters"
+        else -> null
+    }
+}
+
+fun String.validateSurname(): String? {
+    val regex = "^[A-Za-zÇĞİÖŞÜçğıöşü\\s'-]+$".toRegex()
+    return when {
+        isBlank() -> "Surname cannot be blank"
+        length < 2 -> "Surname must be at least 2 characters long"
+        trim() != this -> "Surname cannot start or end with a space"
+        !regex.matches(this) -> "Surname can only contain letters"
+        else -> null
+    }
+}
+
+fun String.validateEmail(): String? = when {
+    this.isBlank() -> "Email cannot be blank"
+    !android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches() -> ("Invalid email address")
+    else -> null
+}
+
+fun String.validatePassword(): String? {
+    return when {
+        this.isBlank() -> "Password cannot be blank"
+        length < 8 -> "Password must be at least 8 characters long"
+        else -> null
+    }
+}
