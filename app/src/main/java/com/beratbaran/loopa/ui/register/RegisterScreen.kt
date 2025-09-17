@@ -123,7 +123,6 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             Text(
                 modifier = Modifier
                     .padding(top = 4.dp),
@@ -149,7 +148,6 @@ fun RegisterScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -168,6 +166,7 @@ fun RegisterScreen(
                     },
                     label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
                     singleLine = true,
+                    enabled = !uiState.isLoading,
                     isError = uiState.supportingTextName != null,
                     leadingIcon = { Icon(Icons.Filled.AccountBox, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
@@ -217,6 +216,7 @@ fun RegisterScreen(
                     },
                     label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
                     singleLine = true,
+                    enabled = !uiState.isLoading,
                     isError = uiState.supportingTextSurname != null,
                     leadingIcon = { Icon(Icons.Filled.CoPresent, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
@@ -266,6 +266,7 @@ fun RegisterScreen(
                     },
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
                     singleLine = true,
+                    enabled = !uiState.isLoading,
                     isError = uiState.supportingTextEmail != null,
                     leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
                     keyboardOptions = KeyboardOptions(
@@ -313,6 +314,7 @@ fun RegisterScreen(
                     onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
                     label = { Text(text = stringResource(R.string.login_label_password)) },
                     singleLine = true,
+                    enabled = !uiState.isLoading,
                     isError = uiState.supportingTextPassword != null,
                     leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
                     visualTransformation = if (uiState.showPassword) VisualTransformation.None else
@@ -331,9 +333,11 @@ fun RegisterScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            onAction(UiAction.OnSubmitAttempted)
-                            keyboardController?.hide()
-                            onAction(UiAction.OnRegisterClicked)
+                            if (!uiState.isLoading) {
+                                onAction(UiAction.OnSubmitClick)
+                                keyboardController?.hide()
+                                onAction(UiAction.OnRegisterClick)
+                            }
                         }
                     ),
                     shape = RoundedCornerShape(12.dp),
@@ -360,7 +364,6 @@ fun RegisterScreen(
 
                 uiState.passwordStrength?.let { strength ->
                     val (progress, color, label) = when (strength) {
-
                         RegisterContract.PasswordStrength.STRONG -> Triple(
                             1f,
                             Color.Green,
@@ -399,6 +402,25 @@ fun RegisterScreen(
                     }
                 }
 
+                if (uiState.errorMessage.isNotBlank()) {
+                    androidx.compose.animation.AnimatedVisibility(visible = true) {
+                        Text(
+                            text = uiState.errorMessage,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.12f),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(horizontal = 12.dp, vertical = 12.dp),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(6.dp))
+                }
+
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Button(
@@ -407,8 +429,10 @@ fun RegisterScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     onClick = {
-                        onAction(UiAction.OnSubmitAttempted)
-                        onAction(UiAction.OnRegisterClicked)
+                        if (!uiState.isLoading) {
+                            onAction(UiAction.OnSubmitClick)
+                            onAction(UiAction.OnRegisterClick)
+                        }
                     },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -422,12 +446,19 @@ fun RegisterScreen(
                         pressedElevation = 6.dp,
                         disabledElevation = 2.dp
                     ),
-                    enabled = uiState.isRegisterEnabled
+                    enabled = uiState.isRegisterEnabled && !uiState.isLoading
                 ) {
-                    Text(
-                        text = stringResource(R.string.registerScreen_registerButton_text),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    if (uiState.isLoading) {
+                        androidx.compose.material3.CircularProgressIndicator(
+                            modifier = Modifier.size(22.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.registerScreen_registerButton_text),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(6.dp))
