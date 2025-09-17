@@ -69,6 +69,14 @@ fun NavGraph(
                         launchSingleTop = true
                     }
                 },
+                onNavigateToBack = {
+                    navController.navigate(Screen.Onboarding) {
+                        popUpTo(Screen.Register) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
