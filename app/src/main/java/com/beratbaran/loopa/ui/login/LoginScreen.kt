@@ -166,7 +166,7 @@ fun LoginScreen(
                     isError = uiState.supportingTextEmail != null,
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_selected_home),
+                            painter = painterResource(id = R.drawable.ic_email),
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
@@ -219,7 +219,7 @@ fun LoginScreen(
                     isError = uiState.supportingTextPassword != null,
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_filter),
+                            painter = painterResource(id = R.drawable.ic_password),
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
