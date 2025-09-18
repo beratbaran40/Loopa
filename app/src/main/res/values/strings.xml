@@ -10,7 +10,12 @@
     <string name="login_label_mail_text">Email</string>
     <string name="login_placeholder_mail_example">loopa123@mail.com</string>
     <string name="login_label_password">Password</string>
-    <string name="login_errorText_mail">Enter a valid Email</string>
-
-
+    <string name="login_background_info">Kiyomizudera Temple - Kyoto, Japan 🇯🇵</string>
+    <string name="registerScreen_registerButton_text">Register</string>
+    <string name="registerScreen_name_text">Name</string>
+    <string name="registerScreen_surname_text">Surname</string>"
+    <string name="register_background_info">St. Basil Cathedral - Moscow, Russia 🇷🇺</string>
+    <string name="register_password_strength_WEAK">Your password is too weak</string>
+    <string name="register_password_strength_MEDIUM">Your password is medium</string>
+    <string name="register_password_strength_STRONG">Your password is strong</string>
 </resources>

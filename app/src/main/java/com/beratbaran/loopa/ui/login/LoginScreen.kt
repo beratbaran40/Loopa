@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -23,8 +24,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
@@ -70,7 +69,6 @@ fun LoginScreen(
     uiEffect: Flow<LoginContract.UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit
-
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -108,7 +106,14 @@ fun LoginScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .imePadding()
-                .padding(24.dp, vertical = 24.dp),
+                .padding(horizontal = 24.dp, vertical = 24.dp)
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                },
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -136,20 +141,14 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 24.dp)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
-                    },
+                    .padding(bottom = 24.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp, top = 16.dp)
+                        .padding(bottom = 16.dp)
                         .bringIntoViewRequester(bringIntoViewRequester)
                         .onFocusEvent { event ->
                             if (event.isFocused) {
@@ -165,7 +164,13 @@ fun LoginScreen(
                     label = { Text(text = stringResource(R.string.login_label_mail_text)) },
                     singleLine = true,
                     isError = uiState.supportingTextEmail != null,
-                    leadingIcon = { Icon(Icons.Filled.Email, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_email),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -212,13 +217,19 @@ fun LoginScreen(
                     label = { Text(text = stringResource(R.string.login_label_password)) },
                     singleLine = true,
                     isError = uiState.supportingTextPassword != null,
-                    leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = null) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_password),
+                            contentDescription = null,
+                            modifier = Modifier.size(25.dp)
+                        )
+                    },
                     visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                         PasswordVisualTransformation(),
                     trailingIcon = {
                         IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                             Icon(
-                                imageVector = if (uiState.showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                             )
                         }
@@ -229,7 +240,7 @@ fun LoginScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            onAction(UiAction.OnSubmitAttempted)
+                            onAction(UiAction.OnSubmitClick)
                             keyboardController?.hide()
                             onAction(UiAction.OnLoginClicked)
                         }
@@ -256,7 +267,7 @@ fun LoginScreen(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Button(
                     modifier = Modifier
@@ -264,7 +275,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     onClick = {
-                        onAction(UiAction.OnSubmitAttempted)
+                        onAction(UiAction.OnSubmitClick)
                         onAction(UiAction.OnLoginClicked)
                     },
                     shape = RoundedCornerShape(28.dp),
@@ -286,6 +297,23 @@ fun LoginScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    modifier = Modifier
+                        .background(
+                            color = Color.Black.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                        .align(Alignment.CenterHorizontally),
+
+                    text = stringResource(R.string.login_background_info),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = Color.White.copy(alpha = 0.7f)
+                    ),
+                )
             }
         }
     }
