@@ -6,14 +6,11 @@ object HomepageContract {
         val isLoading: Boolean = false,
     )
 
-
     sealed interface UiAction {
         data object OnDetailsClick : UiAction
     }
 
-
     sealed interface UiEffect {
         data object NavigateToDetails : UiEffect
     }
-
 }
