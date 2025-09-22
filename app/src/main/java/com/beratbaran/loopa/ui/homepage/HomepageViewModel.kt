@@ -17,12 +17,10 @@ class HomepageViewModel : ViewModel() {
 
     val uiState: StateFlow<HomepageContract.UiState> = _uiState.asStateFlow()
 
-
     private val _uiEffect by lazy { Channel<HomepageContract.UiEffect>() }
     val uiEffect: Flow<HomepageContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     fun onAction(uiAction: UiAction) {
 
     }
-
 }
