@@ -32,8 +32,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -216,6 +216,7 @@ fun RegisterScreen(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_name),
+                        tint = MaterialTheme.colorScheme.background,
                         contentDescription = null,
                         modifier = Modifier.size(25.dp)
                     )
@@ -228,16 +229,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.background,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.background,
+                    disabledBorderColor = MaterialTheme.colorScheme.background,
+                    disabledLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.background,
+                    cursorColor = MaterialTheme.colorScheme.background
                 ),
                 supportingText = {
                     uiState.supportingTextName?.let {
@@ -272,6 +278,7 @@ fun RegisterScreen(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_surname),
+                        tint = MaterialTheme.colorScheme.background,
                         contentDescription = null,
                         modifier = Modifier.size(35.dp)
                     )
@@ -284,16 +291,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.background,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.background,
+                    disabledBorderColor = MaterialTheme.colorScheme.background,
+                    disabledLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.background,
+                    cursorColor = MaterialTheme.colorScheme.background
                 ),
                 supportingText = {
                     uiState.supportingTextSurname?.let {
@@ -328,6 +340,7 @@ fun RegisterScreen(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_email),
+                        tint = MaterialTheme.colorScheme.background,
                         contentDescription = null,
                         modifier = Modifier.size(25.dp)
                     )
@@ -340,16 +353,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.background,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.background,
+                    disabledBorderColor = MaterialTheme.colorScheme.background,
+                    disabledLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.background,
+                    cursorColor = MaterialTheme.colorScheme.background
                 ),
                 supportingText = {
                     uiState.supportingTextEmail?.let {
@@ -382,6 +400,7 @@ fun RegisterScreen(
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_password),
+                        tint = MaterialTheme.colorScheme.background,
                         contentDescription = null,
                         modifier = Modifier.size(25.dp)
                     )
@@ -395,6 +414,7 @@ fun RegisterScreen(
                                 if (uiState.showPassword) R.drawable.ic_visibility
                                 else R.drawable.ic_visibility_off
                             ),
+                            tint = MaterialTheme.colorScheme.background,
                             contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                         )
                     }
@@ -413,16 +433,21 @@ fun RegisterScreen(
                     }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.background,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.background,
+                    disabledBorderColor = MaterialTheme.colorScheme.background,
+                    disabledLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.background,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.background,
+                    cursorColor = MaterialTheme.colorScheme.background
                 ),
                 supportingText = {
                     uiState.supportingTextPassword?.let {
