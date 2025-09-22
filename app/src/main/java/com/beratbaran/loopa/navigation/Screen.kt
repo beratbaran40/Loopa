@@ -14,4 +14,7 @@ sealed interface Screen {
 
     @Serializable
     data object Homepage : Screen
+
+    @Serializable
+    data object DetailsScreen : Screen
 }
