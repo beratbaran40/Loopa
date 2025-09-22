@@ -24,9 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -49,11 +46,13 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -392,7 +391,10 @@ fun RegisterScreen(
                 trailingIcon = {
                     IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                         Icon(
-                            imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            imageVector = ImageVector.vectorResource(
+                                if (uiState.showPassword) R.drawable.ic_visibility
+                                else R.drawable.ic_visibility_off
+                            ),
                             contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                         )
                     }
