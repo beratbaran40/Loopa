@@ -38,10 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -87,17 +85,10 @@ fun LoginScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.login_img),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.6f))
+                .background(color = MaterialTheme.colorScheme.background)
         )
 
         Column(
@@ -123,12 +114,9 @@ fun LoginScreen(
                     .padding(horizontal = 24.dp),
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displaySmall.copy(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Color(0xFFCDFF85), Color.White)
-                    )
+                    color = MaterialTheme.colorScheme.primary,
                 )
             )
-
             Image(
                 modifier = Modifier
                     .padding(top = 2.dp),
@@ -166,7 +154,7 @@ fun LoginScreen(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
-                            tint = MaterialTheme.colorScheme.background,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
@@ -180,20 +168,20 @@ fun LoginScreen(
                     ),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.background,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                         focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
                         unfocusedContainerColor = Color.Transparent,
                         errorContainerColor = Color.Transparent,
                         disabledContainerColor = Color.Transparent,
-                        disabledTextColor = MaterialTheme.colorScheme.background,
-                        disabledBorderColor = MaterialTheme.colorScheme.background,
-                        disabledLabelColor = MaterialTheme.colorScheme.background,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.background,
-                        focusedLabelColor = MaterialTheme.colorScheme.background,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.background,
-                        cursorColor = MaterialTheme.colorScheme.background
+                        disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     supportingText = {
                         uiState.supportingTextEmail?.let {
@@ -225,7 +213,7 @@ fun LoginScreen(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_password),
-                            tint = MaterialTheme.colorScheme.background,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
@@ -239,7 +227,7 @@ fun LoginScreen(
                                     if (uiState.showPassword) R.drawable.ic_visibility
                                     else R.drawable.ic_visibility_off
                                 ),
-                                tint = MaterialTheme.colorScheme.background,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                             )
                         }
@@ -257,20 +245,20 @@ fun LoginScreen(
                     ),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedTextColor = MaterialTheme.colorScheme.background,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                         focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                         focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedContainerColor = Color.Transparent,
+                        focusedContainerColor = MaterialTheme.colorScheme.background,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
                         unfocusedContainerColor = Color.Transparent,
                         errorContainerColor = Color.Transparent,
                         disabledContainerColor = Color.Transparent,
-                        disabledTextColor = MaterialTheme.colorScheme.background,
-                        disabledBorderColor = MaterialTheme.colorScheme.background,
-                        disabledLabelColor = MaterialTheme.colorScheme.background,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.background,
-                        focusedLabelColor = MaterialTheme.colorScheme.background,
-                        unfocusedLabelColor = MaterialTheme.colorScheme.background,
-                        cursorColor = MaterialTheme.colorScheme.background
+                        disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     supportingText = {
                         uiState.supportingTextPassword?.let {
@@ -297,8 +285,8 @@ fun LoginScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = (Color.Black),
-                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                        disabledContentColor = Color.White.copy(alpha = 0.8f)
+                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                        disabledContentColor = Color.White.copy(alpha = 0.4f)
                     ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 3.dp,
@@ -312,23 +300,6 @@ fun LoginScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    modifier = Modifier
-                        .background(
-                            color = Color.Black.copy(alpha = 0.1f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                        .align(Alignment.CenterHorizontally),
-
-                    text = stringResource(R.string.login_background_info),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = Color.White.copy(alpha = 0.7f)
-                    ),
-                )
             }
         }
     }
