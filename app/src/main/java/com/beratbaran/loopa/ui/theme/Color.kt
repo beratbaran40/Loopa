@@ -2,7 +2,7 @@ package com.beratbaran.loopa.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Green = Color(0xFFCDFF85)
+val Green = Color(0xFFAEDA70)
 val Black = Color(0xFF111111)
 val White = Color(0xFFFFFFFF)
 val Yellow = Color(0xFFF7CE46)
