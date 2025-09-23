@@ -388,7 +388,6 @@ fun RegisterScreen(
                                 if (uiState.showPassword) R.drawable.ic_visibility
                                 else R.drawable.ic_visibility_off
                             ),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                         )
                     }

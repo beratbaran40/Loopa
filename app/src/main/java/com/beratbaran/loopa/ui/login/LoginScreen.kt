@@ -154,7 +154,6 @@ fun LoginScreen(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_email),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
@@ -213,7 +212,6 @@ fun LoginScreen(
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_password),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             contentDescription = null,
                             modifier = Modifier.size(25.dp)
                         )
@@ -227,7 +225,6 @@ fun LoginScreen(
                                     if (uiState.showPassword) R.drawable.ic_visibility
                                     else R.drawable.ic_visibility_off
                                 ),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                             )
                         }
