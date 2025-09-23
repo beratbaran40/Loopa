@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -105,9 +104,7 @@ fun OnboardingScreen(
                 .padding(top = 16.dp)
                 .padding(horizontal = 24.dp),
             style = MaterialTheme.typography.displaySmall.copy(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFFCDFF85), Color.White)
-                )
+                color = MaterialTheme.colorScheme.primary
             )
         )
 
