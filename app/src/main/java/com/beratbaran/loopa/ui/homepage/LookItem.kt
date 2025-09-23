@@ -58,13 +58,11 @@ fun LookItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-
         ) {
 
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-
             ) {
 
                 AsyncImage(
@@ -73,7 +71,7 @@ fun LookItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(130.dp),
+                        .width(120.dp),
                     placeholder = painterResource(R.drawable.look_item_img)
                 )
 
