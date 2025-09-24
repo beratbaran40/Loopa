@@ -42,16 +42,16 @@ fun LookItem(
     rating: Double,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
-    onItemClick: () -> Unit
+    onDetailsClick: () -> Unit
 ) {
 
     Card(
-        onClick = onItemClick,
+        onClick = onDetailsClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp),
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onSurfaceVariant),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     )
     {
@@ -65,6 +65,11 @@ fun LookItem(
                     .fillMaxSize()
             ) {
 
+                Card(
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
+                    elevation = CardDefaults.cardElevation(4.dp),
+                ) {
+
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = null,
@@ -74,6 +79,7 @@ fun LookItem(
                         .width(120.dp),
                     placeholder = painterResource(R.drawable.look_item_img)
                 )
+            }
 
                 Column(
                     modifier = Modifier
@@ -83,11 +89,48 @@ fun LookItem(
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
 
-                        Text(
-                            text = name,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.Top
+                        ) {
+
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 6.dp)
+                                    .size(42.dp)
+                                    .clip(
+                                        CircleShape
+                                    )
+                                    .background(
+                                        MaterialTheme.colorScheme.primaryContainer.copy(
+                                            alpha = 0.40f
+                                        )
+                                    ),
+                            ) {
+                                IconButton(onClick = onFavoriteClick) {
+                                    Icon(
+                                        painter = painterResource(
+                                            id = if (isFavorite) R.drawable.ic_selected_favorite
+                                            else R.drawable.ic_favorite
+                                        ),
+                                        contentDescription = "Favorite",
+                                        modifier = Modifier.size(28.dp),
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+
+                        }
 
                         Spacer(
                             modifier = Modifier
@@ -115,12 +158,12 @@ fun LookItem(
                                     text = location,
                                     style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.SemiBold,
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically
@@ -138,33 +181,10 @@ fun LookItem(
                                 text = "%.1f".format(rating),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp)
-                    .size(42.dp)
-                    .clip(
-                        CircleShape
-                    )
-                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.30f)),
-            ) {
-                IconButton(onClick = onFavoriteClick) {
-                    Icon(
-                        painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_selected_favorite
-                            else R.drawable.ic_favorite
-                        ),
-                        contentDescription = "Favorite",
-                        modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
                 }
             }
         }
@@ -188,7 +208,29 @@ fun LookItemPreview(
             rating = rating,
             isFavorite = isFavorite,
             onFavoriteClick = {},
-            onItemClick = {}
+            onDetailsClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LookItemPreviewDark(
+    name: String = "Look Item",
+    location: String = "Location",
+    imageUrl: String = "Image",
+    rating: Double = 4.1,
+    isFavorite: Boolean = true,
+) {
+    MyappTheme {
+        LookItem(
+            name = name,
+            location = location,
+            imageUrl = imageUrl,
+            rating = rating,
+            isFavorite = isFavorite,
+            onFavoriteClick = {},
+            onDetailsClick = {},
         )
     }
 }
