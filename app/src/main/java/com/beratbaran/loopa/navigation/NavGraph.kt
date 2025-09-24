@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.beratbaran.loopa.ui.homepage.HomepageScreen
 import com.beratbaran.loopa.ui.homepage.HomepageViewModel
+import com.beratbaran.loopa.ui.homepage.samplePlaces
 import com.beratbaran.loopa.ui.login.LoginScreen
 import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
@@ -117,7 +118,46 @@ fun NavGraph(
                         launchSingleTop = true
                     }
                 },
+
+                onFavoriteClick = {
+                    navController.navigate(Screen.FavoritesScreen) {
+                        popUpTo(Screen.Homepage) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                places = samplePlaces(),
+
+                onDetailsClick = {
+                    navController.navigate(Screen.DetailsScreen) {
+                        popUpTo(Screen.Homepage) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                onNavigateToFavorites = {
+                    navController.navigate(Screen.FavoritesScreen) {
+                        popUpTo(Screen.Homepage) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                isFavorite = false
             )
+        }
+
+        composable<Screen.FavoritesScreen> {
+
+        }
+
+        composable<Screen.DetailsScreen> {
+
         }
     }
 }
