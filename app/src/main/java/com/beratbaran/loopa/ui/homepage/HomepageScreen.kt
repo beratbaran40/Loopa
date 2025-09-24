@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -116,7 +115,7 @@ fun HomepageScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 displayedPlaces.forEach { place ->
-                    Box(Modifier.width(335.dp)) {
+                    Box {
                         TopPlaceItem(
                             name = place.name,
                             location = place.location,
