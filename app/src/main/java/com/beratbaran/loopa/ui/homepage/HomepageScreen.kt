@@ -75,7 +75,9 @@ fun HomepageScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(
+                    rememberScrollState()
+                )
         ) {
 
             Image(
