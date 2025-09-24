@@ -71,7 +71,8 @@ fun TopPlaceItem(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1.2f),
+                        .height(250.dp)
+                        .aspectRatio(1.1f),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -83,7 +84,8 @@ fun TopPlaceItem(
                             model = imageUrl,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize(),
                             placeholder = painterResource(R.drawable.top_place_item_img)
                         )
 
@@ -119,7 +121,7 @@ fun TopPlaceItem(
 
                     Text(
                         text = name,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -140,7 +142,7 @@ fun TopPlaceItem(
 
                         Text(
                             text = location,
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -158,7 +160,7 @@ fun TopPlaceItem(
 
                         Text(
                             text = "%.1f".format(rating),
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
