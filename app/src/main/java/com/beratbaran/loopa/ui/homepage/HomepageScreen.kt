@@ -130,6 +130,9 @@ fun HomepageScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
+
             Text(
                 modifier = Modifier.padding(top = 24.dp, start = 16.dp, bottom = 8.dp),
                 text = stringResource(R.string.homepage_you_might_wanna_look),
