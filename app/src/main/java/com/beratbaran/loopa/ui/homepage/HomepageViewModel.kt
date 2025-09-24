@@ -21,6 +21,15 @@ class HomepageViewModel : ViewModel() {
     val uiEffect: Flow<HomepageContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     fun onAction(uiAction: UiAction) {
+        when (uiAction) {
 
+            UiAction.OnDetailsClick -> {
+                _uiEffect.trySend(HomepageContract.UiEffect.NavigateToDetails)
+            }
+
+            UiAction.ToggleFavorite -> {
+                _uiEffect.trySend(HomepageContract.UiEffect.NavigateToFavorites)
+            }
+        }
     }
 }
