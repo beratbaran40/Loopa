@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.ui
+package com.beratbaran.loopa.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
