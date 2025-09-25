@@ -119,7 +119,7 @@ fun HomepageScreen(
                             imageUrl = place.imageUrl,
                             rating = place.rating,
                             isFavorite = place.isFavorite,
-                            onFavoriteClick = { onAction(UiAction.ToggleFavorite)},
+                            onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
                             onDetailsClick = { onAction(UiAction.OnDetailsClick) }
                         )
                     }
@@ -209,7 +209,7 @@ fun samplePlaces() = listOf(
 @Preview(showBackground = true)
 @Composable
 fun HomepageScreenPreview(
-    @PreviewParameter(HomepageScreenPreviewProvider::class) uiState: HomepageContract.UiState
+    @PreviewParameter(HomepageScreenPreviewProvider::class) uiState: HomepageContract.UiState,
 ) {
     MyappTheme {
         HomepageScreen(

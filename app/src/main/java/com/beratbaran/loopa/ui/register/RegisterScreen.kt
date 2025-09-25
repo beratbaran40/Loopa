@@ -69,7 +69,7 @@ fun RegisterScreen(
     uiEffect: Flow<RegisterContract.UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit,
-    onNavigateToBack: () -> Unit
+    onNavigateToBack: () -> Unit,
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -541,7 +541,7 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview(
-    @PreviewParameter(RegisterScreenPreviewProvider::class) uiState: RegisterContract.UiState
+    @PreviewParameter(RegisterScreenPreviewProvider::class) uiState: RegisterContract.UiState,
 ) {
     MyappTheme {
         RegisterScreen(

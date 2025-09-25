@@ -22,7 +22,7 @@ import com.beratbaran.loopa.ui.register.RegisterViewmodel
 fun NavGraph(
     navController: NavHostController,
     startDestination: Screen,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,

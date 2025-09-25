@@ -65,7 +65,7 @@ fun LoginScreen(
     uiState: LoginContract.UiState,
     uiEffect: Flow<LoginContract.UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToHomepage: () -> Unit
+    onNavigateToHomepage: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -305,7 +305,7 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview(
-    @PreviewParameter(LoginScreenPreviewProvider::class) uiState: LoginContract.UiState
+    @PreviewParameter(LoginScreenPreviewProvider::class) uiState: LoginContract.UiState,
 ) {
     MyappTheme {
         LoginScreen(
