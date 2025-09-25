@@ -64,47 +64,49 @@ fun OnboardingScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .navigationBarsPadding()
-
+            .navigationBarsPadding(),
     ) {
         val bgImages = listOf(
             R.drawable.onboarding_img1,
             R.drawable.onboarding_img2,
             R.drawable.onboarding_img3,
-            R.drawable.onboarding_img4
+            R.drawable.onboarding_img4,
         )
 
-        Crossfade(targetState = uiState.bgIndex, label = "onboarding-bg") { idx ->
+        Crossfade(
+            targetState = uiState.bgIndex,
+            label = "onboarding-bg",
+        ) { idx ->
             Image(
+                modifier = Modifier.fillMaxSize(),
                 painter = painterResource(id = bgImages[idx]),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.5f))
+                .background(color = Color.Black.copy(alpha = 0.5f)),
         )
 
         Image(
-            painter = painterResource(id = R.drawable.loopa),
-            contentDescription = null,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
+            painter = painterResource(id = R.drawable.loopa),
+            contentDescription = null,
         )
 
         Text(
-            text = stringResource(R.string.app_name),
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 16.dp)
                 .padding(horizontal = 24.dp),
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.displaySmall.copy(
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         )
 
@@ -113,7 +115,7 @@ fun OnboardingScreen(
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 160.dp)
                 .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Dots(selected = uiState.bgIndex)
 
@@ -124,7 +126,7 @@ fun OnboardingScreen(
                 text = stringResource(R.string.onboarding_salute_message),
                 style = MaterialTheme.typography.displayLarge,
                 color = Color.White,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +135,7 @@ fun OnboardingScreen(
                 text = stringResource(R.string.onboarding_description),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.LightGray,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
 
@@ -143,28 +145,29 @@ fun OnboardingScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Button(
-                onClick = { onAction(UiAction.OnRegisterClick) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
+                onClick = { onAction(UiAction.OnRegisterClick) },
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = (Color.Black)
+                    contentColor = Color.Black,
                 ),
             ) {
                 Text(
                     text = stringResource(R.string.onboarding_button_text),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
+                modifier = Modifier.clickable { onAction(UiAction.OnLoginClick) },
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(color = Color.White)) {
                         append(stringResource(R.string.onboarding_account_text_span))
@@ -173,7 +176,6 @@ fun OnboardingScreen(
                         append(stringResource(R.string.onboarding_login_text_span))
                     }
                 },
-                modifier = Modifier.clickable { onAction(UiAction.OnLoginClick) },
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -184,7 +186,7 @@ fun OnboardingScreen(
 private fun Dots(selected: Int) {
     Row(
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(4) { index ->
             val isSelected = index == selected
@@ -197,9 +199,8 @@ private fun Dots(selected: Int) {
                 modifier = Modifier
                     .height(8.dp)
                     .width(if (isSelected) 18.dp else 8.dp)
-                    .background(color = bgColor, shape = CircleShape)
+                    .background(color = bgColor, shape = CircleShape),
             )
-
 
             Spacer(modifier = Modifier.width(4.dp))
         }
@@ -217,7 +218,7 @@ private fun OnboardingScreenPreview(
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToRegister = {},
-            onNavigateToLogin = {}
+            onNavigateToLogin = {},
         )
     }
 }
