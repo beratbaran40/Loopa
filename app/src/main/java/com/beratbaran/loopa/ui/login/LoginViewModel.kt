@@ -1,8 +1,7 @@
 package com.beratbaran.loopa.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.beratbaran.loopa.common.validateEmail
-import com.beratbaran.loopa.common.validatePassword
+import com.beratbaran.loopa.common.ValidationManager
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.login.LoginContract.UiEffect
 import kotlinx.coroutines.channels.Channel
@@ -24,8 +23,8 @@ class LoginViewModel : ViewModel() {
         when (uiAction) {
             UiAction.OnLoginClicked -> {
                 val currentState = _uiState.value
-                val emailError = currentState.email.validateEmail()
-                val passwordError = currentState.password.validatePassword()
+                val emailError = ValidationManager.validateEmail(currentState.email)
+                val passwordError = ValidationManager.validatePassword(currentState.password)
                 if (emailError.isEmpty() && passwordError.isEmpty()) {
                     _uiEffect.trySend(UiEffect.NavigateToHomePage)
                 } else {
@@ -56,6 +55,8 @@ class LoginViewModel : ViewModel() {
             UiAction.OnToggleShowPassword -> _uiState.update {
                 it.copy(showPassword = !it.showPassword)
             }
+
+            UiAction.OnBackClick -> _uiEffect.trySend(UiEffect.NavigateToBack)
         }
     }
 
