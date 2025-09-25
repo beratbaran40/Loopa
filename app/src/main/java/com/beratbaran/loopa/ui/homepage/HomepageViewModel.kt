@@ -10,11 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 class HomepageViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(
-        HomepageContract.UiState(
-        )
-    )
-
+    private val _uiState = MutableStateFlow(HomepageContract.UiState())
     val uiState: StateFlow<HomepageContract.UiState> = _uiState.asStateFlow()
 
     private val _uiEffect by lazy { Channel<HomepageContract.UiEffect>() }
@@ -22,7 +18,6 @@ class HomepageViewModel : ViewModel() {
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
-
             UiAction.OnDetailsClick -> {
                 _uiEffect.trySend(HomepageContract.UiEffect.NavigateToDetails)
             }
