@@ -17,9 +17,12 @@ object LoginContract {
         data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
         data object OnToggleShowPassword : UiAction
+        data object OnBackClick : UiAction
     }
 
     sealed interface UiEffect {
         data object NavigateToHomePage : UiEffect
+        data object NavigateToBack : UiEffect
+
     }
 }
