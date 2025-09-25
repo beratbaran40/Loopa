@@ -24,9 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,25 +32,22 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -97,17 +91,11 @@ fun RegisterScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-        Image(
-            modifier = Modifier.fillMaxSize(),
-            painter = painterResource(id = R.drawable.register_img),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = Color.Black.copy(alpha = 0.6f))
+                .background(color = MaterialTheme.colorScheme.background)
         )
 
         Column(
@@ -152,20 +140,12 @@ fun RegisterScreen(
                             modifier = Modifier
                                 .padding(top = 8.dp)
                                 .size(24.dp)
-                                .clickable { onNavigateToBack() }
-                                .graphicsLayer(alpha = 0.99f)
-                                .drawWithCache {
-                                    val brush = Brush.linearGradient(
-                                        colors = listOf(Color(0xFFCDFF85), Color.White)
-                                    )
-                                    onDrawWithContent {
-                                        drawContent()
-                                        drawRect(brush, blendMode = BlendMode.SrcAtop)
-                                    }
+                                .clickable {
+                                    onNavigateToBack()
                                 },
                             painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = null,
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                     Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
@@ -175,13 +155,10 @@ fun RegisterScreen(
                                 .padding(top = 4.dp),
                             text = stringResource(R.string.app_name),
                             style = MaterialTheme.typography.displaySmall.copy(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(Color(0xFFCDFF85), Color.White)
-                                )
+                                color = MaterialTheme.colorScheme.primary
                             )
                         )
                     }
-
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
@@ -229,16 +206,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = Color.Transparent,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 supportingText = {
                     uiState.supportingTextName?.let {
@@ -285,16 +267,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = Color.Transparent,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 supportingText = {
                     uiState.supportingTextSurname?.let {
@@ -341,16 +328,21 @@ fun RegisterScreen(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = Color.Transparent,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 supportingText = {
                     uiState.supportingTextEmail?.let {
@@ -392,7 +384,10 @@ fun RegisterScreen(
                 trailingIcon = {
                     IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                         Icon(
-                            imageVector = if (uiState.showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            imageVector = ImageVector.vectorResource(
+                                if (uiState.showPassword) R.drawable.ic_visibility
+                                else R.drawable.ic_visibility_off
+                            ),
                             contentDescription = if (uiState.showPassword) "Hide password" else "Show password"
                         )
                     }
@@ -411,16 +406,21 @@ fun RegisterScreen(
                     }
                 ),
                 shape = RoundedCornerShape(12.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                     focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = Color.Transparent,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
                     unfocusedContainerColor = Color.Transparent,
                     errorContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    cursorColor = Color.White
+                    disabledContainerColor = Color.Transparent,
+                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 supportingText = {
                     uiState.supportingTextPassword?.let {
@@ -507,9 +507,9 @@ fun RegisterScreen(
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = (Color.Black),
-                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                    disabledContentColor = Color.White.copy(alpha = 0.8f)
+                    contentColor = Color.Black,
+                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                    disabledContentColor = Color.White.copy(alpha = 0.4f)
                 ),
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 3.dp,
@@ -520,7 +520,9 @@ fun RegisterScreen(
             ) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier
+                            .size(22.dp)
+                            .background(MaterialTheme.colorScheme.background),
                         strokeWidth = 2.dp
                     )
                 } else {
@@ -532,22 +534,6 @@ fun RegisterScreen(
             }
 
             Spacer(modifier = Modifier.height(6.dp))
-
-            Text(
-                modifier = Modifier
-                    .background(
-                        color = Color.Black.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-                    .align(Alignment.CenterHorizontally),
-
-                text = stringResource(R.string.register_background_info),
-                maxLines = 1,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = Color.White.copy(alpha = 0.7f)
-                ),
-            )
         }
     }
 }
