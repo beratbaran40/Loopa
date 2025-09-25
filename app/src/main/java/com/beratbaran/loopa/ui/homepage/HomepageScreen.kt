@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -61,7 +62,8 @@ fun HomepageScreen(
         Image(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .height(80.dp),
+                .height(100.dp)
+                .aspectRatio(1f),
             painter = painterResource(id = R.drawable.loopa),
             contentDescription = null,
         )
