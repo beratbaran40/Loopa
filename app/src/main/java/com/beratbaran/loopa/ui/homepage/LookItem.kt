@@ -131,6 +131,8 @@ fun LookItem(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Row(
+                    modifier = Modifier
+                        .padding(start = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
