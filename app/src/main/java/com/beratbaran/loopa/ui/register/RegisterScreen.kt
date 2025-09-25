@@ -157,7 +157,10 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_name),
                     contentDescription = null,
+                    tint = if (uiState.supportingTextName.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
@@ -214,6 +217,8 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_name),
                     contentDescription = null,
+                    tint = if (uiState.supportingTextSurname.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -274,6 +279,8 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_email),
                     contentDescription = null,
+                    tint = if (uiState.supportingTextEmail.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -332,6 +339,8 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_password),
                     contentDescription = null,
+                    tint = if (uiState.supportingTextPassword.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             visualTransformation = if (uiState.showPassword) VisualTransformation.None else
@@ -343,7 +352,7 @@ fun RegisterScreen(
                             if (uiState.showPassword) R.drawable.ic_visibility
                             else R.drawable.ic_visibility_off
                         ),
-                        contentDescription = "Toggle password visibility",
+                        contentDescription = stringResource(R.string.login_register_screen_toggle_password),
                     )
                 }
             },
