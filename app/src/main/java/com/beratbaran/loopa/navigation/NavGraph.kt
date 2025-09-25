@@ -3,7 +3,7 @@ package com.beratbaran.loopa.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -92,6 +92,14 @@ fun NavGraph(
                 onAction = viewModel::onAction,
                 onNavigateToHomepage = {
                     navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.Login) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToBack = {
+                    navController.navigate(Screen.Onboarding) {
                         popUpTo(Screen.Login) {
                             inclusive = true
                         }
