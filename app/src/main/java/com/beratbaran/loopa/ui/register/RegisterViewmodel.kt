@@ -71,17 +71,12 @@ class RegisterViewmodel : ViewModel() {
                 val surnameError = currentState.surname.validateSurname()
                 val emailError = currentState.email.validateEmail()
                 val passwordError = currentState.password.validatePassword()
-                if (nameError == null && surnameError == null && emailError == null && passwordError == null) {
+
+                if (listOf(nameError, surnameError, emailError, passwordError).none(String::isNotEmpty)) {
                     _uiEffect.trySend(RegisterContract.UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
-                            submitClick = true,
-                            isNameValid = false,
-                            isSurnameValid = false,
-                            isEmailValid = false,
-                            isPasswordValid = false,
-                            isLoading = false,
                             supportingTextName = nameError,
                             supportingTextSurname = surnameError,
                             supportingTextEmail = emailError,
@@ -95,7 +90,7 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(
                     name = uiAction.name,
                     isRegisterEnabled = checkRegisterState(
-                        uiAction.name, it.surname, it.email, it.password
+                        uiAction.name, it.surname, it.email, it.password,
                     )
                 )
             }
@@ -104,7 +99,7 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(
                     surname = uiAction.surname,
                     isRegisterEnabled = checkRegisterState(
-                        it.name, uiAction.surname, it.email, it.password
+                        it.name, uiAction.surname, it.email, it.password,
                     )
                 )
             }
@@ -113,7 +108,7 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(
                     email = uiAction.email,
                     isRegisterEnabled = checkRegisterState(
-                        it.name, it.surname, uiAction.email, it.password
+                        it.name, it.surname, uiAction.email, it.password,
                     )
                 )
             }
@@ -122,34 +117,18 @@ class RegisterViewmodel : ViewModel() {
                 val newPassword = uiAction.password
                 it.copy(
                     password = newPassword,
-                    isPasswordValid = newPassword.validatePassword() == null,
                     isRegisterEnabled = checkRegisterState(
-                        it.name,
-                        it.surname,
-                        it.email,
-                        newPassword
+                        name = it.name,
+                        surname = it.surname,
+                        email = it.email,
+                        password = newPassword,
                     ),
-                    passwordStrength = computePasswordStrength(newPassword)
+                    passwordStrength = computePasswordStrength(newPassword),
                 )
             }
 
             UiAction.OnToggleShowPassword -> _uiState.update {
                 it.copy(showPassword = !it.showPassword)
-            }
-
-            is UiAction.OnSubmitClick -> _uiState.update { state ->
-                val nameError = state.name.validateName()
-                val surnameError = state.surname.validateSurname()
-                val emailError = state.email.validateEmail()
-                val passwordError = state.password.validatePassword()
-                state.copy(
-                    submitClick = true,
-                    supportingTextName = nameError,
-                    supportingTextSurname = surnameError,
-                    supportingTextEmail = emailError,
-                    supportingTextPassword = passwordError,
-                    isEmailValid = (emailError == null)
-                )
             }
 
             UiAction.OnBackClick -> _uiEffect.trySend(RegisterContract.UiEffect.NavigateToBack)

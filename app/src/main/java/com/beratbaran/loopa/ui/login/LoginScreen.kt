@@ -272,7 +272,6 @@ fun LoginScreen(
                 elevation = ButtonDefaults.buttonElevation(
                     defaultElevation = 3.dp,
                     pressedElevation = 6.dp,
-                    disabledElevation = 2.dp,
                 ),
                 enabled = uiState.isLoginButtonEnabled,
             ) {

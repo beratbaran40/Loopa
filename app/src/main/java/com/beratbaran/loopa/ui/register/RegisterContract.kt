@@ -5,26 +5,19 @@ object RegisterContract {
     enum class PasswordStrength { STRONG, MEDIUM, WEAK }
 
     data class UiState(
+        val isLoading: Boolean = false,
         val name: String = "",
         val surname: String = "",
         val email: String = "",
         val password: String = "",
-        val isNameValid: Boolean = true,
-        val isSurnameValid: Boolean = true,
-        val isEmailValid: Boolean = true,
-        val isPasswordValid: Boolean = true,
-        val supportingTextName: String? = null,
-        val supportingTextSurname: String? = null,
-        val supportingTextEmail: String? = null,
-        val supportingTextPassword: String? = null,
-        val isLoading: Boolean = false,
+        val supportingTextName: String = "",
+        val supportingTextSurname: String = "",
+        val supportingTextEmail: String = "",
+        val supportingTextPassword: String = "",
         val isRegisterEnabled: Boolean = false,
         val errorMessage: String = "",
-        val navigateBack: Boolean = false,
-        val submitClick: Boolean = false,
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
-        val passwordStrengthProgress: Float = 0f,
     )
 
     sealed interface UiAction {
@@ -34,10 +27,7 @@ object RegisterContract {
         data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
         data object OnToggleShowPassword : UiAction
-        data object OnSubmitClick : UiAction
         data object OnBackClick : UiAction
-
-
     }
 
     sealed interface UiEffect {
