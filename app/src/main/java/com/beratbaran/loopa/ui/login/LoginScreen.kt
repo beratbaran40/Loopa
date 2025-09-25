@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,6 +67,7 @@ fun LoginScreen(
     uiEffect: Flow<LoginContract.UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit,
+    onNavigateToBack: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -81,11 +84,13 @@ fun LoginScreen(
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             LoginContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
+            LoginContract.UiEffect.NavigateToBack -> onNavigateToBack()
         }
     }
 
     Column(
         modifier = Modifier
+
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
@@ -96,191 +101,206 @@ fun LoginScreen(
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
-            ) {
+
+                ) {
                 focusManager.clearFocus()
                 keyboardController?.hide()
             },
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.displaySmall.copy(
-                color = MaterialTheme.colorScheme.primary,
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .size(24.dp)
+                    .clickable { onNavigateToBack() },
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onBackground,
             )
-        )
+
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.displaySmall.copy(
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            )
+        }
 
         Image(
+            modifier = Modifier
+                .height(240.dp)
+                .aspectRatio(1f),
             painter = painterResource(id = R.drawable.loopa),
             contentDescription = null,
         )
 
-        Column(
+        OutlinedTextField(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 24.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .bringIntoViewRequester(bringIntoViewRequester)
-                    .onFocusEvent { event ->
-                        if (event.isFocused) {
-                            coroutineScope.launch {
-                                bringIntoViewRequester.bringIntoView()
-                            }
+                .fillMaxWidth()
+                .bringIntoViewRequester(bringIntoViewRequester)
+                .onFocusEvent { event ->
+                    if (event.isFocused) {
+                        coroutineScope.launch {
+                            bringIntoViewRequester.bringIntoView()
                         }
-                    },
-                value = uiState.email,
-                onValueChange = { onAction(UiAction.OnEmailChange(it)) },
-                label = { Text(text = stringResource(R.string.login_label_mail_text)) },
-                singleLine = true,
-                isError = uiState.supportingTextEmail.isNotEmpty(),
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        painter = painterResource(id = R.drawable.ic_email),
-                        contentDescription = null,
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                ),
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedLabelColor = MaterialTheme.colorScheme.primary,
-                    unfocusedContainerColor = Color.Transparent,
-                    errorContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
-                supportingText = {
-                    if (uiState.supportingTextEmail.isNotEmpty()) {
-                        Text(
-                            text = uiState.supportingTextEmail,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .bringIntoViewRequester(bringIntoViewRequester)
-                    .onFocusEvent { event ->
-                        if (event.isFocused) {
-                            coroutineScope.launch {
-                                bringIntoViewRequester.bringIntoView()
-                            }
-                        }
-                    },
-                value = uiState.password,
-                onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
-                label = { Text(text = stringResource(R.string.login_label_password)) },
-                singleLine = true,
-                isError = uiState.supportingTextPassword.isNotEmpty(),
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(25.dp),
-                        painter = painterResource(id = R.drawable.ic_password),
-                        contentDescription = null,
-                    )
-                },
-                visualTransformation = visualTransformation,
-                trailingIcon = {
-                    IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(
-                                if (uiState.showPassword) R.drawable.ic_visibility
-                                else R.drawable.ic_visibility_off
-                            ),
-                            contentDescription = "Toggle password visibility",
-                        )
                     }
                 },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                        onAction(UiAction.OnLoginClicked)
-                    }
-                ),
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedLabelColor = MaterialTheme.colorScheme.primary,
-                    unfocusedContainerColor = Color.Transparent,
-                    errorContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                    cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
-                supportingText = {
-                    if (uiState.supportingTextPassword.isNotEmpty()) {
-                        Text(
-                            text = uiState.supportingTextPassword,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                modifier = Modifier
-                    .bringIntoViewRequester(bringIntoViewRequester)
-                    .fillMaxWidth()
-                    .height(56.dp),
-                onClick = { onAction(UiAction.OnLoginClicked) },
-                shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                    disabledContentColor = MaterialTheme.colorScheme.background,
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 3.dp,
-                    pressedElevation = 6.dp,
-                ),
-                enabled = uiState.isLoginButtonEnabled,
-            ) {
-                Text(
-                    text = stringResource(R.string.loginScreen_loginButton_text),
-                    style = MaterialTheme.typography.bodyLarge,
+            value = uiState.email,
+            onValueChange = { onAction(UiAction.OnEmailChange(it)) },
+            label = { Text(text = stringResource(R.string.login_label_mail_text)) },
+            singleLine = true,
+            isError = uiState.supportingTextEmail.isNotEmpty(),
+            leadingIcon = {
+                Icon(
+                    modifier = Modifier.size(25.dp),
+                    painter = painterResource(id = R.drawable.ic_email),
+                    contentDescription = null,
+                    tint = if (uiState.supportingTextEmail.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next,
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            ),
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
+            supportingText = {
+                if (uiState.supportingTextEmail.isNotEmpty()) {
+                    Text(
+                        text = uiState.supportingTextEmail,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
             }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .bringIntoViewRequester(bringIntoViewRequester)
+                .onFocusEvent { event ->
+                    if (event.isFocused) {
+                        coroutineScope.launch {
+                            bringIntoViewRequester.bringIntoView()
+                        }
+                    }
+                },
+            value = uiState.password,
+            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
+            label = { Text(text = stringResource(R.string.login_label_password)) },
+            singleLine = true,
+            isError = uiState.supportingTextPassword.isNotEmpty(),
+            leadingIcon = {
+                Icon(
+                    modifier = Modifier.size(25.dp),
+                    painter = painterResource(id = R.drawable.ic_password),
+                    contentDescription = null,
+                    tint = if (uiState.supportingTextPassword.isNotEmpty())
+                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            },
+            visualTransformation = visualTransformation,
+            trailingIcon = {
+                IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(
+                            if (uiState.showPassword) R.drawable.ic_visibility
+                            else R.drawable.ic_visibility_off
+                        ),
+                        contentDescription = stringResource(R.string.login_register_screen_toggle_password),
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    onAction(UiAction.OnLoginClicked)
+                }
+            ),
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            ),
+            supportingText = {
+                if (uiState.supportingTextPassword.isNotEmpty()) {
+                    Text(
+                        text = uiState.supportingTextPassword,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            modifier = Modifier
+                .bringIntoViewRequester(bringIntoViewRequester)
+                .fillMaxWidth()
+                .height(56.dp),
+            onClick = { onAction(UiAction.OnLoginClicked) },
+            shape = RoundedCornerShape(28.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                disabledContentColor = MaterialTheme.colorScheme.background,
+            ),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 3.dp,
+                pressedElevation = 6.dp,
+            ),
+            enabled = uiState.isLoginButtonEnabled,
+        ) {
+            Text(
+                text = stringResource(R.string.loginScreen_loginButton_text),
+                style = MaterialTheme.typography.bodyLarge,
+            )
         }
+
     }
 }
 
@@ -295,6 +315,7 @@ fun LoginScreenPreview(
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToHomepage = {},
+            onNavigateToBack = {},
         )
     }
 }
