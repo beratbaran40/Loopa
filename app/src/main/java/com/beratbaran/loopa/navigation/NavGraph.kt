@@ -110,27 +110,8 @@ fun NavGraph(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
+
                 onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
-                        popUpTo(Screen.Homepage) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                },
-
-                onFavoriteClick = {
-                    navController.navigate(Screen.FavoritesScreen) {
-                        popUpTo(Screen.Homepage) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                },
-
-                places = samplePlaces(),
-
-                onDetailsClick = {
                     navController.navigate(Screen.DetailsScreen) {
                         popUpTo(Screen.Homepage) {
                             inclusive = true
@@ -148,7 +129,7 @@ fun NavGraph(
                     }
                 },
 
-                isFavorite = false
+                places = samplePlaces(),
             )
         }
 
