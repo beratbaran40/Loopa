@@ -44,9 +44,6 @@ fun HomepageScreen(
     onNavigateToDetails: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     places: List<PlaceModel>,
-    isFavorite: Boolean,
-    onFavoriteClick: (PlaceModel) -> Unit,
-    onDetailsClick: () -> Unit
 ) {
 
     val userName = "User"
@@ -122,8 +119,8 @@ fun HomepageScreen(
                             imageUrl = place.imageUrl,
                             rating = place.rating,
                             isFavorite = place.isFavorite,
-                            onFavoriteClick = { onFavoriteClick(place) },
-                            onDetailsClick = { onDetailsClick() }
+                            onFavoriteClick = { onAction(UiAction.ToggleFavorite)},
+                            onDetailsClick = { onAction(UiAction.OnDetailsClick) }
                         )
                     }
                 }
@@ -160,8 +157,8 @@ fun HomepageScreen(
                             imageUrl = place.imageUrl,
                             rating = place.rating,
                             isFavorite = place.isFavorite,
-                            onFavoriteClick = { onFavoriteClick(place) },
-                            onDetailsClick = { onDetailsClick() },
+                            onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
+                            onDetailsClick = { onAction(UiAction.OnDetailsClick) },
                         )
                     }
                 }
@@ -220,11 +217,8 @@ fun HomepageScreenPreview(
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToDetails = {},
-            onFavoriteClick = {},
-            onDetailsClick = {},
             places = samplePlaces(),
             onNavigateToFavorites = {},
-            isFavorite = false
         )
     }
 }
@@ -238,11 +232,8 @@ fun HomepageScreenPreviewDark(@PreviewParameter(HomepageScreenPreviewProvider::c
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToDetails = {},
-            onFavoriteClick = {},
-            onDetailsClick = {},
             places = samplePlaces(),
             onNavigateToFavorites = {},
-            isFavorite = false
         )
     }
 }
