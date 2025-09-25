@@ -11,14 +11,14 @@ plugins {
 
 android {
     namespace = "com.beratbaran.loopa"
-    compileSdk = 35
+    compileSdk = 36
 
     android.buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.beratbaran.loopa"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

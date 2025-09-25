@@ -5,14 +5,11 @@ object LoginContract {
         val email: String = "",
         val password: String = "",
         val isLoading: Boolean = false,
-        val errorMessage: String? = null,
-        val submitClick: Boolean = false,
+        val errorMessage: String = "",
         val showPassword: Boolean = false,
-        val isEmailValid: Boolean = true,
-        val isPasswordValid: Boolean = true,
-        val supportingTextEmail: String? = null,
-        val supportingTextPassword: String? = null,
-        val isLoginEnabled: Boolean = false,
+        val supportingTextEmail: String = "",
+        val supportingTextPassword: String = "",
+        val isLoginButtonEnabled: Boolean = false,
     )
 
     sealed interface UiAction {
@@ -20,7 +17,6 @@ object LoginContract {
         data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
         data object OnToggleShowPassword : UiAction
-        data object OnSubmitClick : UiAction
     }
 
     sealed interface UiEffect {

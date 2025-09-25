@@ -16,18 +16,23 @@ class LoginScreenPreviewProvider : PreviewParameterProvider<LoginContract.UiStat
                 password = "123456",
                 isLoading = false,
                 errorMessage = "",
+                isLoginButtonEnabled = true,
             ),
             LoginContract.UiState(
-                email = "test@example.com",
+                email = "test@example",
                 password = "123456",
                 isLoading = true,
                 errorMessage = "",
+                supportingTextEmail = "Invalid email format",
+                isLoginButtonEnabled = false,
             ),
             LoginContract.UiState(
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
                 errorMessage = "Error",
+                supportingTextPassword = "Password must be at least 8 characters",
+                isLoginButtonEnabled = false,
             ),
         )
 }
