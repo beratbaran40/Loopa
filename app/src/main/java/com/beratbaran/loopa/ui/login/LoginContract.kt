@@ -12,7 +12,7 @@ object LoginContract {
         val isPasswordValid: Boolean = true,
         val supportingTextEmail: String? = null,
         val supportingTextPassword: String? = null,
-        val isLoginEnabled: Boolean = false
+        val isLoginEnabled: Boolean = false,
     )
 
     sealed interface UiAction {

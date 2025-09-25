@@ -42,7 +42,7 @@ fun LookItem(
     rating: Double,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
-    onDetailsClick: () -> Unit
+    onDetailsClick: () -> Unit,
 ) {
 
     Card(
@@ -70,16 +70,16 @@ fun LookItem(
                     elevation = CardDefaults.cardElevation(4.dp),
                 ) {
 
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(120.dp),
-                    placeholder = painterResource(R.drawable.look_item_img)
-                )
-            }
+                    AsyncImage(
+                        model = imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(120.dp),
+                        placeholder = painterResource(R.drawable.look_item_img)
+                    )
+                }
 
                 Column(
                     modifier = Modifier

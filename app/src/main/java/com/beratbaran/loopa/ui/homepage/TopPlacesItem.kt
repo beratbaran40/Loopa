@@ -43,7 +43,7 @@ fun TopPlaceItem(
     rating: Double,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
-    onDetailsClick: () -> Unit
+    onDetailsClick: () -> Unit,
 ) {
     Card(
         onClick = onDetailsClick,

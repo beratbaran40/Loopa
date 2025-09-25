@@ -24,7 +24,7 @@ object RegisterContract {
         val submitClick: Boolean = false,
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
-        val passwordStrengthProgress: Float = 0f
+        val passwordStrengthProgress: Float = 0f,
     )
 
     sealed interface UiAction {

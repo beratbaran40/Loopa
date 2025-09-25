@@ -1,10 +1,10 @@
 package com.beratbaran.loopa.ui.register
 
 import androidx.lifecycle.ViewModel
-import com.beratbaran.loopa.common.validateName
-import com.beratbaran.loopa.common.validateSurname
 import com.beratbaran.loopa.common.validateEmail
+import com.beratbaran.loopa.common.validateName
 import com.beratbaran.loopa.common.validatePassword
+import com.beratbaran.loopa.common.validateSurname
 import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import kotlinx.coroutines.channels.Channel
@@ -58,7 +58,7 @@ class RegisterViewmodel : ViewModel() {
         name: String,
         surname: String,
         email: String,
-        password: String
+        password: String,
     ): Boolean {
         return name.isNotBlank() && surname.isNotBlank() && email.isNotBlank() && password.isNotBlank()
     }
@@ -123,7 +123,12 @@ class RegisterViewmodel : ViewModel() {
                 it.copy(
                     password = newPassword,
                     isPasswordValid = newPassword.validatePassword() == null,
-                    isRegisterEnabled = checkRegisterState(it.name, it.surname, it.email, newPassword),
+                    isRegisterEnabled = checkRegisterState(
+                        it.name,
+                        it.surname,
+                        it.email,
+                        newPassword
+                    ),
                     passwordStrength = computePasswordStrength(newPassword)
                 )
             }
