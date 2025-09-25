@@ -1,10 +1,7 @@
 package com.beratbaran.loopa.ui.register
 
 import androidx.lifecycle.ViewModel
-import com.beratbaran.loopa.common.validateEmail
-import com.beratbaran.loopa.common.validateName
-import com.beratbaran.loopa.common.validatePassword
-import com.beratbaran.loopa.common.validateSurname
+import com.beratbaran.loopa.common.ValidationManager
 import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import kotlinx.coroutines.channels.Channel
@@ -67,12 +64,18 @@ class RegisterViewmodel : ViewModel() {
         when (uiAction) {
             UiAction.OnRegisterClick -> {
                 val currentState = _uiState.value
-                val nameError = currentState.name.validateName()
-                val surnameError = currentState.surname.validateSurname()
-                val emailError = currentState.email.validateEmail()
-                val passwordError = currentState.password.validatePassword()
+                val nameError = ValidationManager.validateName(currentState.name)
+                val surnameError = ValidationManager.validateSurname(currentState.surname)
+                val emailError = ValidationManager.validateEmail(currentState.email)
+                val passwordError = ValidationManager.validatePassword(currentState.password)
 
-                if (listOf(nameError, surnameError, emailError, passwordError).none(String::isNotEmpty)) {
+                if (listOf(
+                        nameError,
+                        surnameError,
+                        emailError,
+                        passwordError
+                    ).none(String::isNotEmpty)
+                ) {
                     _uiEffect.trySend(RegisterContract.UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
