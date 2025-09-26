@@ -52,6 +52,14 @@ class LoginViewModel : ViewModel() {
                 )
             }
 
+            is UiAction.OnEmailTextFieldFocusChange -> _uiState.update {
+                it.copy(isEmailTextFieldFocused = uiAction.isFocused)
+            }
+
+            is UiAction.OnPasswordTextFieldFocusChange -> _uiState.update {
+                it.copy(isPasswordTextFieldFocused = uiAction.isFocused)
+            }
+
             UiAction.OnToggleShowPassword -> _uiState.update {
                 it.copy(showPassword = !it.showPassword)
             }
