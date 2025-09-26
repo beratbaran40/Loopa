@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -94,6 +95,8 @@ fun OnboardingScreen(
         Image(
             modifier = Modifier
                 .align(Alignment.TopCenter)
+                .height(300.dp)
+                .aspectRatio(1f)
                 .padding(top = 16.dp),
             painter = painterResource(id = R.drawable.loopa),
             contentDescription = null,
