@@ -38,6 +38,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -149,6 +150,13 @@ fun LoginScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnEmailTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.email,
             onValueChange = { onAction(UiAction.OnEmailChange(it)) },
@@ -160,8 +168,11 @@ fun LoginScreen(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(id = R.drawable.ic_email),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextEmail.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextEmail.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isEmailTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -210,6 +221,13 @@ fun LoginScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnPasswordTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.password,
             onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
@@ -221,8 +239,11 @@ fun LoginScreen(
                     modifier = Modifier.size(25.dp),
                     painter = painterResource(id = R.drawable.ic_password),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextPassword.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextEmail.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isPasswordTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             },
             visualTransformation = visualTransformation,
