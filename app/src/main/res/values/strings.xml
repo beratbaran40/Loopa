@@ -11,8 +11,8 @@
     <string name="login_placeholder_mail_example">loopa123@mail.com</string>
     <string name="login_label_password">Password</string>
     <string name="registerScreen_registerButton_text">Register</string>
-    <string name="registerScreen_name_text">Name</string>
-    <string name="registerScreen_surname_text">Surname</string>"
+    <string name="registerScreen_name_text">First Name</string>
+    <string name="registerScreen_surname_text">Last Name</string>"
     <string name="register_password_strength_WEAK">Your password is too weak</string>
     <string name="register_password_strength_MEDIUM">Your password is medium</string>
     <string name="register_password_strength_STRONG">Your password is strong</string>
