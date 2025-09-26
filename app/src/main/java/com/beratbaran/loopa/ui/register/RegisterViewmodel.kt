@@ -130,6 +130,22 @@ class RegisterViewmodel : ViewModel() {
                 )
             }
 
+            is UiAction.OnNameTextFieldFocusChange -> _uiState.update {
+                it.copy(isNameTextFieldFocused = uiAction.isFocused)
+            }
+
+            is UiAction.OnSurnameTextFieldFocusChange -> _uiState.update {
+                it.copy(isSurnameTextFieldFocused = uiAction.isFocused)
+            }
+
+            is UiAction.OnEmailTextFieldFocusChange -> _uiState.update {
+                it.copy(isEmailTextFieldFocused = uiAction.isFocused)
+            }
+
+            is UiAction.OnPasswordTextFieldFocusChange -> _uiState.update {
+                it.copy(isPasswordTextFieldFocused = uiAction.isFocused)
+            }
+
             UiAction.OnToggleShowPassword -> _uiState.update {
                 it.copy(showPassword = !it.showPassword)
             }
