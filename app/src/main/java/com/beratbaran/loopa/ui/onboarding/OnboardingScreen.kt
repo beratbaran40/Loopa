@@ -105,8 +105,7 @@ fun OnboardingScreen(
         Text(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 16.dp)
-                .padding(horizontal = 24.dp),
+                .padding(top = 16.dp, start = 16.dp),
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.displaySmall.copy(
                 color = MaterialTheme.colorScheme.primary,
