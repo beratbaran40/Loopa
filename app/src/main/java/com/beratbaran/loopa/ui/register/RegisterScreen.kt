@@ -41,6 +41,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -146,6 +147,13 @@ fun RegisterScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnNameTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.name,
             onValueChange = { onAction(UiAction.OnNameChange(it)) },
@@ -157,8 +165,11 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_name),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextName.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextName.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isNameTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
 
             },
@@ -206,6 +217,13 @@ fun RegisterScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnSurnameTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.surname,
             onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
@@ -217,8 +235,11 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_name),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextSurname.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextSurname.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isSurnameTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -266,6 +287,13 @@ fun RegisterScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnEmailTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.email,
             onValueChange = {
@@ -279,8 +307,11 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_email),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextEmail.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextEmail.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isEmailTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             },
             keyboardOptions = KeyboardOptions(
@@ -328,6 +359,13 @@ fun RegisterScreen(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
+                }
+                .onFocusChanged { focusState ->
+                    onAction(
+                        UiAction.OnPasswordTextFieldFocusChange(
+                            focusState.isFocused
+                        )
+                    )
                 },
             value = uiState.password,
             onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
@@ -339,8 +377,11 @@ fun RegisterScreen(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_password),
                     contentDescription = null,
-                    tint = if (uiState.supportingTextPassword.isNotEmpty())
-                        MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    tint = when {
+                        uiState.supportingTextPassword.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.isPasswordTextFieldFocused -> MaterialTheme.colorScheme.primary
+                        else -> MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             },
             visualTransformation = if (uiState.showPassword) VisualTransformation.None else
