@@ -10,12 +10,16 @@ object LoginContract {
         val supportingTextEmail: String = "",
         val supportingTextPassword: String = "",
         val isLoginButtonEnabled: Boolean = false,
+        val isEmailTextFieldFocused: Boolean = false,
+        val isPasswordTextFieldFocused: Boolean = false,
     )
 
     sealed interface UiAction {
         data object OnLoginClicked : UiAction
         data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
+        data class OnEmailTextFieldFocusChange(val isFocused: Boolean) : UiAction
+        data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data object OnToggleShowPassword : UiAction
         data object OnBackClick : UiAction
     }
