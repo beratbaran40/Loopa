@@ -15,6 +15,10 @@ object RegisterContract {
         val supportingTextEmail: String = "",
         val supportingTextPassword: String = "",
         val isRegisterEnabled: Boolean = false,
+        val isNameTextFieldFocused: Boolean = false,
+        val isSurnameTextFieldFocused: Boolean = false,
+        val isEmailTextFieldFocused: Boolean = false,
+        val isPasswordTextFieldFocused: Boolean = false,
         val errorMessage: String = "",
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
@@ -26,6 +30,10 @@ object RegisterContract {
         data class OnSurnameChange(val surname: String) : UiAction
         data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
+        data class OnNameTextFieldFocusChange(val isFocused: Boolean) : UiAction
+        data class OnSurnameTextFieldFocusChange(val isFocused: Boolean) : UiAction
+        data class OnEmailTextFieldFocusChange(val isFocused: Boolean) : UiAction
+        data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data object OnToggleShowPassword : UiAction
         data object OnBackClick : UiAction
     }
