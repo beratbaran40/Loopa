@@ -271,7 +271,6 @@ fun LoginScreen(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
