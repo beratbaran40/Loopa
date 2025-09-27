@@ -20,4 +20,7 @@
     <string name="homepage_top_places">Top Places</string>
     <string name="homepage_you_might_wanna_look">You Might Want to Look</string>
     <string name="login_register_screen_toggle_password">Toggle password visibility</string>
+    <string name="details_screen_overview_text">Overview</string>
+    <string name="details_screen_example_place_description_text">Lorem ispum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="details_screen_photos_text">Photos</string>
 </resources>
