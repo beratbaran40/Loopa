@@ -8,6 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.beratbaran.loopa.ui.details.DetailsScreen
+import com.beratbaran.loopa.ui.details.DetailsViewModel
 import com.beratbaran.loopa.ui.homepage.HomepageScreen
 import com.beratbaran.loopa.ui.homepage.HomepageViewModel
 import com.beratbaran.loopa.ui.login.LoginScreen
@@ -91,7 +93,7 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
                 onNavigateToHomepage = {
-                    navController.navigate(Screen.Homepage) {
+                    navController.navigate(Screen.DetailsScreen) {
                         popUpTo(Screen.Login) {
                             inclusive = true
                         }
@@ -138,11 +140,37 @@ fun NavGraph(
             )
         }
 
-        composable<Screen.FavoritesScreen> {
+        composable<Screen.DetailsScreen> {
+            val viewModel = hiltViewModel<DetailsViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            DetailsScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToBack = {
+                    navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.DetailsScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                onNavigateToMaps = {
+                    navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.DetailsScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+
+                }
+            )
         }
 
-        composable<Screen.DetailsScreen> {
+        composable<Screen.FavoritesScreen> {
 
         }
     }
