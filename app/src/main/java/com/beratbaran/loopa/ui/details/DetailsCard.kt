@@ -37,11 +37,12 @@ fun DetailsCard(
             modifier = Modifier
                 .weight(1f)
                 .border(
-                    1.dp, MaterialTheme.colorScheme.onSurfaceVariant,
-                    RoundedCornerShape(6.dp)
+                    1.dp, MaterialTheme.colorScheme.outlineVariant,
+                    RoundedCornerShape(8.dp)
                 )
                 .background(
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    RoundedCornerShape(8.dp)
                 )
                 .padding(12.dp)
         )
@@ -49,15 +50,17 @@ fun DetailsCard(
             Column {
                 Text(
                     text = category,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = categoryName,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
         }
@@ -65,26 +68,29 @@ fun DetailsCard(
             modifier = Modifier
                 .weight(1f)
                 .border(
-                    1.dp, MaterialTheme.colorScheme.onSurfaceVariant,
+                    1.dp, MaterialTheme.colorScheme.outlineVariant,
                     RoundedCornerShape(6.dp)
                 )
                 .background(
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    RoundedCornerShape(8.dp)
                 )
                 .padding(12.dp)
         ) {
             Column {
                 Text(
                     text = location,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Bold
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = locationName,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline
                 )
             }
         }
@@ -99,7 +105,7 @@ fun DetailsCardPreview() {
             category = "Category",
             categoryName = "Category Name",
             location = "Location",
-            locationName = "Location Name"
+            locationName = "Location Name",
         )
     }
 }
