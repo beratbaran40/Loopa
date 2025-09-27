@@ -94,7 +94,7 @@ fun LookItem(
                             .clip(CircleShape)
                             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                             .background(
-                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f)
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             ),
                         onClick = onFavoriteClick,
                     ) {
