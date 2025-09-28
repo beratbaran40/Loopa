@@ -3,6 +3,7 @@ package com.beratbaran.loopa.ui.details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -113,7 +114,10 @@ fun DetailsHeader(
                     Brush.verticalGradient(
                         colors = listOf(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                            Color.Transparent, Color(0xE6000000)
+                            Color.Transparent,
+                            if (isSystemInDarkTheme())
+                                Color(0xE6000000).copy(alpha = 0.4f)
+                            else Color(0xE6FFFFFF).copy(alpha = 0.4f)
                         ),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
