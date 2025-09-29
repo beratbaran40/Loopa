@@ -50,8 +50,6 @@ fun DetailsScreen(
 
         Column {
 
-            if (uiState.isLoading) LoadingBar()
-
             DetailsHeader(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
@@ -110,6 +108,8 @@ fun DetailsScreen(
             }
         }
     }
+
+    if (uiState.isLoading) LoadingBar()
 }
 
 
