@@ -23,4 +23,5 @@
     <string name="details_screen_overview_text">Overview</string>
     <string name="details_screen_example_place_description_text">Lorem ispum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="details_screen_photos_text">Photos</string>
+    <string name="details_screen_show_on_map_text">Show on Map</string>
 </resources>
