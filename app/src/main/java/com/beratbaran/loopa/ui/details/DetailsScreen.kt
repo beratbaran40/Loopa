@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -49,15 +48,14 @@ fun DetailsScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        Column(
-            Modifier
-                .fillMaxHeight()
-        ) {
+        Column {
+
+            if (uiState.isLoading) LoadingBar()
 
             DetailsHeader(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
-                mapButton = "Show on Map",
+                mapButton = stringResource(R.string.details_screen_show_on_map_text),
                 navigateToMaps = { onAction(DetailsContract.UiAction.ShowOnMapClick) },
                 imageUrl = uiState.placeImageUrl,
                 isFavorite = uiState.isFavorite,
@@ -67,10 +65,10 @@ fun DetailsScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
+                    .padding(horizontal = 8.dp)
             ) {
 
                 DetailsCard(
@@ -79,15 +77,8 @@ fun DetailsScreen(
                     location = uiState.placeLocation,
                     locationName = uiState.placeLocationName,
                 )
-            }
 
-            Spacer(modifier = Modifier.height(18.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-            ) {
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = stringResource(R.string.details_screen_overview_text),
@@ -105,7 +96,7 @@ fun DetailsScreen(
                         )
                 )
 
-                Spacer(modifier = Modifier.height(14.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = stringResource(R.string.details_screen_photos_text),
@@ -119,8 +110,6 @@ fun DetailsScreen(
             }
         }
     }
-
-    if (uiState.isLoading) LoadingBar()
 }
 
 
