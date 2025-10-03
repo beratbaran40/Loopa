@@ -67,7 +67,6 @@ fun CategoriesScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-
         val rows = uiState.categories.chunked(size = 2)
 
         rows.forEach { pair ->
