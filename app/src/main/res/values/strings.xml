@@ -20,4 +20,5 @@
     <string name="homepage_top_places">Top Places</string>
     <string name="homepage_you_might_wanna_look">You Might Want to Look</string>
     <string name="login_register_screen_toggle_password">Toggle password visibility</string>
+    <string name="categories_screen_page_name">Categories</string>
 </resources>
