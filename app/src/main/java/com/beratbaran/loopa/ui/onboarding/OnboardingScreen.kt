@@ -42,7 +42,7 @@ import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiAction
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -214,7 +214,7 @@ private fun Dots(selected: Int) {
 private fun OnboardingScreenPreview(
     @PreviewParameter(OnboardingScreenPreviewProvider::class) uiState: UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         OnboardingScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
