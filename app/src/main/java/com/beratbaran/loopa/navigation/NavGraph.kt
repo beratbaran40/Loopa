@@ -93,7 +93,7 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
                 onNavigateToHomepage = {
-                    navController.navigate(Screen.SearchScreen) {
+                    navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.Login) {
                             inclusive = true
                         }
