@@ -156,7 +156,17 @@ fun NavGraph(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
+
                 onNavigateToDetails = {
+                    navController.navigate(Screen.DetailsScreen) {
+                        popUpTo(Screen.SearchScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                onNavigateToRandomPlace = {
                     navController.navigate(Screen.DetailsScreen) {
                         popUpTo(Screen.SearchScreen) {
                             inclusive = true
