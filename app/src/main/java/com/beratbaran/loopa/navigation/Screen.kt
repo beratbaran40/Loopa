@@ -20,4 +20,7 @@ sealed interface Screen {
 
     @Serializable
     data object FavoritesScreen : Screen
+
+    @Serializable
+    data object SearchScreen : Screen
 }
