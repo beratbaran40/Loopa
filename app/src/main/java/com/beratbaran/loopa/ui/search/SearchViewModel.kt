@@ -16,23 +16,12 @@ class SearchViewModel : ViewModel() {
 
     fun onAction(action: SearchContract.UiAction) {
         when (action) {
-            SearchContract.UiAction.OnDetailsClick(placeId = "") -> {
-                _uiEffect.trySend(SearchContract.UiEffect.NavigateToDetails)
-            }
 
-            SearchContract.UiAction.ToggleFavorite(placeId = "") -> {
-                _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
-            }
+            is SearchContract.UiAction.OnRandomPlaceClick ->
+                _uiEffect.trySend(SearchContract.UiEffect.NavigateToRandomPlace)
 
             is SearchContract.UiAction.OnQueryChange -> {
                 _uiState.value = _uiState.value.copy(query = action.query)
-            }
-
-            SearchContract.UiAction.SubmitSearch -> {
-            }
-
-            SearchContract.UiAction.ClearQuery -> {
-                _uiState.value = _uiState.value.copy(query = "")
             }
 
             is SearchContract.UiAction.OnDetailsClick ->
@@ -40,8 +29,13 @@ class SearchViewModel : ViewModel() {
 
             is SearchContract.UiAction.ToggleFavorite ->
                 _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
+
+            SearchContract.UiAction.SubmitSearch -> {
+            }
+
+            SearchContract.UiAction.ClearQuery -> {
+                _uiState.value = _uiState.value.copy(query = "")
+            }
         }
     }
-
-
 }
