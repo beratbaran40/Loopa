@@ -20,17 +20,14 @@ class SearchViewModel : ViewModel() {
             is SearchContract.UiAction.OnRandomPlaceClick ->
                 _uiEffect.trySend(SearchContract.UiEffect.NavigateToRandomPlace)
 
-            is SearchContract.UiAction.OnQueryChange -> {
-                _uiState.value = _uiState.value.copy(query = action.query)
-            }
-
             is SearchContract.UiAction.OnDetailsClick ->
                 _uiEffect.trySend(SearchContract.UiEffect.NavigateToDetails)
 
             is SearchContract.UiAction.ToggleFavorite ->
                 _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
 
-            SearchContract.UiAction.SubmitSearch -> {
+            is SearchContract.UiAction.OnQueryChange -> {
+                _uiState.value = _uiState.value.copy(query = action.query)
             }
 
             SearchContract.UiAction.ClearQuery -> {
