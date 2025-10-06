@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -330,7 +330,7 @@ fun LoginScreen(
 fun LoginScreenPreview(
     @PreviewParameter(LoginScreenPreviewProvider::class) uiState: LoginContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         LoginScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),

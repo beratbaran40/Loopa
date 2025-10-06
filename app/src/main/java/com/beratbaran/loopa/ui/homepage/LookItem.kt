@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun LookItem(
@@ -164,7 +164,7 @@ fun LookItemPreview(
     rating: String = "4.1",
     isFavorite: Boolean = true,
 ) {
-    MyappTheme {
+    LoopaTheme {
         LookItem(
             name = name,
             location = location,

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.beratbaran.loopa.navigation.NavGraph
 import com.beratbaran.loopa.navigation.Screen
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyappTheme {
+            LoopaTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
