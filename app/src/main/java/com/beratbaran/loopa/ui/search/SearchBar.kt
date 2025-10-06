@@ -23,7 +23,6 @@ fun SearchBar(
     modifier: Modifier = Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
-    onSubmit: () -> Unit,
     onClear: () -> Unit = {},
     onSearch: () -> Unit = {},
     enabled: Boolean = true,
@@ -61,7 +60,7 @@ fun SearchBar(
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSubmit() }),
+        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.24f),
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
@@ -92,6 +91,5 @@ fun SearchBarPreview(
         onQueryChange = onValueChange,
         onSearch = onSearch,
         uiState = SearchContract.UiState(),
-        onSubmit = {}
     )
 }
