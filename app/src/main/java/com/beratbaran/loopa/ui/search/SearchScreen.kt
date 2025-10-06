@@ -79,8 +79,7 @@ fun SearchScreen(
                 onQueryChange = {
                     onAction(SearchContract.UiAction.OnQueryChange(it))
                 },
-                onSubmit = { onAction(SearchContract.UiAction.SubmitSearch) },
-                onSearch = { onAction(SearchContract.UiAction.SubmitSearch) },
+                onSearch = { onAction(SearchContract.UiAction.OnQueryChange(uiState.query)) },
                 onClear = { onAction(SearchContract.UiAction.ClearQuery) },
                 uiState = uiState,
             )
