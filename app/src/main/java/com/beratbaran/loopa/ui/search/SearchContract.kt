@@ -17,13 +17,12 @@ object SearchContract {
         data class OnRandomPlaceClick(val placeId: String) : UiAction
         data class ToggleFavorite(val placeId: String) : UiAction
         data class OnQueryChange(val query: String) : UiAction
-        data object SubmitSearch : UiAction
         data object ClearQuery : UiAction
     }
 
     sealed interface UiEffect {
         data object NavigateToDetails : UiEffect
-        data object NavigateToRandomPlace: UiEffect
+        data object NavigateToRandomPlace : UiEffect
 
     }
 }
