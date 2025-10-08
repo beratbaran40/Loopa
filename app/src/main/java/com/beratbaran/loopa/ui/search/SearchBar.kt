@@ -1,9 +1,11 @@
 package com.beratbaran.loopa.ui.search
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -11,6 +13,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -29,6 +32,8 @@ fun SearchBar(
     uiState: SearchContract.UiState,
 ) {
 
+    val focusManager = LocalFocusManager.current
+
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -39,7 +44,13 @@ fun SearchBar(
         placeholder = { Text(text = stringResource(R.string.search_screen_search_bar_placeholder_text)) },
         leadingIcon = {
             val clickableModifier = if (enabled && !uiState.isLoading) {
-                Modifier.clickable { onSearch() }
+                Modifier.clickable {
+                    if (query.isNotBlank()) {
+                        onSearch()
+                        focusManager.clearFocus()
+                    }
+                }
+
             } else {
                 Modifier
             }
@@ -50,17 +61,34 @@ fun SearchBar(
             )
         },
         trailingIcon = {
-            if (query.isNotEmpty()) {
-                Icon(
-                    modifier = Modifier.clickable { onClear() },
-                    painter = painterResource(id = R.drawable.ic_close_remove),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error
-                )
+            when {
+                uiState.isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(18.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+
+                query.isNotEmpty() -> {
+                    Icon(
+                        modifier = Modifier.clickable { onClear() },
+                        painter = painterResource(id = R.drawable.ic_close_remove),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch() }),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                if (query.isNotBlank()) {
+                    onSearch()
+                    focusManager.clearFocus()
+                }
+            }
+        ),
+
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.24f),
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
