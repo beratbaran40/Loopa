@@ -8,6 +8,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.beratbaran.loopa.ui.categories.CategoriesScreen
+import com.beratbaran.loopa.ui.categories.CategoriesViewModel
 import com.beratbaran.loopa.ui.favorites.FavoritesScreen
 import com.beratbaran.loopa.ui.favorites.FavoritesViewModel
 import com.beratbaran.loopa.ui.homepage.HomepageScreen
@@ -158,11 +160,33 @@ fun NavGraph(
                     }
                 }
             )
+        }
+
+        composable<Screen.DetailsScreen> {
 
         }
 
+        composable<Screen.CategoriesScreen> {
+            val viewModel = hiltViewModel<CategoriesViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-        composable<Screen.DetailsScreen> {
+            CategoriesScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToCategoryDetails = {
+                    navController.navigate(Screen.CategoryDetailsScreen) {
+                        popUpTo(Screen.CategoriesScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+
+        composable<Screen.CategoryDetailsScreen> {
 
         }
     }
