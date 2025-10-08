@@ -4,16 +4,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +37,6 @@ fun CategoriesScreen(
     onAction: (CategoriesContract.UiAction) -> Unit,
     onNavigateToCategoryDetails: () -> Unit,
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             CategoriesContract.UiEffect.NavigateToCategoryDetails -> onNavigateToCategoryDetails()
@@ -51,14 +49,11 @@ fun CategoriesScreen(
             .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+            .padding(24.dp)
+            .padding(top = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 24.dp),
             text = stringResource(R.string.categories_screen_page_name),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleSmall,
@@ -67,41 +62,23 @@ fun CategoriesScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        val rows = uiState.categories.chunked(size = 2)
-
-        rows.forEach { pair ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.Top
-            ) {
-                pair.forEach { item ->
-                    Box(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        CategoryItem(
-                            categories = item.category,
-                            categoryIcon = item.categoryIconRes,
-                            onCategoryClick = { onAction(CategoriesContract.UiAction.OnCategoryClick) },
-                        )
-                    }
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            items(uiState.categories) { item ->
+                Box {
+                    CategoryItem(
+                        category = item,
+                        onCategoryClick = { onAction(CategoriesContract.UiAction.OnCategoryClick) },
+                    )
                 }
-
-                if (pair.size == 1) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-
-            if (rows.indexOf(pair) != rows.lastIndex) {
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
 
     if (uiState.isLoading) LoadingBar()
-
 }
 
 @PreviewLightDark
