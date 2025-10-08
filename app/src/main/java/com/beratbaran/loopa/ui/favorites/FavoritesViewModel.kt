@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 class FavoritesViewModel : ViewModel() {
+
     private val _uiState = MutableStateFlow(FavoritesContract.UiState())
     val uiState: StateFlow<FavoritesContract.UiState> = _uiState.asStateFlow()
 
@@ -21,10 +22,7 @@ class FavoritesViewModel : ViewModel() {
                 _uiEffect.trySend(FavoritesContract.UiEffect.NavigateToDetails)
             }
 
-            FavoritesContract.UiAction.OnUnFavoriteClick -> {
-                _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
-            }
+            FavoritesContract.UiAction.OnUnFavoriteClick -> Unit
         }
     }
-
 }

@@ -2,18 +2,16 @@ package com.beratbaran.loopa.ui.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +37,6 @@ fun FavoritesScreen(
     onAction: (UiAction) -> Unit,
     onNavigateToDetails: () -> Unit,
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             FavoritesContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -52,14 +49,11 @@ fun FavoritesScreen(
             .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+            .padding(24.dp)
+            .padding(top = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 24.dp),
             text = stringResource(R.string.favorites_screen_page_name),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleSmall,
@@ -68,38 +62,22 @@ fun FavoritesScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        val rows = uiState.favoriteItem.chunked(2)
-        rows.forEachIndexed { rowIndex, pair ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                pair.forEach { item ->
-                    Box(modifier = Modifier.weight(1f)) {
-                        FavoriteItem(
-                            name = item.name,
-                            location = item.location,
-                            imageUrl = item.imageUrl,
-                            rating = item.rating,
-                            isFavorite = item.isFavorite,
-                            onUnFavoriteClick = { onAction(UiAction.OnUnFavoriteClick) },
-                            onDetailsClick = { onAction(UiAction.OnDetailsClick) }
-                        )
-                    }
-                }
-                if (pair.size == 1) {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-
-            if (rowIndex != rows.lastIndex) {
-                Spacer(modifier = Modifier.height(16.dp))
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items(uiState.favorites) { item ->
+                FavoriteItem(
+                    item = item,
+                    onUnFavoriteClick = { onAction(UiAction.OnUnFavoriteClick) },
+                    onDetailsClick = { onAction(UiAction.OnDetailsClick) }
+                )
             }
         }
     }
 
     if (uiState.isLoading) LoadingBar()
-
 }
 
 @PreviewLightDark

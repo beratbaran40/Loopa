@@ -2,9 +2,8 @@ package com.beratbaran.loopa.ui.favorites
 
 object FavoritesContract {
     data class UiState(
-        val isFavorite: Boolean = true,
         val isLoading: Boolean = false,
-        val favoriteItem: List<FavoritesModel> = emptyList(),
+        val favorites: List<FavoritesModel> = emptyList(),
     )
 
     sealed class UiEffect {
@@ -16,4 +15,3 @@ object FavoritesContract {
         data object OnUnFavoriteClick : UiAction()
     }
 }
-
