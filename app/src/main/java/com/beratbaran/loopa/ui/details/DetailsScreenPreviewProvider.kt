@@ -6,6 +6,20 @@ class DetailsScreenPreviewProvider : PreviewParameterProvider<DetailsContract.Ui
     override val values: Sequence<DetailsContract.UiState>
         get() = sequenceOf(
             DetailsContract.UiState(
+                isLoading = true
+            ),
+            DetailsContract.UiState(
+                placeName = "Taj Mahal",
+                placeRating = "4.6",
+                placeLocation = "Location",
+                placeLocationName = "India",
+                placeCategory = "Category",
+                placeCategoryName = "Landmark",
+                placeImageUrl = "Image Url",
+                isFavorite = true,
+                isLoading = false,
+            ),
+            DetailsContract.UiState(
                 placeName = "Taj Mahal",
                 placeRating = "4.6",
                 placeLocation = "Location",
@@ -15,28 +29,6 @@ class DetailsScreenPreviewProvider : PreviewParameterProvider<DetailsContract.Ui
                 placeImageUrl = "Image Url",
                 isFavorite = false,
                 isLoading = false,
-            ),
-            DetailsContract.UiState(
-                placeName = "Taj Mahal",
-                placeRating = "4.6",
-                placeLocation = "Location",
-                placeLocationName = "India",
-                placeCategory = "Category",
-                placeCategoryName = "Landmark",
-                placeImageUrl = "Image Url",
-                isFavorite = true,
-                isLoading = false,
-            ),
-            DetailsContract.UiState(
-                placeName = "Taj Mahal",
-                placeRating = "4.6",
-                placeLocation = "Location",
-                placeLocationName = "India",
-                placeCategory = "Category",
-                placeCategoryName = "Landmark",
-                placeImageUrl = "Image Url",
-                isFavorite = true,
-                isLoading = true,
             ),
         )
 }
