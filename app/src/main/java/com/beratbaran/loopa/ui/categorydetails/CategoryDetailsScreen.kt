@@ -43,7 +43,6 @@ fun CategoryDetailsScreen(
     onNavigateToDetails: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             CategoryDetailsContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -66,12 +65,14 @@ fun CategoryDetailsScreen(
                 .fillMaxWidth()
                 .padding(top = 20.dp, bottom = 8.dp),
         ) {
+
             IconButton(
                 onClick = { onNavigateToBack() },
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .size(48.dp)
             ) {
+
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = null,
@@ -108,7 +109,6 @@ fun CategoryDetailsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-
         uiState.places.forEachIndexed { index, place ->
             DetailItem(
                 name = place.name,
@@ -119,6 +119,7 @@ fun CategoryDetailsScreen(
                 onFavoriteClick = { onAction(CategoryDetailsContract.UiAction.ToggleFavorite) },
                 onDetailsClick = { onAction(CategoryDetailsContract.UiAction.OnDetailsClick) },
             )
+
             if (index != uiState.places.lastIndex) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -126,7 +127,6 @@ fun CategoryDetailsScreen(
     }
 
     if (uiState.isLoading) LoadingBar()
-
 }
 
 @PreviewLightDark
