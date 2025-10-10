@@ -38,7 +38,6 @@ fun SearchScreen(
     onNavigateToDetails: () -> Unit,
     onNavigateToRandomPlace: () -> Unit,
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             SearchContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
