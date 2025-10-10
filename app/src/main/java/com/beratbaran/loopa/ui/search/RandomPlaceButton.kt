@@ -21,7 +21,6 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 fun RandomPlaceButton(
     onClick: () -> Unit,
 ) {
-
     Box {
         IconButton(
             onClick = onClick,
@@ -34,6 +33,7 @@ fun RandomPlaceButton(
                     shape = CircleShape,
                 ),
         ) {
+
             Icon(
                 modifier = Modifier
                     .size(50.dp),
@@ -45,8 +45,6 @@ fun RandomPlaceButton(
             )
         }
     }
-
-
 }
 
 @PreviewLightDark
