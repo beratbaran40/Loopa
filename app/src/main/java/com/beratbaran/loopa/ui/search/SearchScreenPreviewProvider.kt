@@ -43,10 +43,8 @@ class SearchScreenPreviewProvider : PreviewParameterProvider<SearchContract.UiSt
                         rating = "4.5",
                         isFavorite = true,
                         id = 4
-
                     ),
                 )
             )
         )
-
 }
