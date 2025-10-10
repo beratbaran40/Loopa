@@ -49,6 +49,7 @@ fun DetailItem(
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
+
     Card(
         modifier = Modifier
             .widthIn(max = 500.dp)
@@ -61,6 +62,7 @@ fun DetailItem(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,6 +85,7 @@ fun DetailItem(
                         )
                     ),
             ) {
+
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = null,
@@ -100,6 +103,7 @@ fun DetailItem(
                             shape = CircleShape,
                         ),
                 ) {
+
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(
@@ -125,6 +129,7 @@ fun DetailItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+
                 Icon(
                     painterResource(R.drawable.ic_location),
                     tint = MaterialTheme.colorScheme.primary,
