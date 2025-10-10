@@ -46,7 +46,6 @@ fun DetailsHeader(
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     onNavigateToBack: () -> Unit,
-
     ) {
     Box(
         modifier = Modifier
@@ -96,6 +95,7 @@ fun DetailsHeader(
                     shape = CircleShape,
                 ),
         ) {
+
             Icon(
                 painter = painterResource(
                     id = if (isFavorite) R.drawable.ic_selected_favorite
@@ -105,7 +105,6 @@ fun DetailsHeader(
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
-
 
         Box(
             modifier = Modifier
@@ -132,9 +131,11 @@ fun DetailsHeader(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Text(
                     text = name,
                     style = MaterialTheme.typography.titleLarge.copy(
@@ -161,7 +162,6 @@ fun DetailsHeader(
                         .copy(color = Color.White)
                 )
 
-
                 Spacer(Modifier.weight(1f))
 
                 Button(
@@ -175,11 +175,13 @@ fun DetailsHeader(
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
+
                     Row(
                         modifier = Modifier
                             .padding(horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+
                         Icon(
                             painterResource(R.drawable.ic_location),
                             modifier = Modifier.size(16.dp),
