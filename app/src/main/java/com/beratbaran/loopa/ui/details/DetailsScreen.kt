@@ -33,7 +33,6 @@ fun DetailsScreen(
     onNavigateToBack: () -> Unit,
     onNavigateToMaps: () -> Unit,
 ) {
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             DetailsContract.UiEffect.NavigateToMaps -> onNavigateToMaps()
@@ -49,7 +48,6 @@ fun DetailsScreen(
     ) {
 
         Column {
-
             DetailsHeader(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
@@ -111,7 +109,6 @@ fun DetailsScreen(
 
     if (uiState.isLoading) LoadingBar()
 }
-
 
 @PreviewLightDark
 @Composable
