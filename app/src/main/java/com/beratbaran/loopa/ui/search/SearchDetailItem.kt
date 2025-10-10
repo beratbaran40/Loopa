@@ -61,6 +61,7 @@ fun SearchDetailItem(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,6 +101,7 @@ fun SearchDetailItem(
                             shape = CircleShape,
                         ),
                 ) {
+
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(
@@ -125,6 +127,7 @@ fun SearchDetailItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+
                 Icon(
                     painterResource(R.drawable.ic_location),
                     tint = MaterialTheme.colorScheme.primary,
