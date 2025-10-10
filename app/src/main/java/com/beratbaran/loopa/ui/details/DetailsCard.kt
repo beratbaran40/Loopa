@@ -33,6 +33,7 @@ fun DetailsCard(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -64,6 +65,7 @@ fun DetailsCard(
                 )
             }
         }
+
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -77,6 +79,7 @@ fun DetailsCard(
                 )
                 .padding(12.dp)
         ) {
+
             Column {
                 Text(
                     text = location,
