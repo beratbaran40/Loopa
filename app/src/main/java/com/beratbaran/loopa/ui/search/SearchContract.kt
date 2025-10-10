@@ -23,6 +23,5 @@ object SearchContract {
     sealed interface UiEffect {
         data object NavigateToDetails : UiEffect
         data object NavigateToRandomPlace : UiEffect
-
     }
 }
