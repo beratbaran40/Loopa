@@ -64,16 +64,17 @@ fun DetailsGrid() {
 
     var selectedIndex by rememberSaveable { mutableStateOf<Int?>(null) }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
+
             Image(
                 painter = painterResource(R.drawable.details_screen_grid_img_1),
                 contentDescription = "1/4",
@@ -173,6 +174,7 @@ private fun GalleryDialog(
             usePlatformDefaultWidth = false,
         )
     ) {
+
         AnimatedVisibility(
             visible = isDialogContentVisible,
             enter = fadeIn(animationSpec = tween(ENTER_MS)) + scaleIn(
@@ -184,6 +186,7 @@ private fun GalleryDialog(
                 targetScale = 0.92f
             )
         ) {
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
