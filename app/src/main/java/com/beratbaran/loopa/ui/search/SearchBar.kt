@@ -31,7 +31,6 @@ fun SearchBar(
     enabled: Boolean = true,
     uiState: SearchContract.UiState,
 ) {
-
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
@@ -88,7 +87,6 @@ fun SearchBar(
                 }
             }
         ),
-
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.24f),
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
