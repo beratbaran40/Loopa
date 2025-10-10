@@ -14,13 +14,10 @@ object DetailsContract {
         val isLoading: Boolean = false,
     )
 
-
     sealed interface UiAction {
         data object ShowOnMapClick : UiAction
         data object OnBackClick : UiAction
         data object ToggleFavorite : UiAction
-
-
     }
 
     sealed interface UiEffect {
