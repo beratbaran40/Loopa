@@ -19,7 +19,7 @@ import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
 import com.beratbaran.loopa.ui.register.RegisterScreen
-import com.beratbaran.loopa.ui.register.RegisterViewmodel
+import com.beratbaran.loopa.ui.register.RegisterViewModel
 
 @Composable
 fun NavGraph(
@@ -60,7 +60,7 @@ fun NavGraph(
         }
 
         composable<Screen.Register> {
-            val viewModel = hiltViewModel<RegisterViewmodel>()
+            val viewModel = hiltViewModel<RegisterViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             RegisterScreen(
