@@ -1,8 +1,8 @@
 package com.beratbaran.loopa.ui.register
 
-object RegisterContract {
+import com.beratbaran.loopa.common.PasswordStrength
 
-    enum class PasswordStrength { STRONG, MEDIUM, WEAK }
+object RegisterContract {
 
     data class UiState(
         val isLoading: Boolean = false,
