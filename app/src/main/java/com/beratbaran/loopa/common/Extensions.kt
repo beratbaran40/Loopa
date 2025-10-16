@@ -7,6 +7,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
 
+enum class PasswordStrength { STRONG, MEDIUM, WEAK }
+
 @Composable
 fun <T> Flow<T>.CollectWithLifecycle(
     collect: suspend (T) -> Unit,
@@ -60,4 +62,32 @@ object ValidationManager {
         { if (password.isBlank()) "Password cannot be blank" else "" },
         { if (password.length < 8) "Password must be at least 8 characters long" else "" }
     )
+
+    fun computePasswordStrength(password: String): PasswordStrength? {
+        if (password.isBlank()) return null
+
+        var score = 0
+        val length = password.length
+        val hasLower = password.any { it.isLowerCase() }
+        val hasUpper = password.any { it.isUpperCase() }
+        val hasDigit = password.any { it.isDigit() }
+        val hasSpecial = password.any { !it.isLetterOrDigit() }
+
+        score += when {
+            length >= 12 -> 2
+            length >= 8 -> 1
+            else -> 0
+        }
+
+        if (hasLower) score++
+        if (hasUpper) score++
+        if (hasDigit) score++
+        if (hasSpecial) score++
+
+        return when {
+            score >= 5 -> PasswordStrength.STRONG
+            score >= 3 -> PasswordStrength.MEDIUM
+            else -> PasswordStrength.WEAK
+        }
+    }
 }
