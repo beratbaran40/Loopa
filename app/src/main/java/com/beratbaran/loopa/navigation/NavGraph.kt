@@ -18,6 +18,8 @@ import com.beratbaran.loopa.ui.login.LoginScreen
 import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
+import com.beratbaran.loopa.ui.profile.ProfileScreen
+import com.beratbaran.loopa.ui.profile.ProfileViewModel
 import com.beratbaran.loopa.ui.register.RegisterScreen
 import com.beratbaran.loopa.ui.register.RegisterViewModel
 
@@ -188,6 +190,35 @@ fun NavGraph(
 
         composable<Screen.CategoryDetailsScreen> {
 
+        }
+
+        composable<Screen.ProfileScreen> {
+            val viewModel = hiltViewModel<ProfileViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            ProfileScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToBack = {
+                    navController.navigate(Screen.Homepage) {
+                        popUpTo(Screen.ProfileScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                onNavigateToOnboarding = {
+                    navController.navigate(Screen.Onboarding) {
+                        popUpTo(Screen.ProfileScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }
