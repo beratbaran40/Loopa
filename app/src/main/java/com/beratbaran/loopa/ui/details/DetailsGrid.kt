@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -59,7 +60,7 @@ fun DetailsGrid() {
         R.drawable.details_screen_grid_img_1,
         R.drawable.details_screen_grid_img_2,
         R.drawable.details_screen_grid_img_3,
-        R.drawable.details_screen_grid_img_4
+        R.drawable.details_screen_grid_img_4,
     )
 
     var selectedIndex by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -76,23 +77,20 @@ fun DetailsGrid() {
         ) {
 
             Image(
-                painter = painterResource(R.drawable.details_screen_grid_img_1),
-                contentDescription = "1/4",
-                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(1f)
-                    .aspectRatio(0.7f)
                     .padding(4.dp)
+                    .aspectRatio(0.7f)
                     .clip(RoundedCornerShape(16.dp))
                     .clickable {
                         selectedIndex = 0
-                    }
+                    },
+                painter = painterResource(R.drawable.details_screen_grid_img_1),
+                contentDescription = stringResource(R.string.details_screen_grid_images_description_1_4),
+                contentScale = ContentScale.Crop,
             )
 
             Image(
-                painter = painterResource(R.drawable.details_screen_grid_img_2),
-                contentDescription = "2/4",
-                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(1f)
                     .padding(4.dp)
@@ -100,7 +98,10 @@ fun DetailsGrid() {
                     .clip(RoundedCornerShape(16.dp))
                     .clickable {
                         selectedIndex = 1
-                    }
+                    },
+                painter = painterResource(R.drawable.details_screen_grid_img_2),
+                contentDescription = stringResource(R.string.details_screen_grid_images_description_2_4),
+                contentScale = ContentScale.Crop,
             )
         }
 
@@ -109,9 +110,6 @@ fun DetailsGrid() {
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(R.drawable.details_screen_grid_img_3),
-                contentDescription = "3/4",
-                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(1f)
                     .padding(4.dp)
@@ -119,13 +117,13 @@ fun DetailsGrid() {
                     .clip(RoundedCornerShape(16.dp))
                     .clickable {
                         selectedIndex = 2
-                    }
+                    },
+                painter = painterResource(R.drawable.details_screen_grid_img_3),
+                contentDescription = stringResource(R.string.details_screen_grid_images_description_3_4),
+                contentScale = ContentScale.Crop,
             )
 
             Image(
-                painter = painterResource(R.drawable.details_screen_grid_img_4),
-                contentDescription = "4/4",
-                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(1f)
                     .padding(4.dp)
@@ -133,7 +131,10 @@ fun DetailsGrid() {
                     .clip(RoundedCornerShape(16.dp))
                     .clickable {
                         selectedIndex = 3
-                    }
+                    },
+                painter = painterResource(R.drawable.details_screen_grid_img_4),
+                contentDescription = stringResource(R.string.details_screen_grid_images_description_4_4),
+                contentScale = ContentScale.Crop,
             )
         }
 
@@ -153,8 +154,9 @@ private fun GalleryDialog(
     initialIndex: Int,
     onClose: (finalIndex: Int) -> Unit,
 ) {
-    var isDialogContentVisible by rememberSaveable { mutableStateOf(true) }
+    var isDialogContentVisible by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
+    val noIndication = remember { MutableInteractionSource() }
 
     val pagerState = rememberPagerState(
         initialPage = initialIndex,
@@ -192,7 +194,7 @@ private fun GalleryDialog(
                     .fillMaxSize()
                     .clickable(
                         indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
+                        interactionSource = noIndication
                     ) {
                         close()
                     }
@@ -200,17 +202,14 @@ private fun GalleryDialog(
             ) {
 
                 HorizontalPager(
-                    state = pagerState,
                     modifier = Modifier
                         .align(Alignment.Center)
                         .fillMaxWidth(),
+                    state = pagerState,
                     pageSpacing = 12.dp
                 )
                 { page ->
                     Image(
-                        painter = painterResource(images[page]),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .shadow(8.dp, RoundedCornerShape(20.dp))
                             .border(
@@ -221,8 +220,11 @@ private fun GalleryDialog(
                             .clip(RoundedCornerShape(20.dp))
                             .clickable(
                                 indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) { }
+                                interactionSource = noIndication
+                            ) { },
+                        painter = painterResource(images[page]),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
                     )
                 }
 
@@ -240,7 +242,7 @@ private fun GalleryDialog(
                                 .size(24.dp)
                                 .clickable(
                                     indication = null,
-                                    interactionSource = remember { MutableInteractionSource() }
+                                    interactionSource = noIndication
                                 ) {
                                     scope.launch {
                                         pagerState.animateScrollToPage(
@@ -249,11 +251,7 @@ private fun GalleryDialog(
                                             )
                                         )
                                     }
-                                }
-                                .clip(CircleShape)
-                                .background(
-                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.001f)
-                                ),
+                                },
                             contentAlignment = Alignment.Center
                         ) {
 
@@ -265,7 +263,7 @@ private fun GalleryDialog(
                                         if (index == pagerState.currentPage)
                                             MaterialTheme.colorScheme.primary
                                         else
-                                            MaterialTheme.colorScheme.surface.copy(alpha = 0.8f)
+                                            MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
                                     )
                             )
                         }
