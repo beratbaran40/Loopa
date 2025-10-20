@@ -2,15 +2,14 @@ package com.beratbaran.loopa.ui.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -29,6 +28,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -46,11 +46,11 @@ fun DetailsHeader(
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     onNavigateToBack: () -> Unit,
-    ) {
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(350.dp)
+            .aspectRatio(1f)
     ) {
 
         AsyncImage(
@@ -62,46 +62,41 @@ fun DetailsHeader(
         )
 
         IconButton(
-            onClick = { onNavigateToBack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(16.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                     shape = CircleShape,
-                ),
-        ) {
+                )
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
 
+            onClick = { onNavigateToBack() },
+        ) {
             Icon(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(24.dp)
-                    .clickable { onNavigateToBack() },
+                    .size(24.dp),
                 painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
+                contentDescription = stringResource(R.string.details_screen_component_descriptions_back_button),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
 
         IconButton(
-            onClick = { onFavoriteClick() },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
-                    shape = CircleShape,
-                ),
-        ) {
-
+                    shape = CircleShape)
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
+            onClick = { onFavoriteClick() },
+            ) {
             Icon(
                 painter = painterResource(
                     id = if (isFavorite) R.drawable.ic_selected_favorite
-                    else R.drawable.ic_favorite
-                ),
-                contentDescription = "Favorite",
+                    else R.drawable.ic_favorite),
+                contentDescription = stringResource(R.string.details_screen_component_descriptions_favorite_button),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
@@ -115,8 +110,8 @@ fun DetailsHeader(
                             MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
                             Color.Transparent,
                             if (isSystemInDarkTheme())
-                                Color(0xE6000000).copy(alpha = 0.4f)
-                            else Color(0xE6FFFFFF).copy(alpha = 0.4f)
+                                Color.Black.copy(alpha = 0.4f)
+                            else Color.White.copy(alpha = 0.4f)
                         ),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
@@ -150,7 +145,7 @@ fun DetailsHeader(
                 Icon(
                     painterResource(R.drawable.ic_star),
                     modifier = Modifier.size(20.dp),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.details_screen_component_descriptions_rating_icon),
                     tint = MaterialTheme.colorScheme.secondary,
                 )
 
@@ -166,36 +161,30 @@ fun DetailsHeader(
 
                 Button(
                     onClick = { navigateToMaps() },
-                    modifier = Modifier.height(40.dp),
                     shape = RoundedCornerShape(16.dp),
                     elevation = ButtonDefaults.buttonElevation(4.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
+                        contentColor = MaterialTheme.colorScheme.background
                     )
                 ) {
 
                     Row(
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
 
                         Icon(
                             painterResource(R.drawable.ic_location),
                             modifier = Modifier.size(16.dp),
-                            contentDescription = null,
-                            tint = Color.Black,
+                            contentDescription = stringResource(R.string.details_screen_component_descriptions_location_icon),
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
                             text = mapButton,
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                color = Color.Black
-                            ),
+                            style = MaterialTheme.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
