@@ -31,6 +31,7 @@ fun SearchBar(
     enabled: Boolean = true,
     uiState: SearchContract.UiState,
 ) {
+
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
