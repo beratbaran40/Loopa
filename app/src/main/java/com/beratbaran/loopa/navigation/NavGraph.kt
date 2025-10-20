@@ -10,6 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsScreen
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsViewModel
+import com.beratbaran.loopa.ui.categories.CategoriesScreen
+import com.beratbaran.loopa.ui.categories.CategoriesViewModel
+import com.beratbaran.loopa.ui.favorites.FavoritesScreen
+import com.beratbaran.loopa.ui.favorites.FavoritesViewModel
 import com.beratbaran.loopa.ui.homepage.HomepageScreen
 import com.beratbaran.loopa.ui.homepage.HomepageViewModel
 import com.beratbaran.loopa.ui.login.LoginScreen
@@ -17,7 +21,7 @@ import com.beratbaran.loopa.ui.login.LoginViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
 import com.beratbaran.loopa.ui.register.RegisterScreen
-import com.beratbaran.loopa.ui.register.RegisterViewmodel
+import com.beratbaran.loopa.ui.register.RegisterViewModel
 
 @Composable
 fun NavGraph(
@@ -58,7 +62,7 @@ fun NavGraph(
         }
 
         composable<Screen.Register> {
-            val viewModel = hiltViewModel<RegisterViewmodel>()
+            val viewModel = hiltViewModel<RegisterViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             RegisterScreen(
@@ -141,7 +145,23 @@ fun NavGraph(
         }
 
         composable<Screen.FavoritesScreen> {
+            val viewModel = hiltViewModel<FavoritesViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            FavoritesScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToDetails = {
+                    navController.navigate(Screen.DetailsScreen) {
+                        popUpTo(Screen.FavoritesScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
 
         composable<Screen.DetailsScreen> {
@@ -175,6 +195,30 @@ fun NavGraph(
                     }
                 },
             )
+        }
+
+        composable<Screen.CategoriesScreen> {
+            val viewModel = hiltViewModel<CategoriesViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            CategoriesScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToCategoryDetails = {
+                    navController.navigate(Screen.CategoryDetailsScreen) {
+                        popUpTo(Screen.CategoriesScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+            )
+        }
+
+        composable<Screen.CategoryDetailsScreen> {
+
         }
     }
 }

@@ -22,4 +22,6 @@
     <string name="login_register_screen_toggle_password">Toggle password visibility</string>
     <string name="category_details_screen_category_name">Category Name</string>
     <string name="category_details_screen_place_number_of_place">%s Places</string>
+    <string name="favorites_screen_page_name">Favorites</string>
+    <string name="categories_screen_page_name">Categories</string>
 </resources>
