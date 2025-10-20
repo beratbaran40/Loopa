@@ -15,6 +15,10 @@ class DetailsViewModel : ViewModel() {
     private val _uiEffect by lazy { Channel<DetailsContract.UiEffect>() }
     val uiEffect: Flow<DetailsContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
+    private fun onImageSelected(index: Int?) {
+        _uiState.value = _uiState.value.copy(selectedIndex = index)
+    }
+
     fun onAction(uiAction: DetailsContract.UiAction) {
         when (uiAction) {
 
@@ -28,6 +32,10 @@ class DetailsViewModel : ViewModel() {
 
             DetailsContract.UiAction.ToggleFavorite -> {
                 _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
+            }
+
+            is DetailsContract.UiAction.OnImageSelected -> {
+                onImageSelected(uiAction.index)
             }
         }
     }
