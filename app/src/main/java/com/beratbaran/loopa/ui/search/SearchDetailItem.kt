@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -37,28 +36,25 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.ui.homepage.PlaceModel
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun SearchDetailItem(
-    name: String,
-    location: String,
-    imageUrl: String,
-    rating: String,
-    isFavorite: Boolean,
+    place: PlaceModel,
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
-            .widthIn(max = 500.dp)
+            .fillMaxWidth()
             .border(
                 BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
                 shape = RoundedCornerShape(16.dp)
             ),
         onClick = onDetailsClick,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
 
@@ -74,7 +70,7 @@ fun SearchDetailItem(
             Box(
                 modifier = Modifier
                     .height(180.dp)
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
@@ -85,7 +81,7 @@ fun SearchDetailItem(
                     ),
             ) {
                 AsyncImage(
-                    model = imageUrl,
+                    model = place.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
@@ -105,7 +101,7 @@ fun SearchDetailItem(
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_selected_favorite
+                            id = if (place.isFavorite) R.drawable.ic_selected_favorite
                             else R.drawable.ic_favorite
                         ),
                         contentDescription = "Favorite",
@@ -115,7 +111,7 @@ fun SearchDetailItem(
             }
 
             Text(
-                text = name,
+                text = place.name,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -126,6 +122,7 @@ fun SearchDetailItem(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
 
                 Icon(
@@ -134,20 +131,15 @@ fun SearchDetailItem(
                     contentDescription = null,
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
-
                 Text(
-                    text = location,
+                    modifier = Modifier.weight(1f),
+                    text = place.location,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
-
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -160,7 +152,7 @@ fun SearchDetailItem(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = rating,
+                        text = place.rating,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -182,11 +174,14 @@ fun TopPlaceItemPreview(
 ) {
     LoopaTheme {
         SearchDetailItem(
-            name = name,
-            location = location,
-            imageUrl = imageUrl,
-            rating = rating,
-            isFavorite = isFavorite,
+            place = PlaceModel(
+                id = 1,
+                name = name,
+                location = location,
+                imageUrl = imageUrl,
+                rating = rating,
+                isFavorite = isFavorite,
+            ),
             onFavoriteClick = {},
             onDetailsClick = {},
         )
