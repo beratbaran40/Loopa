@@ -63,7 +63,7 @@ import androidx.compose.ui.window.Dialog
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -563,7 +563,7 @@ fun RegisterScreen(
 fun RegisterScreenPreview(
     @PreviewParameter(RegisterScreenPreviewProvider::class) uiState: RegisterContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         RegisterScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),

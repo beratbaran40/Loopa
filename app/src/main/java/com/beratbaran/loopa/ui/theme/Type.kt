@@ -82,13 +82,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 16.sp
-
     ),
 
     labelSmall = TextStyle(
         fontFamily = JakartaFont,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 12.sp,
+        fontSize = 10.sp,
         lineHeight = 14.sp
     ),
 )

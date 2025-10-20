@@ -1,7 +1,8 @@
-package com.beratbaran.loopa.ui.homepage
+package com.beratbaran.loopa.ui.favorites
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -23,7 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,55 +36,48 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
-fun TopPlaceItem(
-    name: String,
-    location: String,
-    imageUrl: String,
-    rating: String,
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit,
+fun FavoriteItem(
+    item: FavoritesModel,
+    onUnFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
     Card(
-        modifier = Modifier.widthIn(max = 260.dp),
         onClick = onDetailsClick,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(
+            width = 2.dp,
+            color = MaterialTheme.colorScheme.outlineVariant,
+        ),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(12.dp)),
-            ) {
+            Box {
                 AsyncImage(
-                    model = imageUrl,
+                    modifier = Modifier.height(140.dp),
+                    model = item.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
                 )
 
                 IconButton(
-                    onClick = onFavoriteClick,
+                    onClick = onUnFavoriteClick,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
-                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
+                        .size(32.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             shape = CircleShape,
                         ),
                 ) {
                     Icon(
-                        painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_selected_favorite
-                            else R.drawable.ic_favorite
-                        ),
+                        modifier = Modifier.size(30.dp),
+                        painter = painterResource(id = R.drawable.ic_selected_favorite),
                         contentDescription = "Favorite",
                         tint = MaterialTheme.colorScheme.primary,
                     )
@@ -91,8 +85,9 @@ fun TopPlaceItem(
             }
 
             Text(
-                text = name,
-                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.padding(horizontal = 12.dp),
+                text = item.name,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -100,61 +95,72 @@ fun TopPlaceItem(
             )
 
             Row(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .padding(bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painterResource(R.drawable.ic_location),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = null,
+                BottomInfo(
+                    text = item.location,
+                    icon = R.drawable.ic_location,
                 )
 
                 Spacer(modifier = Modifier.width(6.dp))
 
-                Text(
-                    text = location,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-
-                Spacer(modifier = Modifier.width(6.dp))
-
-                Icon(
-                    painterResource(R.drawable.ic_star),
-                    tint = MaterialTheme.colorScheme.secondary,
-                    contentDescription = null,
-                )
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Text(
-                    text = rating,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                BottomInfo(
+                    text = item.rating,
+                    icon = R.drawable.ic_star,
+                    iconTint = MaterialTheme.colorScheme.secondary,
                 )
             }
         }
     }
 }
 
+@Composable
+private fun BottomInfo(
+    text: String,
+    @DrawableRes icon: Int,
+    iconTint: Color = MaterialTheme.colorScheme.primary,
+) {
+    Icon(
+        modifier = Modifier.size(14.dp),
+        painter = painterResource(icon),
+        contentDescription = null,
+        tint = iconTint,
+    )
+
+    Spacer(modifier = Modifier.width(4.dp))
+
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+    )
+}
+
 @PreviewLightDark
 @Composable
-fun TopPlaceItemPreview(
-    name: String = "Bryce Canyon National Park",
+fun FavoriteItemPreview(
+    name: String = "Eiffel Tower",
     location: String = "Location",
     imageUrl: String = "Image",
     rating: String = "4.5",
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
-        TopPlaceItem(
-            name = name,
-            location = location,
-            imageUrl = imageUrl,
-            rating = rating,
-            isFavorite = isFavorite,
-            onFavoriteClick = {},
+        FavoriteItem(
+            item = FavoritesModel(
+                name = name,
+                location = location,
+                imageUrl = imageUrl,
+                rating = rating,
+                isFavorite = isFavorite,
+            ),
+            onUnFavoriteClick = {},
             onDetailsClick = {},
         )
     }
