@@ -115,6 +115,29 @@ fun ProfileHeader(
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            if (!isInEditMode) {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+                        )
+                ) {
+
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_settings
+
+                        ),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
     }
 }
