@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun DetailsCard(
@@ -31,7 +31,6 @@ fun DetailsCard(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
         InfoCell(category, categoryName)
         InfoCell(location, locationName)
     }
@@ -47,8 +46,9 @@ fun RowScope.InfoCell(title: String, value: String) {
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
-                1.dp, MaterialTheme.colorScheme.outlineVariant,
-                RoundedCornerShape(8.dp)
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant,
+                shape = RoundedCornerShape(8.dp)
             )
             .padding(12.dp)
     ) {
@@ -62,7 +62,7 @@ fun RowScope.InfoCell(title: String, value: String) {
             Text(
                 text = value,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
@@ -71,7 +71,7 @@ fun RowScope.InfoCell(title: String, value: String) {
 @PreviewLightDark
 @Composable
 fun DetailsCardPreview() {
-    MyappTheme {
+    LoopaTheme {
         DetailsCard(
             category = "Category",
             categoryName = "Category Name",
