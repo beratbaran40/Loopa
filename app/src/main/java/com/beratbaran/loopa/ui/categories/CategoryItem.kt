@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun CategoryItem(
@@ -89,7 +89,7 @@ fun CategoryItemPreview(
     categories: String = "Wildlife",
     @DrawableRes categoryIcon: Int = R.drawable.ic_wildlife,
 ) {
-    MyappTheme {
+    LoopaTheme {
         CategoryItem(
             category = CategoryModel(
                 category = categories,
