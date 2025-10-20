@@ -1,6 +1,7 @@
 package com.beratbaran.loopa.ui.homepage
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -91,6 +92,7 @@ fun LookItem(
                         modifier = Modifier
                             .size(32.dp)
                             .clip(CircleShape)
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                             .background(
                                 MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             ),
