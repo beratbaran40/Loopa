@@ -126,7 +126,6 @@ fun LoginScreen(
                         shape = CircleShape,
                     ),
             ) {
-
                 Icon(
                     modifier = Modifier
                         .align(Alignment.Center)
