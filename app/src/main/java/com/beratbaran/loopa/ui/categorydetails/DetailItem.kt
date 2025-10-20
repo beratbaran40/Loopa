@@ -1,8 +1,9 @@
-package com.beratbaran.loopa.ui.favorites
+package com.beratbaran.loopa.ui.categorydetails
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -33,51 +36,72 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.ui.homepage.PlaceModel
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
-fun FavoriteItem(
-    item: FavoritesModel,
-    onUnFavoriteClick: () -> Unit,
+fun DetailItem(
+    place: PlaceModel,
+    onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
     Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                shape = RoundedCornerShape(16.dp),
+            ),
         onClick = onDetailsClick,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(
-            width = 2.dp,
-            color = MaterialTheme.colorScheme.outlineVariant,
-        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Box {
+
+            val isDark = isSystemInDarkTheme()
+
+            Box(
+                modifier = Modifier
+                    .height(180.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                if (isDark) Color.Black else Color.White,
+                                Color.Transparent
+                            )
+                        )
+                    ),
+            ) {
                 AsyncImage(
-                    modifier = Modifier.height(140.dp),
-                    model = item.imageUrl,
+                    model = place.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
                 )
 
                 IconButton(
-                    onClick = onUnFavoriteClick,
+                    onClick = onFavoriteClick,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(16.dp)
-                        .size(32.dp)
+                        .padding(8.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             shape = CircleShape,
                         ),
                 ) {
                     Icon(
-                        modifier = Modifier.size(30.dp),
-                        painter = painterResource(id = R.drawable.ic_selected_favorite),
+                        modifier = Modifier.size(28.dp),
+                        painter = painterResource(
+                            id = if (place.isFavorite) R.drawable.ic_selected_favorite
+                            else R.drawable.ic_favorite
+                        ),
                         contentDescription = "Favorite",
                         tint = MaterialTheme.colorScheme.primary,
                     )
@@ -85,9 +109,8 @@ fun FavoriteItem(
             }
 
             Text(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                text = item.name,
-                style = MaterialTheme.typography.labelLarge,
+                text = place.name,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -95,72 +118,66 @@ fun FavoriteItem(
             )
 
             Row(
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .padding(bottom = 12.dp),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                BottomInfo(
-                    text = item.location,
-                    icon = R.drawable.ic_location,
+                Icon(
+                    painterResource(R.drawable.ic_location),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null,
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
-
-                BottomInfo(
-                    text = item.rating,
-                    icon = R.drawable.ic_star,
-                    iconTint = MaterialTheme.colorScheme.secondary,
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = place.location,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_star),
+                        tint = MaterialTheme.colorScheme.secondary,
+                        contentDescription = null,
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = place.rating,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         }
     }
 }
 
-@Composable
-private fun BottomInfo(
-    text: String,
-    @DrawableRes icon: Int,
-    iconTint: Color = MaterialTheme.colorScheme.primary,
-) {
-    Icon(
-        modifier = Modifier.size(14.dp),
-        painter = painterResource(icon),
-        contentDescription = null,
-        tint = iconTint,
-    )
-
-    Spacer(modifier = Modifier.width(4.dp))
-
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-    )
-}
-
 @PreviewLightDark
 @Composable
-fun FavoriteItemPreview(
-    name: String = "Eiffel Tower",
+fun TopPlaceItemPreview(
+    name: String = "Bryce Canyon National Park",
     location: String = "Location",
     imageUrl: String = "Image",
     rating: String = "4.5",
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
-        FavoriteItem(
-            item = FavoritesModel(
+        DetailItem(
+            place = PlaceModel(
                 name = name,
                 location = location,
                 imageUrl = imageUrl,
                 rating = rating,
                 isFavorite = isFavorite,
             ),
-            onUnFavoriteClick = {},
+            onFavoriteClick = {},
             onDetailsClick = {},
         )
     }

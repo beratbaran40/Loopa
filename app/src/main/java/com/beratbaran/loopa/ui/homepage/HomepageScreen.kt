@@ -31,7 +31,7 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.homepage.HomepageContract.UiAction
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -138,7 +138,7 @@ fun HomepageScreen(
 fun HomepageScreenPreview(
     @PreviewParameter(HomepageScreenPreviewProvider::class) uiState: HomepageContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         HomepageScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
