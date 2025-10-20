@@ -1,12 +1,11 @@
 package com.beratbaran.loopa.ui.details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +46,10 @@ fun DetailsScreen(
             .verticalScroll(rememberScrollState())
     ) {
 
-        Column {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+
             DetailsHeader(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
@@ -59,12 +61,11 @@ fun DetailsScreen(
                 onNavigateToBack = { onAction(DetailsContract.UiAction.OnBackClick) }
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
                 DetailsCard(
@@ -74,15 +75,11 @@ fun DetailsScreen(
                     locationName = uiState.placeLocationName,
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Text(
                     text = stringResource(R.string.details_screen_overview_text),
                     style = MaterialTheme.typography.titleSmall
                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 )
-
-                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = stringResource(R.string.details_screen_example_place_description_text),
@@ -92,15 +89,11 @@ fun DetailsScreen(
                         )
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
                 Text(
                     text = stringResource(R.string.details_screen_photos_text),
                     style = MaterialTheme.typography.titleSmall
                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 )
-
-                Spacer(modifier = Modifier.height(4.dp))
 
                 DetailsGrid()
             }
