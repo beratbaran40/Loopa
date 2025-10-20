@@ -123,7 +123,6 @@ fun RegisterScreen(
                         shape = CircleShape,
                     ),
             ) {
-
                 Icon(
                     modifier = Modifier
                         .align(Alignment.Center)
