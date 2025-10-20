@@ -12,12 +12,15 @@ object DetailsContract {
         val placeImageUrl: String = "",
         val isFavorite: Boolean = false,
         val isLoading: Boolean = false,
+        var selectedIndex : Int? = null
+
     )
 
     sealed interface UiAction {
         data object ShowOnMapClick : UiAction
         data object OnBackClick : UiAction
         data object ToggleFavorite : UiAction
+        data class OnImageSelected(val index: Int?) : UiAction
     }
 
     sealed interface UiEffect {
