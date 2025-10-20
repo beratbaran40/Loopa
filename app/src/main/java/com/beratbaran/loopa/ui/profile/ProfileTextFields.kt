@@ -29,7 +29,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -60,6 +59,7 @@ fun ProfileTextFields(
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val canInteract = !uiState.isLoading && uiState.isInEditMode
 
     Column(
         modifier = Modifier
@@ -89,15 +89,13 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                }
-                .onFocusChanged { focusState ->
-                    onAction(UiAction.OnNameTextFieldFocusChange(focusState.isFocused))
+                    onAction(UiAction.OnNameTextFieldFocusChange(event.isFocused))
                 },
             value = uiState.name,
             onValueChange = { onAction(UiAction.OnNameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
             singleLine = true,
-            enabled = uiState.isInEditMode && !uiState.isLoading,
+            enabled = !uiState.isLoading,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextName.isNotEmpty(),
             leadingIcon = {
@@ -117,7 +115,7 @@ fun ProfileTextFields(
             ),
             keyboardActions = KeyboardActions(
                 onNext = {
-                    if (!uiState.isLoading && uiState.isInEditMode) {
+                    if (canInteract) {
                         focusManager.moveFocus(FocusDirection.Down)
                     }
                 }
@@ -125,10 +123,9 @@ fun ProfileTextFields(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = Color.Transparent,
                 errorContainerColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
@@ -158,15 +155,13 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                }
-                .onFocusChanged { focusState ->
-                    onAction(UiAction.OnSurnameTextFieldFocusChange(focusState.isFocused))
+                    onAction(UiAction.OnSurnameTextFieldFocusChange(event.isFocused))
                 },
             value = uiState.surname,
             onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
             singleLine = true,
-            enabled = uiState.isInEditMode && !uiState.isLoading,
+            enabled = !uiState.isLoading,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextSurname.isNotEmpty(),
             leadingIcon = {
@@ -186,7 +181,7 @@ fun ProfileTextFields(
             ),
             keyboardActions = KeyboardActions(
                 onNext = {
-                    if (!uiState.isLoading && uiState.isInEditMode) {
+                    if (canInteract) {
                         focusManager.moveFocus(FocusDirection.Down)
                     }
                 }
@@ -194,10 +189,9 @@ fun ProfileTextFields(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = Color.Transparent,
                 errorContainerColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
@@ -227,15 +221,13 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                }
-                .onFocusChanged { focusState ->
-                    onAction(UiAction.OnEmailTextFieldFocusChange(focusState.isFocused))
+                    onAction(UiAction.OnEmailTextFieldFocusChange(event.isFocused))
                 },
             value = uiState.email,
             onValueChange = { onAction(UiAction.OnEmailChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
-            enabled = uiState.isInEditMode && !uiState.isLoading,
+            enabled = !uiState.isLoading,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextEmail.isNotEmpty(),
             leadingIcon = {
@@ -255,7 +247,7 @@ fun ProfileTextFields(
             ),
             keyboardActions = KeyboardActions(
                 onNext = {
-                    if (!uiState.isLoading && uiState.isInEditMode) {
+                    if (canInteract) {
                         focusManager.moveFocus(FocusDirection.Down)
                     }
                 }
@@ -263,9 +255,8 @@ fun ProfileTextFields(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = Color.Transparent,
                 errorContainerColor = Color.Transparent,
@@ -298,19 +289,13 @@ fun ProfileTextFields(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
-                }
-                .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnPasswordTextFieldFocusChange(
-                            focusState.isFocused
-                        )
-                    )
+                    onAction(UiAction.OnPasswordTextFieldFocusChange(event.isFocused))
                 },
             value = uiState.password,
             onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
-            enabled = uiState.isInEditMode && !uiState.isLoading,
+            enabled = !uiState.isLoading,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextPassword.isNotEmpty(),
             leadingIcon = {
@@ -329,7 +314,7 @@ fun ProfileTextFields(
             trailingIcon = {
                 IconButton(
                     onClick = { onAction(UiAction.OnToggleShowPassword) },
-                    enabled = uiState.isInEditMode
+                    enabled = canInteract
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(
@@ -346,7 +331,7 @@ fun ProfileTextFields(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if (!uiState.isLoading && uiState.isInEditMode) {
+                    if (canInteract) {
                         keyboardController?.hide()
                         onAction(UiAction.OnConfirmChangesClick)
                     }
@@ -355,10 +340,9 @@ fun ProfileTextFields(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedContainerColor = Color.Transparent,
                 errorContainerColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
