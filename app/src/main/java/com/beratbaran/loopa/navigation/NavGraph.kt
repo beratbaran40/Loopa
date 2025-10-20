@@ -154,7 +154,6 @@ fun NavGraph(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
-
                 onNavigateToBack = {
                     navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.DetailsScreen) {
@@ -163,7 +162,6 @@ fun NavGraph(
                         launchSingleTop = true
                     }
                 },
-
                 onNavigateToMaps = {
                     navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.DetailsScreen) {
@@ -171,7 +169,6 @@ fun NavGraph(
                         }
                         launchSingleTop = true
                     }
-
                 }
             )
         }
