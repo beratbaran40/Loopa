@@ -56,7 +56,7 @@ fun ProfileBottomButtons(
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = Color.Black,
+                    contentColor = MaterialTheme.colorScheme.onError,
                 ),
             ) {
 
@@ -99,7 +99,7 @@ fun ProfileBottomButtons(
 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_delete_your_account),
-                    contentDescription = "delete",
+                    contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
             }
