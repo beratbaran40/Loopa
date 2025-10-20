@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun DetailsHeader(
@@ -52,7 +52,6 @@ fun DetailsHeader(
             .fillMaxWidth()
             .aspectRatio(1f)
     ) {
-
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
             model = imageUrl,
@@ -89,13 +88,17 @@ fun DetailsHeader(
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                     shape = CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
-            onClick = { onFavoriteClick() },
-            ) {
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = CircleShape),
+            onClick = { onFavoriteClick() }
+        ) {
             Icon(
                 painter = painterResource(
                     id = if (isFavorite) R.drawable.ic_selected_favorite
-                    else R.drawable.ic_favorite),
+                    else R.drawable.ic_favorite
+                ),
                 contentDescription = stringResource(R.string.details_screen_component_descriptions_favorite_button),
                 tint = MaterialTheme.colorScheme.primary,
             )
@@ -126,15 +129,13 @@ fun DetailsHeader(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Text(
                     text = name,
                     style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onBackground,
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -152,9 +153,8 @@ fun DetailsHeader(
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = rating,
-                    style = MaterialTheme.typography.titleMedium
-                        .copy(color = Color.White)
+                    text = rating, style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(Modifier.weight(1f))
@@ -169,11 +169,9 @@ fun DetailsHeader(
                         contentColor = MaterialTheme.colorScheme.background
                     )
                 ) {
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-
                         Icon(
                             painterResource(R.drawable.ic_location),
                             modifier = Modifier.size(16.dp),
@@ -204,7 +202,7 @@ fun DetailsHeaderPreview(
     rating: String = "3.9",
     navigateToMaps: () -> Unit = {},
 ) {
-    MyappTheme {
+    LoopaTheme {
         DetailsHeader(
             imageUrl = imageUrl,
             name = name,
