@@ -23,4 +23,5 @@
     <string name="search_screen_page_name">Search</string>
     <string name="search_screen_search_result_text">We found %s places in "%s"</string>
     <string name="search_screen_search_bar_placeholder_text">Search</string>
+    <string name="search_screen_random_button_text">Random Place</string>
 </resources>
