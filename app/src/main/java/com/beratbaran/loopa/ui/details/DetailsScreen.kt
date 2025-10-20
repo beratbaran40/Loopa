@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -43,13 +44,12 @@ fun DetailsScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
+            .statusBarsPadding()
             .verticalScroll(rememberScrollState())
     ) {
-
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             DetailsHeader(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
@@ -84,9 +84,7 @@ fun DetailsScreen(
                 Text(
                     text = stringResource(R.string.details_screen_example_place_description_text),
                     style = MaterialTheme.typography.labelLarge
-                        .copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        .copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 )
 
                 Text(
@@ -95,7 +93,10 @@ fun DetailsScreen(
                         .copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                 )
 
-                DetailsGrid()
+                DetailsGrid(
+                    uiState = uiState,
+                    onImageSelected = { onAction(DetailsContract.UiAction.OnImageSelected(it)) }
+                )
             }
         }
     }
@@ -108,7 +109,7 @@ fun DetailsScreen(
 fun DetailsScreenPreview(
     @PreviewParameter(DetailsScreenPreviewProvider::class) uiState: DetailsContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         DetailsScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
