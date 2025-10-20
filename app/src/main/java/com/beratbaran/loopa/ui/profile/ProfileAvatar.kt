@@ -1,5 +1,7 @@
 package com.beratbaran.loopa.ui.profile
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,18 +35,25 @@ fun ProfileAvatar(
             .padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
 
-        AsyncImage(
+        Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .size(120.dp)
-                .clip(CircleShape),
-            model = imageUrl,
-            contentDescription = null,
-            placeholder = painterResource(R.drawable.ic_avatar),
-            error = painterResource(R.drawable.ic_error),
-            contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-        )
+                .clickable {  }
+        ) {
+
+            AsyncImage(
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape),
+                model = imageUrl,
+                contentDescription = null,
+                placeholder = painterResource(R.drawable.ic_avatar),
+                error = painterResource(R.drawable.ic_error),
+                contentScale = ContentScale.Crop,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+            )
+
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
