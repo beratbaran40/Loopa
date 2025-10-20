@@ -57,33 +57,28 @@ fun CategoryDetailsScreen(
             .statusBarsPadding()
             .navigationBarsPadding()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp),
+            .padding(24.dp)
+            .padding(top = 24.dp),
     ) {
-
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp, bottom = 8.dp),
+            modifier = Modifier.fillMaxWidth(),
         ) {
-
             IconButton(
-                onClick = { onNavigateToBack() },
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .size(48.dp)
+                    .size(48.dp),
+                onClick = { onNavigateToBack() },
             ) {
-
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onBackground,
                 )
             }
 
             Text(
                 text = stringResource(R.string.category_details_screen_category_name),
-                modifier = Modifier
-                    .align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center),
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -111,12 +106,8 @@ fun CategoryDetailsScreen(
 
         uiState.places.forEachIndexed { index, place ->
             DetailItem(
-                name = place.name,
-                location = place.location,
-                imageUrl = place.imageUrl,
-                rating = place.rating,
-                isFavorite = place.isFavorite,
-                onFavoriteClick = { onAction(CategoryDetailsContract.UiAction.ToggleFavorite) },
+                place = place,
+                onFavoriteClick = { onAction(CategoryDetailsContract.UiAction.OnToggleFavorite) },
                 onDetailsClick = { onAction(CategoryDetailsContract.UiAction.OnDetailsClick) },
             )
 

@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -37,32 +36,27 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.ui.homepage.PlaceModel
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun DetailItem(
-    name: String,
-    location: String,
-    imageUrl: String,
-    rating: String,
-    isFavorite: Boolean,
+    place: PlaceModel,
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
-
     Card(
         modifier = Modifier
-            .widthIn(max = 500.dp)
+            .fillMaxWidth()
             .border(
-                BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                shape = RoundedCornerShape(16.dp)
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                shape = RoundedCornerShape(16.dp),
             ),
         onClick = onDetailsClick,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -85,9 +79,8 @@ fun DetailItem(
                         )
                     ),
             ) {
-
                 AsyncImage(
-                    model = imageUrl,
+                    model = place.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
@@ -103,11 +96,10 @@ fun DetailItem(
                             shape = CircleShape,
                         ),
                 ) {
-
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(
-                            id = if (isFavorite) R.drawable.ic_selected_favorite
+                            id = if (place.isFavorite) R.drawable.ic_selected_favorite
                             else R.drawable.ic_favorite
                         ),
                         contentDescription = "Favorite",
@@ -117,7 +109,7 @@ fun DetailItem(
             }
 
             Text(
-                text = name,
+                text = place.name,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -128,31 +120,25 @@ fun DetailItem(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-
                 Icon(
                     painterResource(R.drawable.ic_location),
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
-
                 Text(
-                    text = location,
+                    modifier = Modifier.weight(1f),
+                    text = place.location,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                Spacer(modifier = Modifier.width(6.dp))
-
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-
                     Icon(
                         painterResource(R.drawable.ic_star),
                         tint = MaterialTheme.colorScheme.secondary,
@@ -162,7 +148,7 @@ fun DetailItem(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = rating,
+                        text = place.rating,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -184,11 +170,13 @@ fun TopPlaceItemPreview(
 ) {
     LoopaTheme {
         DetailItem(
-            name = name,
-            location = location,
-            imageUrl = imageUrl,
-            rating = rating,
-            isFavorite = isFavorite,
+            place = PlaceModel(
+                name = name,
+                location = location,
+                imageUrl = imageUrl,
+                rating = rating,
+                isFavorite = isFavorite,
+            ),
             onFavoriteClick = {},
             onDetailsClick = {},
         )

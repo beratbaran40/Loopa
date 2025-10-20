@@ -13,7 +13,7 @@ object CategoryDetailsContract {
     sealed interface UiAction {
         data object OnDetailsClick : UiAction
         data object OnBackClick : UiAction
-        data object ToggleFavorite : UiAction
+        data object OnToggleFavorite : UiAction
     }
 
     sealed interface UiEffect {

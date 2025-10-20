@@ -21,7 +21,7 @@ class CategoryDetailsViewModel : ViewModel() {
                 _uiEffect.trySend(CategoryDetailsContract.UiEffect.NavigateToDetails)
             }
 
-            CategoryDetailsContract.UiAction.ToggleFavorite -> {
+            CategoryDetailsContract.UiAction.OnToggleFavorite -> {
                 _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
             }
 
