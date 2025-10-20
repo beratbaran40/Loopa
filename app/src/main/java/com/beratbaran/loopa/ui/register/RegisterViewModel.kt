@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
-class RegisterViewmodel : ViewModel() {
+class RegisterViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         RegisterContract.UiState(
         )
