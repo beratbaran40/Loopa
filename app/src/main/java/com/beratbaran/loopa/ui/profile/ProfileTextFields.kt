@@ -54,7 +54,6 @@ fun ProfileTextFields(
     onAction: (UiAction) -> Unit,
     uiState: ProfileContract.UiState,
 ) {
-
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
@@ -79,7 +78,6 @@ fun ProfileTextFields(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -211,7 +209,6 @@ fun ProfileTextFields(
                 }
             }
         )
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -277,7 +274,6 @@ fun ProfileTextFields(
                 }
             }
         )
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -362,7 +358,6 @@ fun ProfileTextFields(
                 }
             }
         )
-
         uiState.passwordStrength?.let { strength ->
             val (progress, color, label) = strength.toProgress()
 
