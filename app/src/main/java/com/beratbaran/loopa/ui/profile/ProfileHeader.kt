@@ -33,11 +33,9 @@ fun ProfileHeader(
     isInEditMode: Boolean,
     areFieldsEmpty: Boolean,
 ) {
-
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
-
         Icon(
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -48,7 +46,6 @@ fun ProfileHeader(
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onBackground,
         )
-
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(R.string.profile_screen_page_name),
@@ -56,13 +53,11 @@ fun ProfileHeader(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         )
-
         Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(end = 12.dp, top = 8.dp)
         ) {
-
             if (isInEditMode) {
                 IconButton(
                     onClick = { onAction(UiAction.OnConfirmChangesClick) },
@@ -80,8 +75,8 @@ fun ProfileHeader(
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
-            }
 
+            }
             IconButton(
                 onClick = {
                     if (!isInEditMode) {
@@ -100,7 +95,6 @@ fun ProfileHeader(
                         }
                     )
             ) {
-
                 Icon(
                     painter = painterResource(
                         id = when {
@@ -127,7 +121,6 @@ fun ProfileHeader(
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
                         )
                 ) {
-
                     Icon(
                         painter = painterResource(
                             id = R.drawable.ic_settings
