@@ -16,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val placeRepository: PlaceRepository,
-) : ViewModel() {
+    private val placeRepository: PlaceRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileContract.UiState())
     val uiState: StateFlow<ProfileContract.UiState> = _uiState.asStateFlow()
 
@@ -28,8 +27,7 @@ class ProfileViewModel @Inject constructor(
         name: String = _uiState.value.name,
         surname: String = _uiState.value.surname,
         email: String = _uiState.value.email,
-        password: String = _uiState.value.password,
-    ): Boolean {
+        password: String = _uiState.value.password): Boolean {
         val allEmpty = name.isBlank() && surname.isBlank() && email.isBlank() && password.isBlank()
         if (allEmpty) return false
 
