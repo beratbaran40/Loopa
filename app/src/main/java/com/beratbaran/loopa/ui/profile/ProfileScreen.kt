@@ -50,7 +50,6 @@ fun ProfileScreen(
             ).show()
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,23 +60,19 @@ fun ProfileScreen(
             .padding(top = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         ProfileHeader(
             onAction = onAction,
             onNavigateToBack = onNavigateToBack,
             isInEditMode = uiState.isInEditMode,
             areFieldsEmpty = uiState.areFieldsEmpty,
         )
-
         ProfileAvatar(
             imageUrl = uiState.imageUrl,
         )
-
         ProfileTextFields(
             onAction = onAction,
             uiState = uiState,
         )
-
         ProfileBottomButtons(
             onAction = onAction,
         )
@@ -100,7 +95,6 @@ fun ProfileScreen(
             }
         )
     }
-
     if (uiState.showDeleteAccountDialog) {
         AlertDialog(
             onDismissRequest = { onAction(ProfileContract.UiAction.OnDeleteAccountDismissClick) },
@@ -118,7 +112,6 @@ fun ProfileScreen(
             }
         )
     }
-
     if (uiState.isLoading) LoadingBar()
 }
 
