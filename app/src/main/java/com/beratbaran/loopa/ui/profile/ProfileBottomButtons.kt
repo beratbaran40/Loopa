@@ -38,7 +38,6 @@ fun ProfileBottomButtons(
         modifier = Modifier
             .fillMaxHeight()
     ) {
-
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -47,7 +46,6 @@ fun ProfileBottomButtons(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -59,7 +57,6 @@ fun ProfileBottomButtons(
                     contentColor = MaterialTheme.colorScheme.onError,
                 ),
             ) {
-
                 Text(
                     text = stringResource(R.string.profile_screen_logout_text),
                     style = MaterialTheme.typography.bodyLarge,
@@ -73,7 +70,6 @@ fun ProfileBottomButtons(
                     modifier = Modifier.size(24.dp)
                 )
             }
-
             OutlinedButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,7 +85,6 @@ fun ProfileBottomButtons(
                     color = MaterialTheme.colorScheme.error,
                 )
             ) {
-
                 Text(
                     text = stringResource(R.string.profile_screen_delete_your_account_text),
                     style = MaterialTheme.typography.bodyLarge,
