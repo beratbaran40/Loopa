@@ -171,6 +171,7 @@ fun TopPlaceItemPreview(
     LoopaTheme {
         DetailItem(
             place = PlaceModel(
+                id = 0,
                 name = name,
                 location = location,
                 imageUrl = imageUrl,

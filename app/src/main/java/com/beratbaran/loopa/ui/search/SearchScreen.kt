@@ -44,7 +44,6 @@ fun SearchScreen(
             SearchContract.UiEffect.NavigateToRandomPlace -> onNavigateToRandomPlace()
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +53,6 @@ fun SearchScreen(
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp),
     ) {
-
         Text(
             text = stringResource(R.string.search_screen_page_name),
             modifier = Modifier
@@ -74,9 +72,7 @@ fun SearchScreen(
             SearchBar(
                 modifier = Modifier.weight(1f),
                 query = uiState.query,
-                onQueryChange = {
-                    onAction(SearchContract.UiAction.OnQueryChange(it))
-                },
+                onQueryChange = { onAction(SearchContract.UiAction.OnQueryChange(it)) },
                 onSearch = { onAction(SearchContract.UiAction.OnQueryChange(uiState.query)) },
                 onClear = { onAction(SearchContract.UiAction.ClearQuery) },
                 uiState = uiState,
@@ -92,8 +88,7 @@ fun SearchScreen(
         Text(
             text = stringResource(
                 R.string.search_screen_search_result_text,
-                uiState.searchResultQuantity, uiState.searchResultCountry
-            ),
+                uiState.searchResultQuantity, uiState.searchResultCountry),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -102,7 +97,6 @@ fun SearchScreen(
         )
 
         Spacer(modifier = Modifier.height(24.dp))
-
 
         uiState.places.forEachIndexed { index, place ->
             SearchDetailItem(

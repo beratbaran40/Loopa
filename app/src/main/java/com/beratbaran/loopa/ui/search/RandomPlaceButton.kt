@@ -23,7 +23,6 @@ fun RandomPlaceButton(
     onClick: () -> Unit,
 ) {
     Box {
-
         IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -36,11 +35,8 @@ fun RandomPlaceButton(
             onClick = onClick,
         ) {
             Icon(
-                modifier = Modifier
-                    .size(50.dp),
-                painter = painterResource(
-                    id = R.drawable.ic_random
-                ),
+                modifier = Modifier.size(50.dp),
+                painter = painterResource(id = R.drawable.ic_random),
                 contentDescription = stringResource(R.string.search_screen_random_button_text),
                 tint = MaterialTheme.colorScheme.background,
             )

@@ -68,7 +68,6 @@ fun SearchBar(
                         strokeWidth = 2.dp
                     )
                 }
-
                 query.isNotEmpty() -> {
                     Icon(
                         modifier = Modifier.clickable { onClear() },

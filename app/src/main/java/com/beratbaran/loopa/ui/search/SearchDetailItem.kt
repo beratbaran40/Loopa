@@ -49,7 +49,10 @@ fun SearchDetailItem(
         modifier = Modifier
             .fillMaxWidth()
             .border(
-                BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+                BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+                ),
                 shape = RoundedCornerShape(16.dp)
             ),
         onClick = onDetailsClick,
@@ -57,7 +60,6 @@ fun SearchDetailItem(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -86,7 +88,6 @@ fun SearchDetailItem(
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
                 )
-
                 IconButton(
                     onClick = onFavoriteClick,
                     modifier = Modifier
@@ -97,7 +98,6 @@ fun SearchDetailItem(
                             shape = CircleShape,
                         ),
                 ) {
-
                     Icon(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(
@@ -109,7 +109,6 @@ fun SearchDetailItem(
                     )
                 }
             }
-
             Text(
                 text = place.name,
                 style = MaterialTheme.typography.titleSmall,
@@ -118,19 +117,16 @@ fun SearchDetailItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-
                 Icon(
                     painterResource(R.drawable.ic_location),
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                 )
-
                 Text(
                     modifier = Modifier.weight(1f),
                     text = place.location,
@@ -138,11 +134,9 @@ fun SearchDetailItem(
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Icon(
                         painterResource(R.drawable.ic_star),
                         tint = MaterialTheme.colorScheme.secondary,
