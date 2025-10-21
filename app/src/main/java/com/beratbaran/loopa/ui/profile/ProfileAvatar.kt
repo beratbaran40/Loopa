@@ -33,13 +33,11 @@ fun ProfileAvatar(
             .fillMaxWidth()
             .padding(top = 32.dp, start = 16.dp, end = 16.dp)
     ) {
-
         Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable { }
         ) {
-
             AsyncImage(
                 modifier = Modifier
                     .size(120.dp)
@@ -50,7 +48,6 @@ fun ProfileAvatar(
                 error = painterResource(R.drawable.ic_error),
                 contentScale = ContentScale.Crop,
             )
-
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -59,8 +56,7 @@ fun ProfileAvatar(
             text = stringResource(R.string.profile_screen_profile_name),
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
 }
