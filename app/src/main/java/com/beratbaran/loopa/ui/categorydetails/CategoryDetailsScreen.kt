@@ -91,7 +91,7 @@ fun CategoryDetailsScreen(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 8.dp, end = 8.dp),
             text = stringResource(
                 R.string.category_details_screen_place_number_of_place,
                 uiState.numberOfPlaces
