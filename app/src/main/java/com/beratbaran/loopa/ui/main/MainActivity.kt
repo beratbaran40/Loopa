@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                                             it.route?.substringBefore(
                                                 '?'
                                             ) == categoriesRoute
-                                        }
+                                        } == true
 
                                         "Favorites" -> currentDestination?.hierarchy?.any {
                                             it.route?.substringBefore(
@@ -74,9 +74,8 @@ class MainActivity : ComponentActivity() {
 
                                         else -> false
                                     }
-
                                     NavigationBarItem(
-                                        selected = selected == true,
+                                        selected = selected,
                                         colors = NavigationBarItemDefaults.colors(
                                             selectedIconColor = MaterialTheme.colorScheme.primary,
                                             selectedTextColor = MaterialTheme.colorScheme.primary,
@@ -85,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                             ),
                                         ),
                                         onClick = {
-                                            if (selected == true) return@NavigationBarItem
+                                            if (selected) return@NavigationBarItem
                                             when (screen.route) {
                                                 "Home" -> navController.navigate(Screen.Homepage) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -94,7 +93,6 @@ class MainActivity : ComponentActivity() {
                                                     launchSingleTop = true
                                                     restoreState = true
                                                 }
-
                                                 "Categories" -> navController.navigate(Screen.CategoriesScreen) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
@@ -102,7 +100,6 @@ class MainActivity : ComponentActivity() {
                                                     launchSingleTop = true
                                                     restoreState = true
                                                 }
-
                                                 "Favorites" -> navController.navigate(Screen.FavoritesScreen) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
@@ -114,7 +111,7 @@ class MainActivity : ComponentActivity() {
                                         },
                                         icon = {
                                             val iconId =
-                                                if (selected == true) screen.selectedIcon else screen.icon
+                                                if (selected) screen.selectedIcon else screen.icon
                                             Icon(
                                                 painter = painterResource(id = iconId),
                                                 contentDescription = stringResource(id = screen.title)
