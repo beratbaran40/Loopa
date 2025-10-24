@@ -16,18 +16,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val placeRepository: PlaceRepository) : ViewModel() {
+    private val placeRepository: PlaceRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileContract.UiState())
     val uiState: StateFlow<ProfileContract.UiState> = _uiState.asStateFlow()
 
     private val _uiEffect by lazy { Channel<ProfileContract.UiEffect>() }
     val uiEffect: Flow<ProfileContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
+    private data class ProfileSnapShot(
+        val name: String,
+        val surname: String,
+        val email: String,
+        val password: String,
+    )
+
+    private var savedProfile: ProfileSnapShot? = null
+
+    private fun hasSavedInfo(): Boolean {
+        val s = savedProfile
+        return s != null &&
+                (s.name.isNotBlank() || s.surname.isNotBlank() || s.email.isNotBlank() || s.password.isNotBlank())
+    }
+
+
     private fun isConfirmChangesEnabled(
         name: String = _uiState.value.name,
         surname: String = _uiState.value.surname,
         email: String = _uiState.value.email,
-        password: String = _uiState.value.password): Boolean {
+        password: String = _uiState.value.password,
+    ): Boolean {
         val allEmpty = name.isBlank() && surname.isBlank() && email.isBlank() && password.isBlank()
         if (allEmpty) return false
 
@@ -53,11 +71,13 @@ class ProfileViewModel @Inject constructor(
             }
 
             UiAction.OnCancelChangesClick -> _uiState.update { current ->
+                val hasSaved = hasSavedInfo()
+                val restore = savedProfile
                 current.copy(
-                    name = UiAction.OnNameChange(current.name).name,
-                    surname = UiAction.OnSurnameChange(current.surname).surname,
-                    email = UiAction.OnEmailChange(current.email).email,
-                    password = UiAction.OnPasswordChange(current.password).password,
+                    name = if (hasSaved) restore!!.name else "",
+                    surname = if (hasSaved) restore!!.surname else "",
+                    email = if (hasSaved) restore!!.email else "",
+                    password = if (hasSaved) restore!!.password else "",
                     supportingTextName = "",
                     supportingTextSurname = "",
                     supportingTextEmail = "",
@@ -70,7 +90,7 @@ class ProfileViewModel @Inject constructor(
                     isEmailTextFieldFocused = false,
                     isPasswordTextFieldFocused = false,
                     isSaveEnabled = false,
-                    areFieldsEmpty = true,
+                    areFieldsEmpty = !hasSaved,
                 )
             }
 
@@ -104,6 +124,15 @@ class ProfileViewModel @Inject constructor(
                     )
                 }
 
+                if (isSuccess) {
+                    savedProfile =
+                        ProfileSnapShot(
+                            name = currentState.name,
+                            surname = currentState.surname,
+                            email = currentState.email,
+                            password = currentState.password
+                        )
+                }
                 if (isSuccess) {
                     _uiEffect.trySend(ProfileContract.UiEffect.ShowPasswordDoneToast)
                 }
