@@ -20,6 +20,8 @@ class PlaceRepository @Inject constructor(
 
     suspend fun createUser(user: UserDto): UserDto = api.createUser(user)
 
+    suspend fun updatePassword(password: UserDto): UserDto = api.updatePassword(password)
+
     suspend fun sendFavorite(favorite: FavoriteDto): FavoriteDto = api.sendFavorite(favorite)
 }
 

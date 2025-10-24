@@ -1,11 +1,12 @@
-package com.beratbaran.loopa.ui.register
+package com.beratbaran.loopa.ui.profile
 
 import com.beratbaran.loopa.common.PasswordStrength
 
-object RegisterContract {
+object ProfileContract {
 
     data class UiState(
         val isLoading: Boolean = false,
+        val imageUrl: String = "",
         val name: String = "",
         val surname: String = "",
         val email: String = "",
@@ -14,7 +15,6 @@ object RegisterContract {
         val supportingTextSurname: String = "",
         val supportingTextEmail: String = "",
         val supportingTextPassword: String = "",
-        val isRegisterEnabled: Boolean = false,
         val isNameTextFieldFocused: Boolean = false,
         val isSurnameTextFieldFocused: Boolean = false,
         val isEmailTextFieldFocused: Boolean = false,
@@ -22,10 +22,15 @@ object RegisterContract {
         val errorMessage: String = "",
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
+        val isInEditMode: Boolean = false,
+        val isSaveEnabled: Boolean = false,
+        val areFieldsEmpty: Boolean = true,
+        val showLogoutDialog: Boolean = false,
+        val showDeleteAccountDialog: Boolean = false,
     )
 
     sealed interface UiAction {
-        data object OnRegisterClick : UiAction
+        data object OnConfirmChangesClick : UiAction
         data class OnNameChange(val name: String) : UiAction
         data class OnSurnameChange(val surname: String) : UiAction
         data class OnEmailChange(val email: String) : UiAction
@@ -36,10 +41,19 @@ object RegisterContract {
         data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data object OnToggleShowPassword : UiAction
         data object OnBackClick : UiAction
+        data object OnEditProfileClick : UiAction
+        data object OnCancelChangesClick : UiAction
+        data object OnLogoutClick : UiAction
+        data object OnLogoutConfirmClick : UiAction
+        data object OnLogoutDismissClick : UiAction
+        data object OnDeleteAccountClick : UiAction
+        data object OnDeleteAccountConfirmClick : UiAction
+        data object OnDeleteAccountDismissClick : UiAction
     }
 
     sealed interface UiEffect {
-        data object NavigateToHomePage : UiEffect
         data object NavigateToBack : UiEffect
+        data object NavigateToOnboarding : UiEffect
+        data object ShowPasswordDoneToast : UiEffect
     }
 }
