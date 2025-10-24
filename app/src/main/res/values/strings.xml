@@ -24,7 +24,6 @@
     <string name="category_details_screen_place_number_of_place">%s Places</string>
     <string name="favorites_screen_page_name">Favorites</string>
     <string name="categories_screen_page_name">Categories</string>
-
     <string name="navbar_home_screen_page_name">Home</string>
     <string name="navbar_categories_screen_page_name">Categories</string>
     <string name="navbar_search_screen_page_name">Search</string>
