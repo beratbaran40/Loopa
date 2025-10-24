@@ -27,7 +27,7 @@ object ProfileContract {
         val areFieldsEmpty: Boolean = true,
         val showLogoutDialog: Boolean = false,
         val showDeleteAccountDialog: Boolean = false,
-        )
+    )
 
     sealed interface UiAction {
         data object OnConfirmChangesClick : UiAction
