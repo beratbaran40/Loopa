@@ -54,19 +54,19 @@ class MainActivity : ComponentActivity() {
                             NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
                                 items.forEach { screen ->
                                     val selected = when (screen.route) {
-                                        "home" -> currentDestination?.hierarchy?.any {
+                                        "Home" -> currentDestination?.hierarchy?.any {
                                             it.route?.substringBefore(
                                                 '?'
                                             ) == homeRoute
                                         } == true
 
-                                        "categories" -> currentDestination?.hierarchy?.any {
+                                        "Categories" -> currentDestination?.hierarchy?.any {
                                             it.route?.substringBefore(
                                                 '?'
                                             ) == categoriesRoute
                                         }
 
-                                        "favorites" -> currentDestination?.hierarchy?.any {
+                                        "Favorites" -> currentDestination?.hierarchy?.any {
                                             it.route?.substringBefore(
                                                 '?'
                                             ) == favoritesRoute
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                                         onClick = {
                                             if (selected == true) return@NavigationBarItem
                                             when (screen.route) {
-                                                "home" -> navController.navigate(Screen.Homepage) {
+                                                "Home" -> navController.navigate(Screen.Homepage) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                                                     restoreState = true
                                                 }
 
-                                                "categories" -> navController.navigate(Screen.CategoriesScreen) {
+                                                "Categories" -> navController.navigate(Screen.CategoriesScreen) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
@@ -103,15 +103,13 @@ class MainActivity : ComponentActivity() {
                                                     restoreState = true
                                                 }
 
-                                                "favorites" -> navController.navigate(Screen.FavoritesScreen) {
+                                                "Favorites" -> navController.navigate(Screen.FavoritesScreen) {
                                                     popUpTo(navController.graph.findStartDestination().id) {
                                                         saveState = true
                                                     }
                                                     launchSingleTop = true
                                                     restoreState = true
                                                 }
-
-
                                             }
                                         },
                                         icon = {
