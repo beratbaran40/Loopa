@@ -93,7 +93,7 @@ fun ProfileTextFields(
             onValueChange = { onAction(UiAction.OnNameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
             singleLine = true,
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading && uiState.isInEditMode,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextName.isNotEmpty(),
             leadingIcon = {
@@ -159,7 +159,7 @@ fun ProfileTextFields(
             onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
             singleLine = true,
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading && uiState.isInEditMode,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextSurname.isNotEmpty(),
             leadingIcon = {
@@ -224,7 +224,7 @@ fun ProfileTextFields(
             onValueChange = { onAction(UiAction.OnEmailChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading && uiState.isInEditMode,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextEmail.isNotEmpty(),
             leadingIcon = {
@@ -291,7 +291,7 @@ fun ProfileTextFields(
             onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading && uiState.isInEditMode,
             readOnly = !uiState.isInEditMode,
             isError = uiState.supportingTextPassword.isNotEmpty(),
             leadingIcon = {
