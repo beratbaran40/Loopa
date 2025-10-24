@@ -51,7 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
@@ -75,7 +75,6 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val scrollState = rememberScrollState()
-
     val visualTransformation = if (uiState.showPassword) {
         VisualTransformation.None
     } else {
@@ -306,7 +305,7 @@ fun LoginScreen(
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.background,
                 disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                 disabledContentColor = MaterialTheme.colorScheme.background,
             ),
@@ -321,11 +320,10 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
-
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun LoginScreenPreview(
     @PreviewParameter(LoginScreenPreviewProvider::class) uiState: LoginContract.UiState,
