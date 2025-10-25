@@ -1,27 +1,21 @@
 package com.beratbaran.loopa.ui.onboarding
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiAction
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class OnboardingViewModel : ViewModel() {
+class OnboardingViewModel : BaseViewModel<UiEffect>() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<UiEffect>() }
-    val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     init {
         viewModelScope.launch {
@@ -34,8 +28,8 @@ class OnboardingViewModel : ViewModel() {
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
-            UiAction.OnLoginClick -> _uiEffect.trySend(UiEffect.NavigateToLogin)
-            UiAction.OnRegisterClick -> _uiEffect.trySend(UiEffect.NavigateToRegister)
+            UiAction.OnLoginClick -> setEffect(UiEffect.NavigateToLogin)
+            UiAction.OnRegisterClick -> setEffect(UiEffect.NavigateToRegister)
         }
     }
 }
