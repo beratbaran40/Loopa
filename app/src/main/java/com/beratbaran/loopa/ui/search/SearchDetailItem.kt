@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.ui.categorydetails
+package com.beratbaran.loopa.ui.search
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -40,7 +40,7 @@ import com.beratbaran.loopa.ui.homepage.PlaceModel
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
-fun DetailItem(
+fun SearchDetailItem(
     place: PlaceModel,
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
@@ -49,8 +49,11 @@ fun DetailItem(
         modifier = Modifier
             .fillMaxWidth()
             .border(
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                shape = RoundedCornerShape(16.dp),
+                BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+                ),
+                shape = RoundedCornerShape(16.dp)
             ),
         onClick = onDetailsClick,
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
@@ -69,7 +72,7 @@ fun DetailItem(
             Box(
                 modifier = Modifier
                     .height(180.dp)
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
@@ -85,7 +88,6 @@ fun DetailItem(
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
                 )
-
                 IconButton(
                     onClick = onFavoriteClick,
                     modifier = Modifier
@@ -107,7 +109,6 @@ fun DetailItem(
                     )
                 }
             }
-
             Text(
                 text = place.name,
                 style = MaterialTheme.typography.titleSmall,
@@ -116,7 +117,6 @@ fun DetailItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -127,7 +127,6 @@ fun DetailItem(
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                 )
-
                 Text(
                     modifier = Modifier.weight(1f),
                     text = place.location,
@@ -135,9 +134,8 @@ fun DetailItem(
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         painterResource(R.drawable.ic_star),
@@ -169,9 +167,9 @@ fun TopPlaceItemPreview(
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
-        DetailItem(
+        SearchDetailItem(
             place = PlaceModel(
-                id = 0,
+                id = 1,
                 name = name,
                 location = location,
                 imageUrl = imageUrl,

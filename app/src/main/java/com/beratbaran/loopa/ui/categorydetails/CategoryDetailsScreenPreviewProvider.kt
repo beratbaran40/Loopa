@@ -14,6 +14,7 @@ class CategoryDetailsScreenPreviewProvider :
                 isLoading = false,
                 places = listOf(
                     PlaceModel(
+                        id = 0,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
@@ -21,6 +22,7 @@ class CategoryDetailsScreenPreviewProvider :
                         isFavorite = false
                     ),
                     PlaceModel(
+                        id = 1,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
@@ -28,6 +30,7 @@ class CategoryDetailsScreenPreviewProvider :
                         isFavorite = true
                     ),
                     PlaceModel(
+                        id = 2,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
@@ -35,6 +38,7 @@ class CategoryDetailsScreenPreviewProvider :
                         isFavorite = false
                     ),
                     PlaceModel(
+                        id = 3,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
@@ -42,6 +46,7 @@ class CategoryDetailsScreenPreviewProvider :
                         isFavorite = true
                     ),
                     PlaceModel(
+                        id = 4,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
@@ -49,6 +54,7 @@ class CategoryDetailsScreenPreviewProvider :
                         isFavorite = false
                     ),
                     PlaceModel(
+                        id = 5,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
