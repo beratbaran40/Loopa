@@ -1,23 +1,17 @@
 package com.beratbaran.loopa.ui.login
 
-import androidx.lifecycle.ViewModel
 import com.beratbaran.loopa.common.ValidationManager
+import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.login.LoginContract.UiEffect
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel<UiEffect>() {
     private val _uiState = MutableStateFlow(LoginContract.UiState())
     val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<UiEffect>() }
-    val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
@@ -26,7 +20,7 @@ class LoginViewModel : ViewModel() {
                 val emailError = ValidationManager.validateEmail(currentState.email)
                 val passwordError = ValidationManager.validatePassword(currentState.password)
                 if (emailError.isEmpty() && passwordError.isEmpty()) {
-                    _uiEffect.trySend(UiEffect.NavigateToHomePage)
+                    setEffect(UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
@@ -64,7 +58,7 @@ class LoginViewModel : ViewModel() {
                 it.copy(showPassword = !it.showPassword)
             }
 
-            UiAction.OnBackClick -> _uiEffect.trySend(UiEffect.NavigateToBack)
+            UiAction.OnBackClick -> setEffect(UiEffect.NavigateToBack)
         }
     }
 
