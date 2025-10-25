@@ -1,27 +1,21 @@
 package com.beratbaran.loopa.ui.register
 
-import androidx.lifecycle.ViewModel
 import com.beratbaran.loopa.common.ValidationManager
+import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel : BaseViewModel<RegisterContract.UiEffect>() {
     private val _uiState = MutableStateFlow(
         RegisterContract.UiState(
         )
     )
 
     val uiState: StateFlow<RegisterContract.UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<RegisterContract.UiEffect>() }
-    val uiEffect: Flow<RegisterContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
 
     private fun computePasswordStrength(password: String): PasswordStrength? {
         if (password.isBlank()) return null
@@ -76,7 +70,7 @@ class RegisterViewModel : ViewModel() {
                         passwordError
                     ).none(String::isNotEmpty)
                 ) {
-                    _uiEffect.trySend(RegisterContract.UiEffect.NavigateToHomePage)
+                    setEffect(RegisterContract.UiEffect.NavigateToHomePage)
                 } else {
                     _uiState.update {
                         it.copy(
@@ -150,7 +144,7 @@ class RegisterViewModel : ViewModel() {
                 it.copy(showPassword = !it.showPassword)
             }
 
-            UiAction.OnBackClick -> _uiEffect.trySend(RegisterContract.UiEffect.NavigateToBack)
+            UiAction.OnBackClick -> setEffect(RegisterContract.UiEffect.NavigateToBack)
         }
     }
 }
