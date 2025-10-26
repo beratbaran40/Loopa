@@ -7,6 +7,7 @@ import com.beratbaran.loopa.data.remote.dto.UserDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface LoopaApi {
     @GET("users")
@@ -23,6 +24,9 @@ interface LoopaApi {
 
     @POST("users")
     suspend fun createUser(@Body user: UserDto): UserDto
+
+    @PUT("users")
+    suspend fun updatePassword(@Body user: UserDto): UserDto
 
     @POST("favorites")
     suspend fun sendFavorite(@Body favorite: FavoriteDto): FavoriteDto

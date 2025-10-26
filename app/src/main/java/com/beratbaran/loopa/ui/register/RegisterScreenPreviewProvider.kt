@@ -1,6 +1,8 @@
 package com.beratbaran.loopa.ui.register
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import com.beratbaran.loopa.common.PasswordStrength
+
 
 class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.UiState> {
     override val values: Sequence<RegisterContract.UiState>
@@ -20,7 +22,7 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
-                passwordStrength = RegisterContract.PasswordStrength.WEAK,
+                passwordStrength = PasswordStrength.WEAK,
                 errorMessage = "",
                 isRegisterEnabled = true,
             ),
@@ -39,7 +41,7 @@ class RegisterScreenPreviewProvider : PreviewParameterProvider<RegisterContract.
                 email = "test@example.com",
                 password = "123456",
                 isLoading = false,
-                passwordStrength = RegisterContract.PasswordStrength.STRONG,
+                passwordStrength = PasswordStrength.STRONG,
                 errorMessage = "Example Register Error",
                 isRegisterEnabled = true,
             ),
