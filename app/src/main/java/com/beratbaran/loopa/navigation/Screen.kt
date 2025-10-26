@@ -26,4 +26,7 @@ sealed interface Screen {
 
     @Serializable
     data object CategoryDetailsScreen : Screen
+
+    @Serializable
+    data object SearchScreen : Screen
 }

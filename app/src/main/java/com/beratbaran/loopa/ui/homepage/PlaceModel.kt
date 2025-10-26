@@ -6,4 +6,5 @@ data class PlaceModel(
     val imageUrl: String,
     val rating: String,
     val isFavorite: Boolean,
+    val id: Int,
 )

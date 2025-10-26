@@ -24,6 +24,10 @@
     <string name="category_details_screen_place_number_of_place">%s Places</string>
     <string name="favorites_screen_page_name">Favorites</string>
     <string name="categories_screen_page_name">Categories</string>
+    <string name="search_screen_page_name">Search</string>
+    <string name="search_screen_search_result_text">We found %s places in "%s"</string>
+    <string name="search_screen_search_bar_placeholder_text">Search</string>
+    <string name="search_screen_random_button_text">Random Place</string>
     <string name="details_screen_overview_text">Overview</string>
     <string name="details_screen_example_place_description_text">Lorem ispum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="details_screen_photos_text">Photos</string>

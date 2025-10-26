@@ -26,6 +26,8 @@ import com.beratbaran.loopa.ui.onboarding.OnboardingScreen
 import com.beratbaran.loopa.ui.onboarding.OnboardingViewModel
 import com.beratbaran.loopa.ui.register.RegisterScreen
 import com.beratbaran.loopa.ui.register.RegisterViewModel
+import com.beratbaran.loopa.ui.search.SearchScreen
+import com.beratbaran.loopa.ui.search.SearchViewModel
 
 @Composable
 fun NavGraph(
@@ -268,6 +270,35 @@ fun NavGraph(
                 onNavigateToBack = {
                     navController.navigate(Screen.CategoriesScreen) {
                         popUpTo(Screen.CategoryDetailsScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable<Screen.SearchScreen> {
+            val viewModel = hiltViewModel<SearchViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            SearchScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::onAction,
+
+                onNavigateToDetails = {
+                    navController.navigate(Screen.DetailsScreen) {
+                        popUpTo(Screen.SearchScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+
+                onNavigateToRandomPlace = {
+                    navController.navigate(Screen.DetailsScreen) {
+                        popUpTo(Screen.SearchScreen) {
                             inclusive = true
                         }
                         launchSingleTop = true
