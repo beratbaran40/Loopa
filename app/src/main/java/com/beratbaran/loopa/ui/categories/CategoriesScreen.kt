@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -86,7 +86,7 @@ fun CategoriesScreen(
 fun CategoriesScreenPreview(
     @PreviewParameter(CategoriesScreenPreviewProvider::class) uiState: CategoriesContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         CategoriesScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),

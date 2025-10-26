@@ -1,6 +1,7 @@
 package com.beratbaran.loopa.ui.homepage
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun TopPlaceItem(
@@ -72,6 +73,7 @@ fun TopPlaceItem(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             shape = CircleShape,
@@ -145,7 +147,7 @@ fun TopPlaceItemPreview(
     rating: String = "4.5",
     isFavorite: Boolean = false,
 ) {
-    MyappTheme {
+    LoopaTheme {
         TopPlaceItem(
             name = name,
             location = location,

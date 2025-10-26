@@ -2,6 +2,7 @@ package com.beratbaran.loopa.ui.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -54,14 +56,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -110,15 +112,27 @@ fun RegisterScreen(
         Box(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Icon(
+            IconButton(
+                onClick = { onNavigateToBack() },
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .size(24.dp)
-                    .clickable { onNavigateToBack() },
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
-            )
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .border(2.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0.50f),
+                        shape = CircleShape,
+                    ),
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(24.dp)
+                        .clickable { onNavigateToBack() },
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                )
+            }
 
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -183,7 +197,6 @@ fun RegisterScreen(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -412,7 +425,6 @@ fun RegisterScreen(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -545,12 +557,12 @@ fun RegisterScreen(
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun RegisterScreenPreview(
     @PreviewParameter(RegisterScreenPreviewProvider::class) uiState: RegisterContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         RegisterScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
