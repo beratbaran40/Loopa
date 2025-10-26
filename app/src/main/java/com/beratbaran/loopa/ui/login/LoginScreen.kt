@@ -2,6 +2,7 @@ package com.beratbaran.loopa.ui.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -51,7 +53,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
@@ -75,7 +77,6 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val scrollState = rememberScrollState()
-
     val visualTransformation = if (uiState.showPassword) {
         VisualTransformation.None
     } else {
@@ -113,15 +114,27 @@ fun LoginScreen(
         Box(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Icon(
+            IconButton(
+                onClick = { onNavigateToBack() },
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .size(24.dp)
-                    .clickable { onNavigateToBack() },
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
-            )
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .border(2.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
+                    .background(
+                        color = MaterialTheme.colorScheme.background.copy(alpha = 0.50f),
+                        shape = CircleShape,
+                    ),
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(24.dp)
+                        .clickable { onNavigateToBack() },
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                )
+            }
 
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -240,7 +253,7 @@ fun LoginScreen(
                     painter = painterResource(id = R.drawable.ic_password),
                     contentDescription = null,
                     tint = when {
-                        uiState.supportingTextEmail.isNotEmpty() -> MaterialTheme.colorScheme.error
+                        uiState.supportingTextPassword.isNotEmpty() -> MaterialTheme.colorScheme.error
                         uiState.isPasswordTextFieldFocused -> MaterialTheme.colorScheme.primary
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     }
@@ -271,7 +284,6 @@ fun LoginScreen(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                 focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.background,
                 focusedLabelColor = MaterialTheme.colorScheme.primary,
@@ -306,7 +318,7 @@ fun LoginScreen(
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.background,
                 disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                 disabledContentColor = MaterialTheme.colorScheme.background,
             ),
@@ -321,11 +333,10 @@ fun LoginScreen(
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
-
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun LoginScreenPreview(
     @PreviewParameter(LoginScreenPreviewProvider::class) uiState: LoginContract.UiState,

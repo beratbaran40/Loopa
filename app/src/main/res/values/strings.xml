@@ -28,4 +28,16 @@
     <string name="search_screen_search_result_text">We found %s places in "%s"</string>
     <string name="search_screen_search_bar_placeholder_text">Search</string>
     <string name="search_screen_random_button_text">Random Place</string>
+    <string name="details_screen_overview_text">Overview</string>
+    <string name="details_screen_example_place_description_text">Lorem ispum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="details_screen_photos_text">Photos</string>
+    <string name="details_screen_show_on_map_text">Show on Map</string>
+    <string name="details_screen_grid_images_description_1_4">1/4</string>
+    <string name="details_screen_grid_images_description_2_4">2/4</string>
+    <string name="details_screen_grid_images_description_3_4">3/4</string>
+    <string name="details_screen_grid_images_description_4_4">4/4</string>
+    <string name="details_screen_component_descriptions_back_button">Back</string>
+    <string name="details_screen_component_descriptions_location_icon">Location</string>
+    <string name="details_screen_component_descriptions_rating_icon">Rating</string>
+    <string name="details_screen_component_descriptions_favorite_button">Favorite</string>
 </resources>
