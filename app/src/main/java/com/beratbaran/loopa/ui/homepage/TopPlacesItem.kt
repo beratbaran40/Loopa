@@ -1,6 +1,7 @@
 package com.beratbaran.loopa.ui.homepage
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -72,6 +73,7 @@ fun TopPlaceItem(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(16.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                         .background(
                             color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
                             shape = CircleShape,
