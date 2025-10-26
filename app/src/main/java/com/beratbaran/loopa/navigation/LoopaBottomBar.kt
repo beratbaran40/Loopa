@@ -18,38 +18,31 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun LoopaBottomBar(
     navController: NavHostController,
-    items: List<AppDestination> = AppDestination.bottomBarItems,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val homeRoute = Screen.Homepage::class.qualifiedName
     val categoriesRoute = Screen.CategoriesScreen::class.qualifiedName
     val favoritesRoute = Screen.FavoritesScreen::class.qualifiedName
-
-    val showBottomBar = currentDestination?.hierarchy?.any { dest ->
-        val r = dest.route?.substringBefore('?')
-        r == homeRoute || r == categoriesRoute || r == favoritesRoute
+    val items = AppDestination.bottomBarItems
+    val topLevelRoutes = mapOf(
+        "Home" to homeRoute,
+        "Categories" to categoriesRoute,
+        "Favorites" to favoritesRoute,
+    )
+    val topLevelRoutesSet = topLevelRoutes.values.toSet()
+    val showBottomBar = currentDestination?.hierarchy?.any {
+        it.route?.substringBefore('?') in topLevelRoutesSet
     } == true
 
     if (!showBottomBar) return
-
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         items.forEach { screen ->
-            val selected = when (screen.route) {
-                "Home" -> currentDestination?.hierarchy?.any {
-                    it.route?.substringBefore('?') == homeRoute
-                } == true
+            val selected = currentDestination?.hierarchy?.any { dest ->
+                val targetTab = topLevelRoutes[screen.route] ?: return@any false
+                dest.route?.substringBefore('?') == targetTab
+            } == true
 
-                "Categories" -> currentDestination?.hierarchy?.any {
-                    it.route?.substringBefore('?') == categoriesRoute
-                } == true
-
-                "Favorites" -> currentDestination?.hierarchy?.any {
-                    it.route?.substringBefore('?') == favoritesRoute
-                } == true
-
-                else -> false
-            }
             NavigationBarItem(
                 selected = selected,
                 colors = NavigationBarItemDefaults.colors(
@@ -81,12 +74,10 @@ private fun navigateTopLevel(navController: NavHostController, routeKey: String)
             popUpTo(navController.graph.findStartDestination().id) { saveState = true }
             launchSingleTop = true; restoreState = true
         }
-
         "Categories" -> navController.navigate(Screen.CategoriesScreen) {
             popUpTo(navController.graph.findStartDestination().id) { saveState = true }
             launchSingleTop = true; restoreState = true
         }
-
         "Favorites" -> navController.navigate(Screen.FavoritesScreen) {
             popUpTo(navController.graph.findStartDestination().id) { saveState = true }
             launchSingleTop = true; restoreState = true
