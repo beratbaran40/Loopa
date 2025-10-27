@@ -1,14 +1,11 @@
 package com.beratbaran.loopa.ui.categorydetails
 
 import com.beratbaran.loopa.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
-class CategoryDetailsViewModel : BaseViewModel<CategoryDetailsContract.UiEffect>() {
-    private val _uiState = MutableStateFlow(CategoryDetailsContract.UiState())
-    val uiState: StateFlow<CategoryDetailsContract.UiState> = _uiState.asStateFlow()
-
+class CategoryDetailsViewModel :
+    BaseViewModel<CategoryDetailsContract.UiState, CategoryDetailsContract.UiEffect>(
+        initialState = CategoryDetailsContract.UiState()
+    ) {
     fun onAction(action: CategoryDetailsContract.UiAction) {
         when (action) {
             CategoryDetailsContract.UiAction.OnDetailsClick -> {
@@ -16,7 +13,7 @@ class CategoryDetailsViewModel : BaseViewModel<CategoryDetailsContract.UiEffect>
             }
 
             CategoryDetailsContract.UiAction.OnToggleFavorite -> {
-                _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
+                setState { copy(isFavorite = !isFavorite) }
             }
 
             CategoryDetailsContract.UiAction.OnBackClick -> {
