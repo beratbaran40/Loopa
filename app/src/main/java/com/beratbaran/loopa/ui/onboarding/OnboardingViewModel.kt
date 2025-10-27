@@ -6,22 +6,16 @@ import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiAction
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class OnboardingViewModel : BaseViewModel<UiEffect>() {
-
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
+class OnboardingViewModel : BaseViewModel<UiState, UiEffect>(
+    initialState = UiState()
+) {
     init {
         viewModelScope.launch {
             while (true) {
                 delay(2000)
-                _uiState.update { it.copy(bgIndex = (it.bgIndex + 1) % 4) }
+                setState { copy(bgIndex = (bgIndex + 1) % 4) }
             }
         }
     }
