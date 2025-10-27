@@ -1,15 +1,10 @@
 package com.beratbaran.loopa.ui.favorites
 
 import com.beratbaran.loopa.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
-class FavoritesViewModel : BaseViewModel<FavoritesContract.UiEffect>() {
-
-    private val _uiState = MutableStateFlow(FavoritesContract.UiState())
-    val uiState: StateFlow<FavoritesContract.UiState> = _uiState.asStateFlow()
-
+class FavoritesViewModel : BaseViewModel<FavoritesContract.UiState, FavoritesContract.UiEffect>(
+    initialState = FavoritesContract.UiState()
+) {
     fun onAction(uiAction: FavoritesContract.UiAction) {
         when (uiAction) {
             FavoritesContract.UiAction.OnDetailsClick -> {
