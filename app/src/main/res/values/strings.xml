@@ -24,6 +24,12 @@
     <string name="category_details_screen_place_number_of_place">%s Places</string>
     <string name="favorites_screen_page_name">Favorites</string>
     <string name="categories_screen_page_name">Categories</string>
+
+    <string name="navbar_home_screen_page_name">Home</string>
+    <string name="navbar_categories_screen_page_name">Categories</string>
+    <string name="navbar_search_screen_page_name">Search</string>
+    <string name="navbar_favorites_screen_page_name">Favorites</string>
+    <string name="navbar_profile_screen_page_name">Profile</string>
     <string name="profile_screen_edit_profile_text">Edit Profile</string>
     <string name="profile_screen_cancel_text">Cancel Changes</string>
     <string name="profile_screen_save_changes_text">Save Changes</string>
@@ -40,12 +46,6 @@
     <string name="profile_screen_delete_account_dialog_text">Are you sure you want to delete your account?</string>
     <string name="profile_screen_delete_account_dialog_confirm_button">Yes</string>
     <string name="profile_screen_delete_account_dialog_dismiss_button">No</string>
-
-
-
-
-
-
 
     <string name="search_screen_page_name">Search</string>
     <string name="search_screen_search_result_text">We found %s places in "%s"</string>

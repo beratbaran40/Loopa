@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.beratbaran.loopa.navigation.LoopaBottomBar
 import com.beratbaran.loopa.navigation.NavGraph
 import com.beratbaran.loopa.navigation.Screen
 import com.beratbaran.loopa.ui.theme.LoopaTheme
@@ -23,11 +24,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             LoopaTheme {
                 Scaffold(
+                    bottomBar = {
+                        LoopaBottomBar(
+                            navController = navController,
+                        )
+                    },
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    val navController = rememberNavController()
                     NavGraph(
                         modifier = Modifier
                             .fillMaxSize()
