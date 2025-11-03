@@ -1,40 +1,12 @@
 package com.beratbaran.loopa.ui.register
 
-import com.beratbaran.loopa.common.PasswordStrength
-import com.beratbaran.loopa.common.ValidationManager
+import com.beratbaran.loopa.common.util.ValidationManager
 import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
+import com.beratbaran.loopa.ui.register.RegisterContract.UiEffect
+import com.beratbaran.loopa.ui.register.RegisterContract.UiState
 
-class RegisterViewModel : BaseViewModel<RegisterContract.UiState, RegisterContract.UiEffect>(
-    initialState = RegisterContract.UiState()
-) {
-    private fun computePasswordStrength(password: String): PasswordStrength? {
-        if (password.isBlank()) return null
-
-        var score = 0
-        val length = password.length
-        val hasLower = password.any { it.isLowerCase() }
-        val hasUpper = password.any { it.isUpperCase() }
-        val hasDigit = password.any { it.isDigit() }
-        val hasSpecial = password.any { !it.isLetterOrDigit() }
-
-        score += when {
-            length >= 12 -> 2
-            length >= 8 -> 1
-            else -> 0
-        }
-
-        if (hasLower) score++
-        if (hasUpper) score++
-        if (hasDigit) score++
-        if (hasSpecial) score++
-
-        return when {
-            score >= 5 -> PasswordStrength.STRONG
-            score >= 3 -> PasswordStrength.MEDIUM
-            else -> PasswordStrength.WEAK
-        }
-    }
+class RegisterViewModel : BaseViewModel<UiState, UiEffect>(UiState()) {
 
     private fun checkRegisterState(
         name: String,
@@ -61,7 +33,7 @@ class RegisterViewModel : BaseViewModel<RegisterContract.UiState, RegisterContra
                         passwordError
                     ).none(String::isNotEmpty)
                 ) {
-                    setEffect(RegisterContract.UiEffect.NavigateToHomePage)
+                    setEffect(UiEffect.NavigateToHomePage)
                 } else {
                     setState {
                         copy(
@@ -135,7 +107,7 @@ class RegisterViewModel : BaseViewModel<RegisterContract.UiState, RegisterContra
                 copy(showPassword = !showPassword)
             }
 
-            UiAction.OnBackClick -> setEffect(RegisterContract.UiEffect.NavigateToBack)
+            UiAction.OnBackClick -> setEffect(UiEffect.NavigateToBack)
         }
     }
 }

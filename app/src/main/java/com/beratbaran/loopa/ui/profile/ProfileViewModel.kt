@@ -1,7 +1,7 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.lifecycle.ViewModel
-import com.beratbaran.loopa.common.ValidationManager
+import com.beratbaran.loopa.common.util.ValidationManager
 import com.beratbaran.loopa.data.repository.PlaceRepository
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import dagger.hilt.android.lifecycle.HiltViewModel

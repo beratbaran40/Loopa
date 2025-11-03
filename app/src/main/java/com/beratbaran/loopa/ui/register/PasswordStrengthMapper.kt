@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.common.PasswordStrength
+import com.beratbaran.loopa.common.util.PasswordStrength
 
 @Composable
 fun PasswordStrength.toProgress(): Triple<Float, Color, String> {

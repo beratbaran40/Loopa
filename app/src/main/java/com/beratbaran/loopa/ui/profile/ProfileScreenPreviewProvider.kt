@@ -1,7 +1,7 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.beratbaran.loopa.common.PasswordStrength
+import com.beratbaran.loopa.common.util.PasswordStrength
 
 class ProfileScreenPreviewProvider: PreviewParameterProvider<ProfileContract.UiState> {
 override val values: Sequence<ProfileContract.UiState>

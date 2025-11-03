@@ -1,6 +1,6 @@
 package com.beratbaran.loopa.ui.register
 
-import com.beratbaran.loopa.common.PasswordStrength
+import com.beratbaran.loopa.common.util.PasswordStrength
 
 object RegisterContract {
 
