@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.di
 
+import com.beratbaran.loopa.data.remote.api.LoopaApi
 import com.beratbaran.loopa.data.repository.UserRepositoryImpl
 import com.beratbaran.loopa.domain.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -15,5 +16,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(auth: FirebaseAuth): UserRepository = UserRepositoryImpl(auth)
+    fun provideUserRepository(
+        auth: FirebaseAuth,
+        loopaApi: LoopaApi,
+    ): UserRepository = UserRepositoryImpl(
+        firebaseAuth = auth,
+        loopaApi = loopaApi,
+    )
 }

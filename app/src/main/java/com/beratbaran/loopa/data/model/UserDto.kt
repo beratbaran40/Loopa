@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.data.remote.dto
+package com.beratbaran.loopa.data.model
 
 data class UserDto(
     val name: String?,

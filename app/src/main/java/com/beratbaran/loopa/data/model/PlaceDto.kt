@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.data.remote.dto
+package com.beratbaran.loopa.data.model
 
 import com.google.gson.annotations.SerializedName
 

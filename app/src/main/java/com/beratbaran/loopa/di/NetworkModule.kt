@@ -1,4 +1,4 @@
-package com.beratbaran.loopa.data.remote.di
+package com.beratbaran.loopa.di
 
 import com.beratbaran.loopa.data.remote.api.LoopaApi
 import dagger.Module
