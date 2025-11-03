@@ -483,7 +483,7 @@ fun RegisterScreen(
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = MaterialTheme.colorScheme.background,
                 disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                 disabledContentColor = MaterialTheme.colorScheme.background,
             ),
