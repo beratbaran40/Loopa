@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.register.toProgress
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -384,7 +384,7 @@ fun ProfileTextFields(
 @PreviewLightDark
 @Composable
 fun ProfileTextFieldsPreview() {
-    MyappTheme {
+    LoopaTheme {
         ProfileTextFields(
             onAction = {},
             uiState = ProfileContract.UiState(),

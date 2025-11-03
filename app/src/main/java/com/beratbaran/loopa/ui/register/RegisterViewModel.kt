@@ -1,8 +1,8 @@
 package com.beratbaran.loopa.ui.register
 
+import com.beratbaran.loopa.common.PasswordStrength
 import com.beratbaran.loopa.common.ValidationManager
 import com.beratbaran.loopa.ui.base.BaseViewModel
-import com.beratbaran.loopa.ui.register.RegisterContract.PasswordStrength
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 
 class RegisterViewModel : BaseViewModel<RegisterContract.UiState, RegisterContract.UiEffect>(

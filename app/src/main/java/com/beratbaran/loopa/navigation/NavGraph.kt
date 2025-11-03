@@ -8,14 +8,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.beratbaran.loopa.ui.details.DetailsScreen
-import com.beratbaran.loopa.ui.details.DetailsViewModel
-import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsScreen
-import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsViewModel
 import com.beratbaran.loopa.ui.categories.CategoriesScreen
 import com.beratbaran.loopa.ui.categories.CategoriesViewModel
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsScreen
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsViewModel
+import com.beratbaran.loopa.ui.details.DetailsScreen
+import com.beratbaran.loopa.ui.details.DetailsViewModel
 import com.beratbaran.loopa.ui.favorites.FavoritesScreen
 import com.beratbaran.loopa.ui.favorites.FavoritesViewModel
 import com.beratbaran.loopa.ui.homepage.HomepageScreen

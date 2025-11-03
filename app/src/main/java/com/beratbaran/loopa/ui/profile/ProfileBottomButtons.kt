@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun ProfileBottomButtons(
@@ -105,7 +105,7 @@ fun ProfileBottomButtons(
 @PreviewLightDark
 @Composable
 fun ProfileBottomButtonsPreview() {
-    MyappTheme {
+    LoopaTheme {
         ProfileBottomButtons(
             onAction = {},
         )

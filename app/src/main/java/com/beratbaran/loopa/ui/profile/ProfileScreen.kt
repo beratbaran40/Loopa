@@ -25,7 +25,7 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiEffect
-import com.beratbaran.loopa.ui.theme.MyappTheme
+import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -36,7 +36,7 @@ fun ProfileScreen(
     onAction: (ProfileContract.UiAction) -> Unit,
     onNavigateToBack: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
-    ) {
+) {
 
     val context = LocalContext.current
 
@@ -120,7 +120,7 @@ fun ProfileScreen(
 fun ProfileScreenPreview(
     @PreviewParameter(ProfileScreenPreviewProvider::class) uiState: ProfileContract.UiState,
 ) {
-    MyappTheme {
+    LoopaTheme {
         ProfileScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
