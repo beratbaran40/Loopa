@@ -47,6 +47,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -62,6 +63,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
+import com.beratbaran.loopa.common.showToast
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
@@ -76,7 +78,7 @@ fun RegisterScreen(
     onNavigateToHomepage: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
-
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
@@ -87,6 +89,7 @@ fun RegisterScreen(
         when (effect) {
             RegisterContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
             RegisterContract.UiEffect.NavigateToBack -> onNavigateToBack()
+            is RegisterContract.UiEffect.ShowToast -> context.showToast(effect.message)
         }
     }
 

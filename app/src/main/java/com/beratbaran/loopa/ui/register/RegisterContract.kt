@@ -41,5 +41,6 @@ object RegisterContract {
     sealed interface UiEffect {
         data object NavigateToHomePage : UiEffect
         data object NavigateToBack : UiEffect
+        data class ShowToast(val message: String) : UiEffect
     }
 }

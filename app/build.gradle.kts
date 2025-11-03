@@ -102,6 +102,7 @@ dependencies {
 
     // Firebase
     implementation(platform(libs.firebase))
+    implementation(libs.firebase.auth)
 }
 
 detekt {

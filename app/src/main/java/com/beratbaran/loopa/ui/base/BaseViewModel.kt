@@ -11,9 +11,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<S: Any, E: Any>(initialState: S): ViewModel() {
+abstract class BaseViewModel<S : Any, E : Any>(initialState: S) : ViewModel() {
     private val _uiState = MutableStateFlow(initialState)
     val uiState: StateFlow<S> = _uiState.asStateFlow()
+
+    val currentUiState: S
+        get() = _uiState.value
 
     protected fun setState(reducer: S.() -> S) {
         _uiState.update { it.reducer() }

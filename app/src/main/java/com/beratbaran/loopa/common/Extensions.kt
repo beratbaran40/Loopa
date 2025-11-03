@@ -1,5 +1,7 @@
 package com.beratbaran.loopa.common
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.Lifecycle
@@ -19,4 +21,8 @@ fun <T> Flow<T>.CollectWithLifecycle(
             }
         }
     }
+}
+
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
