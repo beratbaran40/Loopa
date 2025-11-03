@@ -391,7 +391,7 @@ fun RegisterScreen(
             isError = uiState.supportingTextPassword.isNotEmpty(),
             leadingIcon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_password),
+                    painter = painterResource(id = R.drawable.ic_password_custom),
                     contentDescription = null,
                     tint = when {
                         uiState.supportingTextPassword.isNotEmpty() -> MaterialTheme.colorScheme.error
