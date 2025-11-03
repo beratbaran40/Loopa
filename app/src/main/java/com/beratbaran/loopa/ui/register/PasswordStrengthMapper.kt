@@ -5,23 +5,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.common.PasswordStrength
 
 @Composable
-fun RegisterContract.PasswordStrength.toProgress(): Triple<Float, Color, String> {
+fun PasswordStrength.toProgress(): Triple<Float, Color, String> {
     return when (this) {
-        RegisterContract.PasswordStrength.STRONG -> Triple(
+        PasswordStrength.STRONG -> Triple(
             1f,
             MaterialTheme.colorScheme.primary,
             stringResource(R.string.register_password_strength_STRONG),
         )
 
-        RegisterContract.PasswordStrength.MEDIUM -> Triple(
+        PasswordStrength.MEDIUM -> Triple(
             0.50f,
             MaterialTheme.colorScheme.secondary,
             stringResource(R.string.register_password_strength_MEDIUM),
         )
 
-        RegisterContract.PasswordStrength.WEAK -> Triple(
+        PasswordStrength.WEAK -> Triple(
             0.25f,
             MaterialTheme.colorScheme.error,
             stringResource(R.string.register_password_strength_WEAK),

@@ -1,35 +1,24 @@
 package com.beratbaran.loopa.ui.login
 
-import androidx.lifecycle.ViewModel
 import com.beratbaran.loopa.common.ValidationManager
+import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.login.LoginContract.UiEffect
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 
-class LoginViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(LoginContract.UiState())
-    val uiState: StateFlow<LoginContract.UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<UiEffect>() }
-    val uiEffect: Flow<UiEffect> by lazy { _uiEffect.receiveAsFlow() }
-
+class LoginViewModel : BaseViewModel<LoginContract.UiState, UiEffect>(
+    initialState = LoginContract.UiState()
+) {
     fun onAction(uiAction: UiAction) {
         when (uiAction) {
             UiAction.OnLoginClicked -> {
-                val currentState = _uiState.value
+                val currentState = uiState.value
                 val emailError = ValidationManager.validateEmail(currentState.email)
                 val passwordError = ValidationManager.validatePassword(currentState.password)
                 if (emailError.isEmpty() && passwordError.isEmpty()) {
-                    _uiEffect.trySend(UiEffect.NavigateToHomePage)
+                    setEffect(UiEffect.NavigateToHomePage)
                 } else {
-                    _uiState.update {
-                        it.copy(
+                    setState {
+                        copy(
                             supportingTextEmail = emailError,
                             supportingTextPassword = passwordError,
                             isLoading = false,
@@ -37,37 +26,30 @@ class LoginViewModel : ViewModel() {
                     }
                 }
             }
-
-            is UiAction.OnEmailChange -> _uiState.update {
-                it.copy(
+            is UiAction.OnEmailChange -> setState {
+                copy(
                     email = uiAction.email,
-                    isLoginButtonEnabled = checkLoginButtonState(uiAction.email, it.password),
+                    isLoginButtonEnabled = checkLoginButtonState(uiAction.email, password),
                 )
             }
-
-            is UiAction.OnPasswordChange -> _uiState.update {
-                it.copy(
+            is UiAction.OnPasswordChange -> setState {
+                copy(
                     password = uiAction.password,
-                    isLoginButtonEnabled = checkLoginButtonState(it.email, uiAction.password),
+                    isLoginButtonEnabled = checkLoginButtonState(email, uiAction.password),
                 )
             }
-
-            is UiAction.OnEmailTextFieldFocusChange -> _uiState.update {
-                it.copy(isEmailTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnEmailTextFieldFocusChange -> setState {
+                copy(isEmailTextFieldFocused = uiAction.isFocused)
             }
-
-            is UiAction.OnPasswordTextFieldFocusChange -> _uiState.update {
-                it.copy(isPasswordTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnPasswordTextFieldFocusChange -> setState {
+                copy(isPasswordTextFieldFocused = uiAction.isFocused)
             }
-
-            UiAction.OnToggleShowPassword -> _uiState.update {
-                it.copy(showPassword = !it.showPassword)
+            UiAction.OnToggleShowPassword -> setState {
+                copy(showPassword = !showPassword)
             }
-
-            UiAction.OnBackClick -> _uiEffect.trySend(UiEffect.NavigateToBack)
+            UiAction.OnBackClick -> setEffect(UiEffect.NavigateToBack)
         }
     }
-
     private fun checkLoginButtonState(email: String, password: String): Boolean {
         return email.isNotBlank() && password.isNotBlank()
     }
