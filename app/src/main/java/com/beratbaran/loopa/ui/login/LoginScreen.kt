@@ -250,7 +250,7 @@ fun LoginScreen(
             leadingIcon = {
                 Icon(
                     modifier = Modifier.size(25.dp),
-                    painter = painterResource(id = R.drawable.ic_password),
+                    painter = painterResource(id = R.drawable.ic_password_custom),
                     contentDescription = null,
                     tint = when {
                         uiState.supportingTextPassword.isNotEmpty() -> MaterialTheme.colorScheme.error
