@@ -111,7 +111,7 @@ class RegisterViewModel : BaseViewModel<RegisterContract.UiState, RegisterContra
                         email = email,
                         password = newPassword,
                     ),
-                    passwordStrength = computePasswordStrength(newPassword),
+                    passwordStrength = ValidationManager.computePasswordStrength(newPassword),
                 )
             }
 
