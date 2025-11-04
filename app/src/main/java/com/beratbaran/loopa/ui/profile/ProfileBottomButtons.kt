@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,11 +30,15 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileBottomButtons(
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Box(
         modifier = Modifier
             .fillMaxHeight()
@@ -50,7 +55,7 @@ fun ProfileBottomButtons(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                onClick = { onAction(UiAction.OnLogoutClick) },
+                onClick = { coroutineScope.launch { onAction.emit(UiAction.OnLogoutClick) } },
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
@@ -74,7 +79,7 @@ fun ProfileBottomButtons(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                onClick = { onAction(UiAction.OnDeleteAccountClick) },
+                onClick = { coroutineScope.launch { onAction.emit(UiAction.OnDeleteAccountClick) } },
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = Color.Transparent,
@@ -107,7 +112,7 @@ fun ProfileBottomButtons(
 fun ProfileBottomButtonsPreview() {
     LoopaTheme {
         ProfileBottomButtons(
-            onAction = {},
+            onAction = MutableSharedFlow(),
         )
     }
 }

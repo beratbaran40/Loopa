@@ -1,65 +1,24 @@
 package com.beratbaran.loopa.ui.profile
 
-import androidx.lifecycle.ViewModel
 import com.beratbaran.loopa.common.util.ValidationManager
 import com.beratbaran.loopa.data.repository.PlaceRepository
+import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
+import com.beratbaran.loopa.ui.profile.ProfileContract.UiEffect
+import com.beratbaran.loopa.ui.profile.ProfileContract.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val placeRepository: PlaceRepository,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(ProfileContract.UiState())
-    val uiState: StateFlow<ProfileContract.UiState> = _uiState.asStateFlow()
-
-    private val _uiEffect by lazy { Channel<ProfileContract.UiEffect>() }
-    val uiEffect: Flow<ProfileContract.UiEffect> by lazy { _uiEffect.receiveAsFlow() }
-
-    private data class ProfileSnapShot(
-        val name: String,
-        val surname: String,
-        val email: String,
-        val password: String,
-    )
-
-    private var savedProfile: ProfileSnapShot? = null
-
-    private fun hasSavedInfo(): Boolean {
-        val s = savedProfile
-        return s != null &&
-                (s.name.isNotBlank() || s.surname.isNotBlank() || s.email.isNotBlank() || s.password.isNotBlank())
-    }
-
-
-    private fun isConfirmChangesEnabled(
-        name: String = _uiState.value.name,
-        surname: String = _uiState.value.surname,
-        email: String = _uiState.value.email,
-        password: String = _uiState.value.password,
-    ): Boolean {
-        val allEmpty = name.isBlank() && surname.isBlank() && email.isBlank() && password.isBlank()
-        if (allEmpty) return false
-
-        val nameErr = ValidationManager.validateName(name)
-        val surnameErr = ValidationManager.validateSurname(surname)
-        val emailErr = ValidationManager.validateEmail(email)
-        val passwordErr = ValidationManager.validatePassword(password)
-        return nameErr.isBlank() && surnameErr.isBlank() && emailErr.isBlank() && passwordErr.isBlank()
-    }
-
-    fun onAction(uiAction: UiAction) {
-        when (uiAction) {
-            UiAction.OnEditProfileClick -> _uiState.update { current ->
-                current.copy(
+) : BaseViewModel<UiState, UiAction, UiEffect>(
+    initialState = UiState()
+) {
+    override suspend fun handleAction(action: UiAction) {
+        when (action) {
+            UiAction.OnEditProfileClick -> setState {
+                copy(
                     isInEditMode = true,
                     isNameTextFieldFocused = true,
                     isSurnameTextFieldFocused = false,
@@ -70,10 +29,10 @@ class ProfileViewModel @Inject constructor(
                 )
             }
 
-            UiAction.OnCancelChangesClick -> _uiState.update { current ->
+            UiAction.OnCancelChangesClick -> setState {
                 val hasSaved = hasSavedInfo()
                 val restore = savedProfile
-                current.copy(
+                copy(
                     name = if (hasSaved) restore!!.name else "",
                     surname = if (hasSaved) restore!!.surname else "",
                     email = if (hasSaved) restore!!.email else "",
@@ -95,7 +54,7 @@ class ProfileViewModel @Inject constructor(
             }
 
             UiAction.OnConfirmChangesClick -> {
-                val currentState = _uiState.value
+                val currentState = currentUiState
                 val nameError = ValidationManager.validateName(currentState.name)
                 val surnameError = ValidationManager.validateSurname(currentState.surname)
                 val emailError = ValidationManager.validateEmail(currentState.email)
@@ -107,19 +66,19 @@ class ProfileViewModel @Inject constructor(
                             passwordError.isBlank() &&
                             currentState.password.isNotBlank()
 
-                _uiState.update {
-                    it.copy(
+                setState {
+                    copy(
                         supportingTextName = nameError,
                         supportingTextSurname = surnameError,
                         supportingTextEmail = emailError,
                         supportingTextPassword = passwordError,
-                        isInEditMode = if (isSuccess) false else it.isInEditMode,
-                        isNameTextFieldFocused = if (isSuccess) false else it.isNameTextFieldFocused,
-                        isSurnameTextFieldFocused = if (isSuccess) false else it.isSurnameTextFieldFocused,
-                        isEmailTextFieldFocused = if (isSuccess) false else it.isEmailTextFieldFocused,
-                        isPasswordTextFieldFocused = if (isSuccess) false else it.isPasswordTextFieldFocused,
-                        isSaveEnabled = if (isSuccess) false else it.isSaveEnabled,
-                        areFieldsEmpty = if (isSuccess) true else it.areFieldsEmpty,
+                        isInEditMode = if (isSuccess) false else isInEditMode,
+                        isNameTextFieldFocused = if (isSuccess) false else isNameTextFieldFocused,
+                        isSurnameTextFieldFocused = if (isSuccess) false else isSurnameTextFieldFocused,
+                        isEmailTextFieldFocused = if (isSuccess) false else isEmailTextFieldFocused,
+                        isPasswordTextFieldFocused = if (isSuccess) false else isPasswordTextFieldFocused,
+                        isSaveEnabled = if (isSuccess) false else isSaveEnabled,
+                        areFieldsEmpty = if (isSuccess) true else areFieldsEmpty,
                         passwordStrength = null
                     )
                 }
@@ -134,111 +93,142 @@ class ProfileViewModel @Inject constructor(
                         )
                 }
                 if (isSuccess) {
-                    _uiEffect.trySend(ProfileContract.UiEffect.ShowPasswordDoneToast)
+                    setEffect(UiEffect.ShowPasswordDoneToast)
                 }
             }
 
-            is UiAction.OnNameChange -> _uiState.update {
-                val newName = uiAction.name
+            is UiAction.OnNameChange -> setState {
+                val newName = action.name
                 val newAreFieldsEmpty =
-                    newName.isBlank() && it.surname.isBlank() && it.email.isBlank() && it.password.isBlank()
-                it.copy(
+                    newName.isBlank() && surname.isBlank() && email.isBlank() && password.isBlank()
+                copy(
                     name = newName,
                     areFieldsEmpty = newAreFieldsEmpty,
                     isSaveEnabled = isConfirmChangesEnabled(
                         name = newName,
-                        surname = it.surname,
-                        email = it.email,
-                        password = it.password,
+                        surname = surname,
+                        email = email,
+                        password = password,
                     ),
                 )
             }
 
-            is UiAction.OnSurnameChange -> _uiState.update {
-                val newSurname = uiAction.surname
+            is UiAction.OnSurnameChange -> setState {
+                val newSurname = action.surname
                 val newAreFieldsEmpty =
-                    it.name.isBlank() && newSurname.isBlank() && it.email.isBlank() && it.password.isBlank()
-                it.copy(
+                    name.isBlank() && newSurname.isBlank() && email.isBlank() && password.isBlank()
+                copy(
                     surname = newSurname,
                     areFieldsEmpty = newAreFieldsEmpty,
                     isSaveEnabled = isConfirmChangesEnabled(
-                        name = it.name,
+                        name = name,
                         surname = newSurname,
-                        email = it.email,
-                        password = it.password,
+                        email = email,
+                        password = password,
                     ),
                 )
             }
 
-            is UiAction.OnEmailChange -> _uiState.update {
-                val newEmail = uiAction.email
+            is UiAction.OnEmailChange -> setState {
+                val newEmail = action.email
                 val newAreFieldsEmpty =
-                    it.name.isBlank() && it.surname.isBlank() && newEmail.isBlank() && it.password.isBlank()
-                it.copy(
+                    name.isBlank() && surname.isBlank() && newEmail.isBlank() && password.isBlank()
+                copy(
                     email = newEmail,
                     areFieldsEmpty = newAreFieldsEmpty,
                     isSaveEnabled = isConfirmChangesEnabled(
-                        name = it.name,
-                        surname = it.surname,
+                        name = name,
+                        surname = surname,
                         email = newEmail,
-                        password = it.password,
+                        password = password,
                     ),
                 )
             }
 
-            is UiAction.OnPasswordChange -> _uiState.update {
-                val newPassword = uiAction.password
+            is UiAction.OnPasswordChange -> setState {
+                val newPassword = action.password
                 val newAreFieldsEmpty =
-                    it.name.isBlank() && it.surname.isBlank() && it.email.isBlank() && newPassword.isBlank()
-                it.copy(
+                    name.isBlank() && surname.isBlank() && email.isBlank() && newPassword.isBlank()
+                copy(
                     password = newPassword,
                     areFieldsEmpty = newAreFieldsEmpty,
                     isSaveEnabled = isConfirmChangesEnabled(
-                        name = it.name,
-                        surname = it.surname,
-                        email = it.email,
+                        name = name,
+                        surname = surname,
+                        email = email,
                         password = newPassword,
                     ),
                     passwordStrength = ValidationManager.computePasswordStrength(newPassword),
                 )
             }
 
-            is UiAction.OnNameTextFieldFocusChange -> _uiState.update {
-                it.copy(isNameTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnNameTextFieldFocusChange -> setState {
+                copy(isNameTextFieldFocused = action.isFocused)
             }
 
-            is UiAction.OnSurnameTextFieldFocusChange -> _uiState.update {
-                it.copy(isSurnameTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnSurnameTextFieldFocusChange -> setState {
+                copy(isSurnameTextFieldFocused = action.isFocused)
             }
 
-            is UiAction.OnEmailTextFieldFocusChange -> _uiState.update {
-                it.copy(isEmailTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnEmailTextFieldFocusChange -> setState {
+                copy(isEmailTextFieldFocused = action.isFocused)
             }
 
-            is UiAction.OnPasswordTextFieldFocusChange -> _uiState.update {
-                it.copy(isPasswordTextFieldFocused = uiAction.isFocused)
+            is UiAction.OnPasswordTextFieldFocusChange -> setState {
+                copy(isPasswordTextFieldFocused = action.isFocused)
             }
 
-            UiAction.OnToggleShowPassword -> _uiState.update {
-                it.copy(showPassword = !it.showPassword)
+            UiAction.OnToggleShowPassword -> setState {
+                copy(showPassword = !showPassword)
             }
 
-            UiAction.OnLogoutClick -> _uiState.update { it.copy(showLogoutDialog = true) }
+            UiAction.OnLogoutClick -> setState { copy(showLogoutDialog = true) }
 
-            UiAction.OnLogoutDismissClick -> _uiState.update { it.copy(showLogoutDialog = false) }
+            UiAction.OnLogoutDismissClick -> setState { copy(showLogoutDialog = false) }
 
             UiAction.OnLogoutConfirmClick ->
-                _uiEffect.trySend(ProfileContract.UiEffect.NavigateToOnboarding)
+                setEffect(UiEffect.NavigateToOnboarding)
 
             UiAction.OnDeleteAccountClick ->
-                _uiState.update { it.copy(showDeleteAccountDialog = true) }
+                setState { copy(showDeleteAccountDialog = true) }
 
             UiAction.OnDeleteAccountDismissClick ->
-                _uiState.update { it.copy(showDeleteAccountDialog = false) }
+                setState { copy(showDeleteAccountDialog = false) }
 
             UiAction.OnDeleteAccountConfirmClick -> {
-                _uiEffect.trySend(ProfileContract.UiEffect.NavigateToOnboarding)
+                setEffect(UiEffect.NavigateToOnboarding)
             }
         }
+    }
+
+    private data class ProfileSnapShot(
+        val name: String,
+        val surname: String,
+        val email: String,
+        val password: String,
+    )
+
+    private var savedProfile: ProfileSnapShot? = null
+
+    private fun hasSavedInfo(): Boolean {
+        val s = savedProfile
+        return s != null &&
+                (s.name.isNotBlank() || s.surname.isNotBlank() || s.email.isNotBlank() || s.password.isNotBlank())
+    }
+
+    private fun isConfirmChangesEnabled(
+        name: String = currentUiState.name,
+        surname: String = currentUiState.surname,
+        email: String = currentUiState.email,
+        password: String = currentUiState.password,
+    ): Boolean {
+        val allEmpty = name.isBlank() && surname.isBlank() && email.isBlank() && password.isBlank()
+        if (allEmpty) return false
+
+        val nameErr = ValidationManager.validateName(name)
+        val surnameErr = ValidationManager.validateSurname(surname)
+        val emailErr = ValidationManager.validateEmail(email)
+        val passwordErr = ValidationManager.validatePassword(password)
+        return nameErr.isBlank() && surnameErr.isBlank() && emailErr.isBlank() && passwordErr.isBlank()
     }
 }

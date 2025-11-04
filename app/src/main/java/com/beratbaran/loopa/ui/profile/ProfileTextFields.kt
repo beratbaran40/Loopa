@@ -47,11 +47,12 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.register.toProgress
 import com.beratbaran.loopa.ui.theme.LoopaTheme
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileTextFields(
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     uiState: ProfileContract.UiState,
 ) {
     val focusManager = LocalFocusManager.current
@@ -87,10 +88,12 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                    onAction(UiAction.OnNameTextFieldFocusChange(event.isFocused))
+                    coroutineScope.launch {
+                        onAction.emit(UiAction.OnNameTextFieldFocusChange(event.isFocused))
+                    }
                 },
             value = uiState.name,
-            onValueChange = { onAction(UiAction.OnNameChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnNameChange(it)) } },
             label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
             singleLine = true,
             enabled = !uiState.isLoading && uiState.isInEditMode,
@@ -153,10 +156,12 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                    onAction(UiAction.OnSurnameTextFieldFocusChange(event.isFocused))
+                    coroutineScope.launch {
+                        onAction.emit(UiAction.OnSurnameTextFieldFocusChange(event.isFocused))
+                    }
                 },
             value = uiState.surname,
-            onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnSurnameChange(it)) } },
             label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
             singleLine = true,
             enabled = !uiState.isLoading && uiState.isInEditMode,
@@ -218,10 +223,12 @@ fun ProfileTextFields(
                     if (event.isFocused) {
                         coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
-                    onAction(UiAction.OnEmailTextFieldFocusChange(event.isFocused))
+                    coroutineScope.launch {
+                        onAction.emit(UiAction.OnEmailTextFieldFocusChange(event.isFocused))
+                    }
                 },
             value = uiState.email,
-            onValueChange = { onAction(UiAction.OnEmailChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnEmailChange(it)) } },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
             enabled = !uiState.isLoading && uiState.isInEditMode,
@@ -285,10 +292,12 @@ fun ProfileTextFields(
                             bringIntoViewRequester.bringIntoView()
                         }
                     }
-                    onAction(UiAction.OnPasswordTextFieldFocusChange(event.isFocused))
+                    coroutineScope.launch {
+                        onAction.emit(UiAction.OnPasswordTextFieldFocusChange(event.isFocused))
+                    }
                 },
             value = uiState.password,
-            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnPasswordChange(it)) } },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
             enabled = !uiState.isLoading && uiState.isInEditMode,
@@ -309,7 +318,7 @@ fun ProfileTextFields(
                 PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(
-                    onClick = { onAction(UiAction.OnToggleShowPassword) },
+                    onClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleShowPassword) } },
                     enabled = canInteract
                 ) {
                     Icon(
@@ -329,7 +338,9 @@ fun ProfileTextFields(
                 onDone = {
                     if (canInteract) {
                         keyboardController?.hide()
-                        onAction(UiAction.OnConfirmChangesClick)
+                        coroutineScope.launch {
+                            onAction.emit(UiAction.OnConfirmChangesClick)
+                        }
                     }
                 }
             ),
@@ -386,7 +397,7 @@ fun ProfileTextFields(
 fun ProfileTextFieldsPreview() {
     LoopaTheme {
         ProfileTextFields(
-            onAction = {},
+            onAction = MutableSharedFlow(),
             uiState = ProfileContract.UiState(),
         )
     }

@@ -13,6 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,13 +24,17 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileHeader(
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     isInEditMode: Boolean,
     areFieldsEmpty: Boolean,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
@@ -47,7 +52,7 @@ fun ProfileHeader(
         ) {
             if (isInEditMode) {
                 IconButton(
-                    onClick = { onAction(UiAction.OnConfirmChangesClick) },
+                    onClick = { coroutineScope.launch { coroutineScope.launch { onAction.emit(UiAction.OnConfirmChangesClick) } } },
                     modifier = Modifier
                         .clip(CircleShape)
                         .background(
@@ -67,9 +72,13 @@ fun ProfileHeader(
             IconButton(
                 onClick = {
                     if (!isInEditMode) {
-                        onAction(UiAction.OnEditProfileClick)
+                        coroutineScope.launch {
+                            onAction.emit(UiAction.OnEditProfileClick)
+                        }
                     } else {
-                        onAction(UiAction.OnCancelChangesClick)
+                        coroutineScope.launch {
+                            onAction.emit(UiAction.OnCancelChangesClick)
+                        }
                     }
                 },
                 modifier = Modifier
@@ -127,7 +136,7 @@ fun ProfileHeader(
 fun ProfileHeaderPreview() {
     LoopaTheme {
         ProfileHeader(
-            onAction = {},
+            onAction = MutableSharedFlow(),
             isInEditMode = true,
             areFieldsEmpty = false,
         )
