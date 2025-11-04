@@ -7,4 +7,9 @@ interface UserRepository {
         email: String,
         password: String,
     ): Result<Unit>
+
+    suspend fun loginUser(
+        email: String,
+        password: String,
+    ): Result<Unit>
 }
