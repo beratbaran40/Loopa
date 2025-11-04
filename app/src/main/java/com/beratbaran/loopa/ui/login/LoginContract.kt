@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.ui.login
 
+
 object LoginContract {
     data class UiState(
         val email: String = "",
@@ -27,6 +28,6 @@ object LoginContract {
     sealed interface UiEffect {
         data object NavigateToHomePage : UiEffect
         data object NavigateToBack : UiEffect
-
+        data class ShowToast(val message: String) : UiEffect
     }
 }
