@@ -8,7 +8,7 @@ import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class OnboardingViewModel : BaseViewModel<UiState, UiEffect>(
+class OnboardingViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
     initialState = UiState()
 ) {
     init {
@@ -20,10 +20,11 @@ class OnboardingViewModel : BaseViewModel<UiState, UiEffect>(
         }
     }
 
-    fun onAction(uiAction: UiAction) {
-        when (uiAction) {
+    override suspend fun handleAction(action: UiAction) {
+        when(action) {
             UiAction.OnLoginClick -> setEffect(UiEffect.NavigateToLogin)
             UiAction.OnRegisterClick -> setEffect(UiEffect.NavigateToRegister)
+
         }
     }
 }

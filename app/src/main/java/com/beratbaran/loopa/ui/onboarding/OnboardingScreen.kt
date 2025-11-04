@@ -24,6 +24,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,16 +45,21 @@ import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiEffect
 import com.beratbaran.loopa.ui.onboarding.OnboardingContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToRegister: () -> Unit,
     onNavigateToLogin: () -> Unit,
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToLogin -> onNavigateToLogin()
@@ -153,7 +159,7 @@ fun OnboardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                onClick = { onAction(UiAction.OnRegisterClick) },
+                onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRegisterClick) } },
                 shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
@@ -169,7 +175,7 @@ fun OnboardingScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                modifier = Modifier.clickable { onAction(UiAction.OnLoginClick) },
+                modifier = Modifier.clickable { coroutineScope.launch { onAction.emit(UiAction.OnLoginClick) } },
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(color = Color.White)) {
                         append(stringResource(R.string.onboarding_account_text_span))
@@ -218,7 +224,7 @@ private fun OnboardingScreenPreview(
         OnboardingScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToRegister = {},
             onNavigateToLogin = {},
         )
