@@ -1,37 +1,32 @@
 package com.beratbaran.loopa.ui.search
 
-import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import com.beratbaran.loopa.ui.base.BaseViewModel
+import com.beratbaran.loopa.ui.search.SearchContract.UiAction
+import com.beratbaran.loopa.ui.search.SearchContract.UiEffect
+import com.beratbaran.loopa.ui.search.SearchContract.UiState
 
-class SearchViewModel : ViewModel() {
-
-    private val _uiState = MutableStateFlow(SearchContract.UiState())
-    val uiState = _uiState.asStateFlow()
-
-    private val _uiEffect = Channel<SearchContract.UiEffect>()
-    val uiEffect = _uiEffect.receiveAsFlow()
-
-    fun onAction(action: SearchContract.UiAction) {
+class SearchViewModel :
+    BaseViewModel<UiState, UiAction, UiEffect>(
+    initialState = UiState()
+) {
+    override suspend fun handleAction(action: UiAction) {
         when (action) {
 
-            is SearchContract.UiAction.OnRandomPlaceClick ->
-                _uiEffect.trySend(SearchContract.UiEffect.NavigateToRandomPlace)
+            is UiAction.OnRandomPlaceClick ->
+                setEffect(UiEffect.NavigateToRandomPlace)
 
-            is SearchContract.UiAction.OnDetailsClick ->
-                _uiEffect.trySend(SearchContract.UiEffect.NavigateToDetails)
+            is UiAction.OnDetailsClick ->
+                setEffect(UiEffect.NavigateToDetails)
 
-            is SearchContract.UiAction.ToggleFavorite ->
-                _uiState.value = _uiState.value.copy(isFavorite = !_uiState.value.isFavorite)
+            is UiAction.ToggleFavorite ->
+                setState { copy(isFavorite = !isFavorite) }
 
-            is SearchContract.UiAction.OnQueryChange -> {
-                _uiState.value = _uiState.value.copy(query = action.query)
+            is UiAction.OnQueryChange -> {
+                setState { copy(query = action.query) }
             }
 
-            SearchContract.UiAction.ClearQuery -> {
-                _uiState.value = _uiState.value.copy(query = "")
+            UiAction.ClearQuery -> {
+                setState { copy(query = "") }
             }
         }
     }

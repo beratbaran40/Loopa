@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,22 +27,30 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
+import com.beratbaran.loopa.ui.search.SearchContract.UiAction
+import com.beratbaran.loopa.ui.search.SearchContract.UiEffect
+import com.beratbaran.loopa.ui.search.SearchContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
-    uiState: SearchContract.UiState,
-    uiEffect: Flow<SearchContract.UiEffect>,
-    onAction: (SearchContract.UiAction) -> Unit,
+    uiState: UiState,
+    uiEffect: Flow<UiEffect>,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToDetails: () -> Unit,
     onNavigateToRandomPlace: () -> Unit,
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            SearchContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
-            SearchContract.UiEffect.NavigateToRandomPlace -> onNavigateToRandomPlace()
+            UiEffect.NavigateToDetails -> onNavigateToDetails()
+            UiEffect.NavigateToRandomPlace -> onNavigateToRandomPlace()
         }
     }
     Column(
@@ -72,14 +81,14 @@ fun SearchScreen(
             SearchBar(
                 modifier = Modifier.weight(1f),
                 query = uiState.query,
-                onQueryChange = { onAction(SearchContract.UiAction.OnQueryChange(it)) },
-                onSearch = { onAction(SearchContract.UiAction.OnQueryChange(uiState.query)) },
-                onClear = { onAction(SearchContract.UiAction.ClearQuery) },
+                onQueryChange = { coroutineScope.launch { onAction.emit(UiAction.OnQueryChange(it)) } },
+                onSearch = { coroutineScope.launch { onAction.emit(UiAction.OnQueryChange(uiState.query)) } },
+                onClear = { coroutineScope.launch { onAction.emit(UiAction.ClearQuery) } },
                 uiState = uiState,
             )
 
             RandomPlaceButton(
-                onClick = { onAction(SearchContract.UiAction.OnRandomPlaceClick("")) },
+                onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRandomPlaceClick("")) } },
             )
         }
 
@@ -88,7 +97,8 @@ fun SearchScreen(
         Text(
             text = stringResource(
                 R.string.search_screen_search_result_text,
-                uiState.searchResultQuantity, uiState.searchResultCountry),
+                uiState.searchResultQuantity, uiState.searchResultCountry
+            ),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -101,8 +111,8 @@ fun SearchScreen(
         uiState.places.forEachIndexed { index, place ->
             SearchDetailItem(
                 place = place,
-                onFavoriteClick = { onAction(SearchContract.UiAction.ToggleFavorite(place.id.toString())) },
-                onDetailsClick = { onAction(SearchContract.UiAction.OnDetailsClick(place.id.toString())) },
+                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.ToggleFavorite(place.id.toString())) } },
+                onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick(place.id.toString())) } },
             )
 
             if (index != uiState.places.lastIndex)
@@ -116,13 +126,13 @@ fun SearchScreen(
 @PreviewLightDark
 @Composable
 fun SearchScreenPreview(
-    @PreviewParameter(SearchScreenPreviewProvider::class) uiState: SearchContract.UiState,
+    @PreviewParameter(SearchScreenPreviewProvider::class) uiState: UiState,
 ) {
     LoopaTheme {
         SearchScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToDetails = {},
             onNavigateToRandomPlace = {},
         )
