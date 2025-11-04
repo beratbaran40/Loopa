@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.data.repository
 
+import com.beratbaran.loopa.data.model.LoginRequest
 import com.beratbaran.loopa.data.model.RegisterRequest
 import com.beratbaran.loopa.data.remote.api.LoopaApi
 import com.beratbaran.loopa.domain.repository.UserRepository
@@ -33,4 +34,22 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-}
+
+    override suspend fun loginUser(
+        email: String,
+        password: String
+    ): Result<Unit> {
+        return try {
+            firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            val user = firebaseAuth.currentUser ?: throw Exception("User login failed")
+            LoginRequest(
+                uid = user.uid,
+                email = email,
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    }
