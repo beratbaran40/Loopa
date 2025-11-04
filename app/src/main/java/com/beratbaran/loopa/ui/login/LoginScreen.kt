@@ -44,6 +44,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -58,9 +59,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
+import com.beratbaran.loopa.common.showToast
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
@@ -68,11 +71,12 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     uiState: LoginContract.UiState,
     uiEffect: Flow<LoginContract.UiEffect>,
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToHomepage: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -87,6 +91,8 @@ fun LoginScreen(
         when (effect) {
             LoginContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
             LoginContract.UiEffect.NavigateToBack -> onNavigateToBack()
+            is LoginContract.UiEffect.ShowToast -> context.showToast(effect.message)
+
         }
     }
 
@@ -165,14 +171,10 @@ fun LoginScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnEmailTextFieldFocusChange(
-                            focusState.isFocused
-                        )
-                    )
+                    coroutineScope.launch { onAction.emit(UiAction.OnEmailTextFieldFocusChange(focusState.isFocused)) }
                 },
             value = uiState.email,
-            onValueChange = { onAction(UiAction.OnEmailChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnEmailChange(it)) } },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
             isError = uiState.supportingTextEmail.isNotEmpty(),
@@ -236,14 +238,16 @@ fun LoginScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnPasswordTextFieldFocusChange(
-                            focusState.isFocused
+                    coroutineScope.launch {
+                        onAction.emit(
+                            UiAction.OnPasswordTextFieldFocusChange(
+                                focusState.isFocused
+                            )
                         )
-                    )
+                    }
                 },
             value = uiState.password,
-            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnPasswordChange(it)) } },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
             isError = uiState.supportingTextPassword.isNotEmpty(),
@@ -261,7 +265,7 @@ fun LoginScreen(
             },
             visualTransformation = visualTransformation,
             trailingIcon = {
-                IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
+                IconButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleShowPassword) } }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(
                             if (uiState.showPassword) R.drawable.ic_visibility
@@ -278,7 +282,9 @@ fun LoginScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
-                    onAction(UiAction.OnLoginClicked)
+                    coroutineScope.launch {
+                        onAction.emit(UiAction.OnLoginClicked)
+                    }
                 }
             ),
             shape = RoundedCornerShape(12.dp),
@@ -314,7 +320,7 @@ fun LoginScreen(
                 .bringIntoViewRequester(bringIntoViewRequester)
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { onAction(UiAction.OnLoginClicked) },
+            onClick = { coroutineScope.launch { onAction.emit(UiAction.OnLoginClicked) } },
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -345,7 +351,7 @@ fun LoginScreenPreview(
         LoginScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToHomepage = {},
             onNavigateToBack = {},
         )
