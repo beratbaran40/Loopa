@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -25,20 +26,28 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
+import com.beratbaran.loopa.ui.categories.CategoriesContract.UiAction
+import com.beratbaran.loopa.ui.categories.CategoriesContract.UiEffect
+import com.beratbaran.loopa.ui.categories.CategoriesContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriesScreen(
-    uiState: CategoriesContract.UiState,
-    uiEffect: Flow<CategoriesContract.UiEffect>,
-    onAction: (CategoriesContract.UiAction) -> Unit,
+    uiState: UiState,
+    uiEffect: Flow<UiEffect>,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToCategoryDetails: () -> Unit,
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            CategoriesContract.UiEffect.NavigateToCategoryDetails -> onNavigateToCategoryDetails()
+            UiEffect.NavigateToCategoryDetails -> onNavigateToCategoryDetails()
         }
     }
 
@@ -68,7 +77,7 @@ fun CategoriesScreen(
                 Box {
                     CategoryItem(
                         category = item,
-                        onCategoryClick = { onAction(CategoriesContract.UiAction.OnCategoryClick) },
+                        onCategoryClick = { coroutineScope.launch { onAction.emit(UiAction.OnCategoryClick) } },
                     )
                 }
             }
@@ -81,13 +90,13 @@ fun CategoriesScreen(
 @PreviewLightDark
 @Composable
 fun CategoriesScreenPreview(
-    @PreviewParameter(CategoriesScreenPreviewProvider::class) uiState: CategoriesContract.UiState,
+    @PreviewParameter(CategoriesScreenPreviewProvider::class) uiState: UiState,
 ) {
     LoopaTheme {
         CategoriesScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToCategoryDetails = {},
         )
     }
