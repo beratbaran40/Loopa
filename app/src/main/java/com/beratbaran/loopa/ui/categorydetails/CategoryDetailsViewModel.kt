@@ -1,23 +1,27 @@
 package com.beratbaran.loopa.ui.categorydetails
 
 import com.beratbaran.loopa.ui.base.BaseViewModel
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiAction
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiEffect
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiState
+
 
 class CategoryDetailsViewModel :
-    BaseViewModel<CategoryDetailsContract.UiState, CategoryDetailsContract.UiEffect>(
-        initialState = CategoryDetailsContract.UiState()
+    BaseViewModel<UiState, UiAction, UiEffect>(
+        initialState = UiState()
     ) {
-    fun onAction(action: CategoryDetailsContract.UiAction) {
+    override suspend fun handleAction(action: UiAction) {
         when (action) {
-            CategoryDetailsContract.UiAction.OnDetailsClick -> {
-                setEffect(CategoryDetailsContract.UiEffect.NavigateToDetails)
+            UiAction.OnDetailsClick -> {
+                setEffect(UiEffect.NavigateToDetails)
             }
 
-            CategoryDetailsContract.UiAction.OnToggleFavorite -> {
+            UiAction.OnToggleFavorite -> {
                 setState { copy(isFavorite = !isFavorite) }
             }
 
-            CategoryDetailsContract.UiAction.OnBackClick -> {
-                setEffect(CategoryDetailsContract.UiEffect.NavigateToBack)
+            UiAction.OnBackClick -> {
+                setEffect(UiEffect.NavigateToBack)
             }
         }
     }

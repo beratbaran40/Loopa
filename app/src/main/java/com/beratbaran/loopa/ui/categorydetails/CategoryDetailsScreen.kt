@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,22 +32,29 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiAction
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiEffect
+import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun CategoryDetailsScreen(
-    uiState: CategoryDetailsContract.UiState,
-    uiEffect: Flow<CategoryDetailsContract.UiEffect>,
-    onAction: (CategoryDetailsContract.UiAction) -> Unit,
+    uiState: UiState,
+    uiEffect: Flow<UiEffect>,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToDetails: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            CategoryDetailsContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
-            CategoryDetailsContract.UiEffect.NavigateToBack -> onNavigateToBack()
+            UiEffect.NavigateToDetails -> onNavigateToDetails()
+            UiEffect.NavigateToBack -> onNavigateToBack()
         }
     }
 
@@ -107,8 +115,8 @@ fun CategoryDetailsScreen(
         uiState.places.forEachIndexed { index, place ->
             DetailItem(
                 place = place,
-                onFavoriteClick = { onAction(CategoryDetailsContract.UiAction.OnToggleFavorite) },
-                onDetailsClick = { onAction(CategoryDetailsContract.UiAction.OnDetailsClick) },
+                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleFavorite) } },
+                onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick) } },
             )
 
             if (index != uiState.places.lastIndex) {
@@ -123,13 +131,13 @@ fun CategoryDetailsScreen(
 @PreviewLightDark
 @Composable
 fun CategoryDetailsScreenPreview(
-    @PreviewParameter(CategoryDetailsScreenPreviewProvider::class) uiState: CategoryDetailsContract.UiState,
+    @PreviewParameter(CategoryDetailsScreenPreviewProvider::class) uiState: UiState,
 ) {
     LoopaTheme {
         CategoryDetailsScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToDetails = {},
             onNavigateToBack = {},
         )
