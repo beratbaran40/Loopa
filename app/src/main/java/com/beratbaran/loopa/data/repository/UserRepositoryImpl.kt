@@ -37,7 +37,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun loginUser(
         email: String,
-        password: String
+        password: String,
     ): Result<Unit> {
         return try {
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
@@ -51,5 +51,4 @@ class UserRepositoryImpl @Inject constructor(
             Result.failure(e)
         }
     }
-
-    }
+}
