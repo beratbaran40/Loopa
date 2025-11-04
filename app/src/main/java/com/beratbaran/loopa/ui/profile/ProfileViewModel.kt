@@ -223,8 +223,6 @@ class ProfileViewModel @Inject constructor(
                 it.copy(showPassword = !it.showPassword)
             }
 
-            UiAction.OnBackClick -> _uiEffect.trySend(ProfileContract.UiEffect.NavigateToBack)
-
             UiAction.OnLogoutClick -> _uiState.update { it.copy(showLogoutDialog = true) }
 
             UiAction.OnLogoutDismissClick -> _uiState.update { it.copy(showLogoutDialog = false) }

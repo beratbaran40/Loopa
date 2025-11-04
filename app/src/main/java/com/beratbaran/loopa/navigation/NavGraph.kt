@@ -316,15 +316,6 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::onAction,
 
-                onNavigateToBack = {
-                    navController.navigate(Screen.Homepage) {
-                        popUpTo(Screen.ProfileScreen) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                },
-
                 onNavigateToOnboarding = {
                     navController.navigate(Screen.Onboarding) {
                         popUpTo(Screen.ProfileScreen) {

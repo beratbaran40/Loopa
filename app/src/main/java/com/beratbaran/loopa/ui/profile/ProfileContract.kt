@@ -40,7 +40,6 @@ object ProfileContract {
         data class OnEmailTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data object OnToggleShowPassword : UiAction
-        data object OnBackClick : UiAction
         data object OnEditProfileClick : UiAction
         data object OnCancelChangesClick : UiAction
         data object OnLogoutClick : UiAction
@@ -52,7 +51,6 @@ object ProfileContract {
     }
 
     sealed interface UiEffect {
-        data object NavigateToBack : UiEffect
         data object NavigateToOnboarding : UiEffect
         data object ShowPasswordDoneToast : UiEffect
     }

@@ -1,13 +1,11 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -29,23 +27,12 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 @Composable
 fun ProfileHeader(
     onAction: (UiAction) -> Unit,
-    onNavigateToBack: () -> Unit,
     isInEditMode: Boolean,
     areFieldsEmpty: Boolean,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Icon(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 18.dp, top = 18.dp)
-                .size(24.dp)
-                .clickable { onNavigateToBack() },
-            painter = painterResource(id = R.drawable.ic_back),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onBackground,
-        )
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(R.string.profile_screen_page_name),
@@ -141,7 +128,6 @@ fun ProfileHeaderPreview() {
     LoopaTheme {
         ProfileHeader(
             onAction = {},
-            onNavigateToBack = {},
             isInEditMode = true,
             areFieldsEmpty = false,
         )

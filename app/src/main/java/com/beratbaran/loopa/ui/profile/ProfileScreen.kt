@@ -34,7 +34,6 @@ fun ProfileScreen(
     uiState: ProfileContract.UiState,
     uiEffect: Flow<UiEffect>,
     onAction: (ProfileContract.UiAction) -> Unit,
-    onNavigateToBack: () -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
 
@@ -42,7 +41,6 @@ fun ProfileScreen(
 
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            UiEffect.NavigateToBack -> onNavigateToBack()
             UiEffect.NavigateToOnboarding -> onNavigateToOnboarding()
             UiEffect.ShowPasswordDoneToast -> Toast.makeText(
                 context, context.getString(R.string.profile_screen_toast_message_text),
@@ -62,7 +60,6 @@ fun ProfileScreen(
     ) {
         ProfileHeader(
             onAction = onAction,
-            onNavigateToBack = onNavigateToBack,
             isInEditMode = uiState.isInEditMode,
             areFieldsEmpty = uiState.areFieldsEmpty,
         )
@@ -125,7 +122,6 @@ fun ProfileScreenPreview(
             uiState = uiState,
             uiEffect = emptyFlow(),
             onAction = {},
-            onNavigateToBack = {},
             onNavigateToOnboarding = {},
         )
     }
