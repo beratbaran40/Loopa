@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,15 +29,19 @@ import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.favorites.FavoritesContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun FavoritesScreen(
     uiState: FavoritesContract.UiState,
     uiEffect: Flow<FavoritesContract.UiEffect>,
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToDetails: () -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             FavoritesContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -70,8 +75,8 @@ fun FavoritesScreen(
             items(uiState.favorites) { item ->
                 FavoriteItem(
                     item = item,
-                    onUnFavoriteClick = { onAction(UiAction.OnUnFavoriteClick) },
-                    onDetailsClick = { onAction(UiAction.OnDetailsClick) }
+                    onUnFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.OnUnFavoriteClick) } },
+                    onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick) } }
                 )
             }
         }
@@ -89,7 +94,7 @@ fun FavoritesScreenPreview(
         FavoritesScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToDetails = {},
         )
     }
