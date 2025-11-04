@@ -67,6 +67,7 @@ import com.beratbaran.loopa.common.showToast
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
@@ -74,7 +75,7 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     uiState: RegisterContract.UiState,
     uiEffect: Flow<RegisterContract.UiEffect>,
-    onAction: (UiAction) -> Unit,
+    onAction: MutableSharedFlow<UiAction>,
     onNavigateToHomepage: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
@@ -166,14 +167,16 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnNameTextFieldFocusChange(
-                            focusState.isFocused
+                    coroutineScope.launch {
+                        onAction.emit(
+                            UiAction.OnNameTextFieldFocusChange(
+                                focusState.isFocused
+                            )
                         )
-                    )
+                    }
                 },
             value = uiState.name,
-            onValueChange = { onAction(UiAction.OnNameChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnNameChange(it)) } },
             label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -235,14 +238,16 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnSurnameTextFieldFocusChange(
-                            focusState.isFocused
+                    coroutineScope.launch {
+                        onAction.emit(
+                            UiAction.OnSurnameTextFieldFocusChange(
+                                focusState.isFocused
+                            )
                         )
-                    )
+                    }
                 },
             value = uiState.surname,
-            onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnSurnameChange(it)) } },
             label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -305,15 +310,19 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnEmailTextFieldFocusChange(
-                            focusState.isFocused
+                    coroutineScope.launch {
+                        onAction.emit(
+                            UiAction.OnEmailTextFieldFocusChange(
+                                focusState.isFocused
+                            )
                         )
-                    )
+                    }
                 },
             value = uiState.email,
             onValueChange = {
-                onAction(UiAction.OnEmailChange(it))
+                coroutineScope.launch {
+                    onAction.emit(UiAction.OnEmailChange(it))
+                }
             },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
@@ -377,14 +386,16 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    onAction(
-                        UiAction.OnPasswordTextFieldFocusChange(
-                            focusState.isFocused
+                    coroutineScope.launch {
+                        onAction.emit(
+                            UiAction.OnPasswordTextFieldFocusChange(
+                                focusState.isFocused
+                            )
                         )
-                    )
+                    }
                 },
             value = uiState.password,
-            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
+            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnPasswordChange(it)) } },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -403,7 +414,7 @@ fun RegisterScreen(
             visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                 PasswordVisualTransformation(),
             trailingIcon = {
-                IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
+                IconButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleShowPassword) } }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(
                             if (uiState.showPassword) R.drawable.ic_visibility
@@ -421,7 +432,9 @@ fun RegisterScreen(
                 onDone = {
                     if (!uiState.isLoading) {
                         keyboardController?.hide()
-                        onAction(UiAction.OnRegisterClick)
+                        coroutineScope.launch {
+                            onAction.emit(UiAction.OnRegisterClick)
+                        }
                     }
                 }
             ),
@@ -479,7 +492,7 @@ fun RegisterScreen(
                 .bringIntoViewRequester(bringIntoViewRequester)
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { onAction(UiAction.OnRegisterClick) },
+            onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRegisterClick) } },
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -543,7 +556,7 @@ fun RegisterScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    onClick = { onAction(UiAction.OnRegisterClick) },
+                    onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRegisterClick) } },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -569,7 +582,7 @@ fun RegisterScreenPreview(
         RegisterScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = {},
+            onAction = MutableSharedFlow(),
             onNavigateToHomepage = {},
             onNavigateToBack = {}
         )

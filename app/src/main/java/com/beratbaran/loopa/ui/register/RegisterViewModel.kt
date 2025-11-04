@@ -14,35 +14,35 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository,
-) : BaseViewModel<UiState, UiEffect>(UiState()) {
+) : BaseViewModel<UiState, UiAction, UiEffect>(UiState()) {
 
-    fun onAction(uiAction: UiAction) {
-        when (uiAction) {
+    override suspend fun handleAction(action: UiAction) {
+        when (action) {
             UiAction.OnRegisterClick -> handleRegisterClick()
 
             is UiAction.OnNameChange -> setState {
                 copy(
-                    name = uiAction.name,
-                    isRegisterEnabled = checkRegisterState(uiAction.name, surname, email, password)
+                    name = action.name,
+                    isRegisterEnabled = checkRegisterState(action.name, surname, email, password)
                 )
             }
 
             is UiAction.OnSurnameChange -> setState {
                 copy(
-                    surname = uiAction.surname,
-                    isRegisterEnabled = checkRegisterState(name, uiAction.surname, email, password)
+                    surname = action.surname,
+                    isRegisterEnabled = checkRegisterState(name, action.surname, email, password)
                 )
             }
 
             is UiAction.OnEmailChange -> setState {
                 copy(
-                    email = uiAction.email,
-                    isRegisterEnabled = checkRegisterState(name, surname, uiAction.email, password)
+                    email = action.email,
+                    isRegisterEnabled = checkRegisterState(name, surname, action.email, password)
                 )
             }
 
             is UiAction.OnPasswordChange -> setState {
-                val newPassword = uiAction.password
+                val newPassword = action.password
                 copy(
                     password = newPassword,
                     isRegisterEnabled = checkRegisterState(name, surname, email, newPassword),
@@ -50,15 +50,10 @@ class RegisterViewModel @Inject constructor(
                 )
             }
 
-            is UiAction.OnNameTextFieldFocusChange -> setState { copy(isNameTextFieldFocused = uiAction.isFocused) }
-            is UiAction.OnEmailTextFieldFocusChange -> setState { copy(isEmailTextFieldFocused = uiAction.isFocused) }
-            is UiAction.OnSurnameTextFieldFocusChange -> setState {
-                copy(isSurnameTextFieldFocused = uiAction.isFocused)
-            }
-
-            is UiAction.OnPasswordTextFieldFocusChange -> setState {
-                copy(isPasswordTextFieldFocused = uiAction.isFocused)
-            }
+            is UiAction.OnNameTextFieldFocusChange -> setState { copy(isNameTextFieldFocused = action.isFocused) }
+            is UiAction.OnEmailTextFieldFocusChange -> setState { copy(isEmailTextFieldFocused = action.isFocused) }
+            is UiAction.OnSurnameTextFieldFocusChange -> setState { copy(isSurnameTextFieldFocused = action.isFocused) }
+            is UiAction.OnPasswordTextFieldFocusChange -> setState { copy(isPasswordTextFieldFocused = action.isFocused) }
 
             UiAction.OnToggleShowPassword -> setState { copy(showPassword = !showPassword) }
             UiAction.OnBackClick -> setEffect(UiEffect.NavigateToBack)
