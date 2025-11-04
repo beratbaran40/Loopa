@@ -10,8 +10,6 @@ import javax.inject.Inject
 class PlaceRepository @Inject constructor(
     private val api: LoopaApi,
 ) {
-    suspend fun getUsers(): List<UserDto> = api.getUsers()
-
     suspend fun getPlaces(): List<PlaceDto> = api.getPlaces()
 
     suspend fun getCategories(): List<CategoryDto> = api.getCategories()
