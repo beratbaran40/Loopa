@@ -1,6 +1,5 @@
 package com.beratbaran.loopa.ui.login
 
-
 object LoginContract {
     data class UiState(
         val email: String = "",
