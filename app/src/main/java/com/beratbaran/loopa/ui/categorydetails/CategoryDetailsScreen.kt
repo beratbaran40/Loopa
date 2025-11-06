@@ -18,7 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,20 +36,16 @@ import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiEffect
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 @Composable
 fun CategoryDetailsScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToDetails: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -115,8 +110,8 @@ fun CategoryDetailsScreen(
         uiState.places.forEachIndexed { index, place ->
             DetailItem(
                 place = place,
-                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleFavorite) } },
-                onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick) } },
+                onFavoriteClick = { onAction(UiAction.OnToggleFavorite) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick) },
             )
 
             if (index != uiState.places.lastIndex) {
@@ -137,7 +132,7 @@ fun CategoryDetailsScreenPreview(
         CategoryDetailsScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToDetails = {},
             onNavigateToBack = {},
         )

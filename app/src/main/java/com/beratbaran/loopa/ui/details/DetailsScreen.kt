@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -22,25 +21,21 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
-import com.beratbaran.loopa.ui.theme.LoopaTheme
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 import com.beratbaran.loopa.ui.details.DetailsContract.UiAction
 import com.beratbaran.loopa.ui.details.DetailsContract.UiEffect
 import com.beratbaran.loopa.ui.details.DetailsContract.UiState
+import com.beratbaran.loopa.ui.theme.LoopaTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun DetailsScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToBack: () -> Unit,
     onNavigateToMaps: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToMaps -> onNavigateToMaps()
@@ -62,11 +57,11 @@ fun DetailsScreen(
                 name = uiState.placeName,
                 rating = uiState.placeRating,
                 mapButton = stringResource(R.string.details_screen_show_on_map_text),
-                navigateToMaps = { coroutineScope.launch { onAction.emit(UiAction.ShowOnMapClick) } },
+                navigateToMaps = { onAction(UiAction.ShowOnMapClick) },
                 imageUrl = uiState.placeImageUrl,
                 isFavorite = uiState.isFavorite,
-                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.ToggleFavorite) } },
-                onNavigateToBack = { coroutineScope.launch { onAction.emit(UiAction.OnBackClick) } }
+                onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
+                onNavigateToBack = { onAction(UiAction.OnBackClick) }
             )
 
             Column(
@@ -104,13 +99,7 @@ fun DetailsScreen(
                 DetailsGrid(
                     uiState = uiState,
                     onImageSelected = {
-                        coroutineScope.launch {
-                            onAction.emit(
-                                UiAction.OnImageSelected(
-                                    it
-                                )
-                            )
-                        }
+                        onAction(UiAction.OnImageSelected(it))
                     }
                 )
             }
@@ -129,7 +118,7 @@ fun DetailsScreenPreview(
         DetailsScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToBack = {},
             onNavigateToMaps = {},
         )

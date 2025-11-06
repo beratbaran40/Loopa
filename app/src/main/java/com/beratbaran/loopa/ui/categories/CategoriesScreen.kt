@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,26 +30,20 @@ import com.beratbaran.loopa.ui.categories.CategoriesContract.UiEffect
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 @Composable
 fun CategoriesScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToCategoryDetails: () -> Unit,
 ) {
-
-    val coroutineScope = rememberCoroutineScope()
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToCategoryDetails -> onNavigateToCategoryDetails()
         }
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,13 +70,12 @@ fun CategoriesScreen(
                 Box {
                     CategoryItem(
                         category = item,
-                        onCategoryClick = { coroutineScope.launch { onAction.emit(UiAction.OnCategoryClick) } },
+                        onCategoryClick = { onAction(UiAction.OnCategoryClick) },
                     )
                 }
             }
         }
     }
-
     if (uiState.isLoading) LoadingBar()
 }
 
@@ -96,7 +88,7 @@ fun CategoriesScreenPreview(
         CategoriesScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToCategoryDetails = {},
         )
     }

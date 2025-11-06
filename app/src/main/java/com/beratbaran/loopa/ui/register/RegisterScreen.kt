@@ -64,10 +64,10 @@ import androidx.compose.ui.window.Dialog
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.common.showToast
+import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
@@ -75,7 +75,7 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     uiState: RegisterContract.UiState,
     uiEffect: Flow<RegisterContract.UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
@@ -167,16 +167,10 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch {
-                        onAction.emit(
-                            UiAction.OnNameTextFieldFocusChange(
-                                focusState.isFocused
-                            )
-                        )
-                    }
+                    onAction(UiAction.OnNameTextFieldFocusChange(focusState.isFocused))
                 },
             value = uiState.name,
-            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnNameChange(it)) } },
+            onValueChange = { onAction(UiAction.OnNameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -238,16 +232,11 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch {
-                        onAction.emit(
-                            UiAction.OnSurnameTextFieldFocusChange(
-                                focusState.isFocused
-                            )
-                        )
-                    }
+                    onAction(UiAction.OnSurnameTextFieldFocusChange(focusState.isFocused))
+
                 },
             value = uiState.surname,
-            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnSurnameChange(it)) } },
+            onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
             label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -310,19 +299,11 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch {
-                        onAction.emit(
-                            UiAction.OnEmailTextFieldFocusChange(
-                                focusState.isFocused
-                            )
-                        )
-                    }
+                    onAction(UiAction.OnEmailTextFieldFocusChange(focusState.isFocused))
                 },
             value = uiState.email,
             onValueChange = {
-                coroutineScope.launch {
-                    onAction.emit(UiAction.OnEmailChange(it))
-                }
+                onAction(UiAction.OnEmailChange(it))
             },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
@@ -386,16 +367,10 @@ fun RegisterScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch {
-                        onAction.emit(
-                            UiAction.OnPasswordTextFieldFocusChange(
-                                focusState.isFocused
-                            )
-                        )
-                    }
+                    onAction(UiAction.OnPasswordTextFieldFocusChange(focusState.isFocused))
                 },
             value = uiState.password,
-            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnPasswordChange(it)) } },
+            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
             enabled = !uiState.isLoading,
@@ -414,7 +389,7 @@ fun RegisterScreen(
             visualTransformation = if (uiState.showPassword) VisualTransformation.None else
                 PasswordVisualTransformation(),
             trailingIcon = {
-                IconButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleShowPassword) } }) {
+                IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(
                             if (uiState.showPassword) R.drawable.ic_visibility
@@ -432,9 +407,7 @@ fun RegisterScreen(
                 onDone = {
                     if (!uiState.isLoading) {
                         keyboardController?.hide()
-                        coroutineScope.launch {
-                            onAction.emit(UiAction.OnRegisterClick)
-                        }
+                        onAction(UiAction.OnRegisterClick)
                     }
                 }
             ),
@@ -492,7 +465,7 @@ fun RegisterScreen(
                 .bringIntoViewRequester(bringIntoViewRequester)
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRegisterClick) } },
+            onClick = { onAction(UiAction.OnRegisterClick) },
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -556,7 +529,7 @@ fun RegisterScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRegisterClick) } },
+                    onClick = { onAction(UiAction.OnRegisterClick) },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -571,6 +544,7 @@ fun RegisterScreen(
             }
         }
     }
+    if (uiState.isLoading) LoadingBar()
 }
 
 @PreviewLightDark
@@ -582,7 +556,7 @@ fun RegisterScreenPreview(
         RegisterScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToHomepage = {},
             onNavigateToBack = {}
         )

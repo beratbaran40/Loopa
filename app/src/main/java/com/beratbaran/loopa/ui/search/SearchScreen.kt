@@ -15,7 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,21 +31,16 @@ import com.beratbaran.loopa.ui.search.SearchContract.UiEffect
 import com.beratbaran.loopa.ui.search.SearchContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToDetails: () -> Unit,
     onNavigateToRandomPlace: () -> Unit,
 ) {
-
-    val coroutineScope = rememberCoroutineScope()
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -81,14 +75,14 @@ fun SearchScreen(
             SearchBar(
                 modifier = Modifier.weight(1f),
                 query = uiState.query,
-                onQueryChange = { coroutineScope.launch { onAction.emit(UiAction.OnQueryChange(it)) } },
-                onSearch = { coroutineScope.launch { onAction.emit(UiAction.OnQueryChange(uiState.query)) } },
-                onClear = { coroutineScope.launch { onAction.emit(UiAction.ClearQuery) } },
+                onQueryChange = { onAction(UiAction.OnQueryChange(it)) },
+                onSearch = { onAction(UiAction.OnQueryChange(uiState.query)) },
+                onClear = { onAction(UiAction.ClearQuery) },
                 uiState = uiState,
             )
 
             RandomPlaceButton(
-                onClick = { coroutineScope.launch { onAction.emit(UiAction.OnRandomPlaceClick("")) } },
+                onClick = { onAction(UiAction.OnRandomPlaceClick("")) },
             )
         }
 
@@ -111,8 +105,8 @@ fun SearchScreen(
         uiState.places.forEachIndexed { index, place ->
             SearchDetailItem(
                 place = place,
-                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.ToggleFavorite(place.id.toString())) } },
-                onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick(place.id.toString())) } },
+                onFavoriteClick = { onAction(UiAction.ToggleFavorite(place.id.toString())) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id.toString())) },
             )
 
             if (index != uiState.places.lastIndex)
@@ -132,7 +126,7 @@ fun SearchScreenPreview(
         SearchScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToDetails = {},
             onNavigateToRandomPlace = {},
         )

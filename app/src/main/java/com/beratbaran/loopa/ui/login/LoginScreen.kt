@@ -60,10 +60,10 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.common.showToast
+import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
@@ -71,7 +71,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     uiState: LoginContract.UiState,
     uiEffect: Flow<LoginContract.UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToHomepage: () -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
@@ -86,19 +86,15 @@ fun LoginScreen(
     } else {
         PasswordVisualTransformation()
     }
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             LoginContract.UiEffect.NavigateToHomePage -> onNavigateToHomepage()
             LoginContract.UiEffect.NavigateToBack -> onNavigateToBack()
             is LoginContract.UiEffect.ShowToast -> context.showToast(effect.message)
-
         }
     }
-
     Column(
         modifier = Modifier
-
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
@@ -109,8 +105,7 @@ fun LoginScreen(
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
-
-                ) {
+            ) {
                 focusManager.clearFocus()
                 keyboardController?.hide()
             },
@@ -141,7 +136,6 @@ fun LoginScreen(
                     tint = MaterialTheme.colorScheme.onBackground,
                 )
             }
-
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = stringResource(R.string.app_name),
@@ -150,7 +144,6 @@ fun LoginScreen(
                 )
             )
         }
-
         Image(
             modifier = Modifier
                 .height(240.dp)
@@ -158,7 +151,6 @@ fun LoginScreen(
             painter = painterResource(id = R.drawable.loopa),
             contentDescription = null,
         )
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -171,10 +163,10 @@ fun LoginScreen(
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch { onAction.emit(UiAction.OnEmailTextFieldFocusChange(focusState.isFocused)) }
+                    onAction(UiAction.OnEmailTextFieldFocusChange(focusState.isFocused))
                 },
             value = uiState.email,
-            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnEmailChange(it)) } },
+            onValueChange = { onAction(UiAction.OnEmailChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_mail_text)) },
             singleLine = true,
             isError = uiState.supportingTextEmail.isNotEmpty(),
@@ -232,22 +224,14 @@ fun LoginScreen(
                 .bringIntoViewRequester(bringIntoViewRequester)
                 .onFocusEvent { event ->
                     if (event.isFocused) {
-                        coroutineScope.launch {
-                            bringIntoViewRequester.bringIntoView()
-                        }
+                        coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
                     }
                 }
                 .onFocusChanged { focusState ->
-                    coroutineScope.launch {
-                        onAction.emit(
-                            UiAction.OnPasswordTextFieldFocusChange(
-                                focusState.isFocused
-                            )
-                        )
-                    }
+                    onAction(UiAction.OnPasswordTextFieldFocusChange(focusState.isFocused))
                 },
             value = uiState.password,
-            onValueChange = { coroutineScope.launch { onAction.emit(UiAction.OnPasswordChange(it)) } },
+            onValueChange = { onAction(UiAction.OnPasswordChange(it)) },
             label = { Text(text = stringResource(R.string.login_label_password)) },
             singleLine = true,
             isError = uiState.supportingTextPassword.isNotEmpty(),
@@ -265,7 +249,7 @@ fun LoginScreen(
             },
             visualTransformation = visualTransformation,
             trailingIcon = {
-                IconButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnToggleShowPassword) } }) {
+                IconButton(onClick = { onAction(UiAction.OnToggleShowPassword) }) {
                     Icon(
                         imageVector = ImageVector.vectorResource(
                             if (uiState.showPassword) R.drawable.ic_visibility
@@ -282,9 +266,7 @@ fun LoginScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
-                    coroutineScope.launch {
-                        onAction.emit(UiAction.OnLoginClicked)
-                    }
+                    onAction(UiAction.OnLoginClicked)
                 }
             ),
             shape = RoundedCornerShape(12.dp),
@@ -320,7 +302,7 @@ fun LoginScreen(
                 .bringIntoViewRequester(bringIntoViewRequester)
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { coroutineScope.launch { onAction.emit(UiAction.OnLoginClicked) } },
+            onClick = { onAction(UiAction.OnLoginClicked) },
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -340,6 +322,7 @@ fun LoginScreen(
             )
         }
     }
+    if (uiState.isLoading) LoadingBar()
 }
 
 @PreviewLightDark
@@ -351,7 +334,7 @@ fun LoginScreenPreview(
         LoginScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToHomepage = {},
             onNavigateToBack = {},
         )

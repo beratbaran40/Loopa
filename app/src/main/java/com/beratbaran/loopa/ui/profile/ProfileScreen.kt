@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,24 +24,21 @@ import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
+import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.profile.ProfileContract.UiEffect
+import com.beratbaran.loopa.ui.profile.ProfileContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
-import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
-import com.beratbaran.loopa.ui.profile.ProfileContract.UiState
-import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToOnboarding: () -> Unit,
 ) {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
@@ -82,16 +78,16 @@ fun ProfileScreen(
 
     if (uiState.showLogoutDialog) {
         AlertDialog(
-            onDismissRequest = { coroutineScope.launch { onAction.emit(UiAction.OnLogoutDismissClick) } },
+            onDismissRequest = { onAction(UiAction.OnLogoutDismissClick) },
             title = { Text(text = stringResource(id = R.string.profile_screen_logout_dialog_title)) },
             text = { Text(text = stringResource(id = R.string.profile_screen_logout_dialog_text)) },
             confirmButton = {
-                TextButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnLogoutConfirmClick) } }) {
+                TextButton(onClick = { onAction(UiAction.OnLogoutConfirmClick) }) {
                     Text(text = stringResource(id = R.string.profile_screen_logout_dialog_confirm_button))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnLogoutDismissClick) } }) {
+                TextButton(onClick = { onAction(UiAction.OnLogoutDismissClick) }) {
                     Text(text = stringResource(id = R.string.profile_screen_logout_dialog_dismiss_button))
                 }
             }
@@ -99,16 +95,16 @@ fun ProfileScreen(
     }
     if (uiState.showDeleteAccountDialog) {
         AlertDialog(
-            onDismissRequest = { coroutineScope.launch { onAction.emit(UiAction.OnDeleteAccountDismissClick) } },
+            onDismissRequest = { onAction(UiAction.OnDeleteAccountDismissClick) },
             title = { Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_title)) },
             text = { Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_text)) },
             confirmButton = {
-                TextButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnDeleteAccountConfirmClick)  }}) {
+                TextButton(onClick = { onAction(UiAction.OnDeleteAccountConfirmClick) }) {
                     Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_confirm_button))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { coroutineScope.launch { onAction.emit(UiAction.OnDeleteAccountDismissClick) } }) {
+                TextButton(onClick = { onAction(UiAction.OnDeleteAccountDismissClick) }) {
                     Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_dismiss_button))
                 }
             }
@@ -126,7 +122,7 @@ fun ProfileScreenPreview(
         ProfileScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToOnboarding = {},
         )
     }

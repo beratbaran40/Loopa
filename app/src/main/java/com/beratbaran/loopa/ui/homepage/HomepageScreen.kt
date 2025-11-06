@@ -19,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,20 +33,16 @@ import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.homepage.HomepageContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomepageScreen(
     uiState: HomepageContract.UiState,
     uiEffect: Flow<HomepageContract.UiEffect>,
-    onAction: MutableSharedFlow<UiAction>,
+    onAction: (UiAction) -> Unit,
     onNavigateToDetails: () -> Unit,
     onNavigateToFavorites: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
             HomepageContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
@@ -102,8 +97,8 @@ fun HomepageScreen(
                     imageUrl = place.imageUrl,
                     rating = place.rating,
                     isFavorite = place.isFavorite,
-                    onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.ToggleFavorite) } },
-                    onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick) } }
+                    onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
+                    onDetailsClick = { onAction(UiAction.OnDetailsClick) }
                 )
             }
         }
@@ -126,15 +121,14 @@ fun HomepageScreen(
                 imageUrl = place.imageUrl,
                 rating = place.rating,
                 isFavorite = place.isFavorite,
-                onFavoriteClick = { coroutineScope.launch { onAction.emit(UiAction.ToggleFavorite) } },
-                onDetailsClick = { coroutineScope.launch { onAction.emit(UiAction.OnDetailsClick) } },
+                onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick) },
             )
             if (index != uiState.wannaLookPlaces.lastIndex) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
-
     if (uiState.isLoading) LoadingBar()
 }
 
@@ -147,7 +141,7 @@ fun HomepageScreenPreview(
         HomepageScreen(
             uiState = uiState,
             uiEffect = emptyFlow(),
-            onAction = MutableSharedFlow(),
+            onAction = {},
             onNavigateToDetails = {},
             onNavigateToFavorites = {},
         )
