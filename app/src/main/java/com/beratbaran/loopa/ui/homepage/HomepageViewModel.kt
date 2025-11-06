@@ -8,7 +8,7 @@ import com.beratbaran.loopa.ui.homepage.HomepageContract.UiEffect
 class HomepageViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
     initialState = UiState()
 ) {
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnDetailsClick -> setEffect(UiEffect.NavigateToDetails)
             UiAction.ToggleFavorite -> setEffect(UiEffect.NavigateToFavorites)
