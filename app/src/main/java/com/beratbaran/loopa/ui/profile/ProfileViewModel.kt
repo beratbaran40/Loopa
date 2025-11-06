@@ -15,7 +15,7 @@ class ProfileViewModel @Inject constructor(
 ) : BaseViewModel<UiState, UiAction, UiEffect>(
     initialState = UiState()
 ) {
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnEditProfileClick -> setState {
                 copy(

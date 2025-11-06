@@ -20,7 +20,7 @@ class OnboardingViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
         }
     }
 
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when(action) {
             UiAction.OnLoginClick -> setEffect(UiEffect.NavigateToLogin)
             UiAction.OnRegisterClick -> setEffect(UiEffect.NavigateToRegister)

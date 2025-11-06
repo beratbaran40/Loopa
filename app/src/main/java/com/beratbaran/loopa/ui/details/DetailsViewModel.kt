@@ -14,24 +14,15 @@ class DetailsViewModel :
         setState { copy(selectedIndex = index) }
     }
 
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
+            UiAction.ShowOnMapClick -> { setEffect(UiEffect.NavigateToMaps) }
 
-            UiAction.ShowOnMapClick -> {
-                setEffect(UiEffect.NavigateToMaps)
-            }
+            UiAction.OnBackClick -> { setEffect(UiEffect.NavigateToBack) }
 
-            UiAction.OnBackClick -> {
-                setEffect(UiEffect.NavigateToBack)
-            }
+            UiAction.ToggleFavorite -> { setState { copy(isFavorite = !isFavorite) } }
 
-            UiAction.ToggleFavorite -> {
-                setState { copy(isFavorite = !isFavorite) }
-            }
-
-            is UiAction.OnImageSelected -> {
-                onImageSelected(action.index)
-            }
+            is UiAction.OnImageSelected -> { onImageSelected(action.index) }
         }
     }
 }

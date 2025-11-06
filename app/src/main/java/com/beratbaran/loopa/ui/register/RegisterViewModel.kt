@@ -16,7 +16,7 @@ class RegisterViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) : BaseViewModel<UiState, UiAction, UiEffect>(UiState()) {
 
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnRegisterClick -> handleRegisterClick()
 

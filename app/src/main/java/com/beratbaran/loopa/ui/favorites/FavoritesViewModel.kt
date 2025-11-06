@@ -9,7 +9,7 @@ import com.beratbaran.loopa.ui.favorites.FavoritesContract.UiState
 class FavoritesViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
     initialState = UiState()
 ) {
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnDetailsClick -> {
                 setEffect(UiEffect.NavigateToDetails)

@@ -16,7 +16,7 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginContract.UiState, UiAction, UiEffect>(
     initialState = LoginContract.UiState()
 ) {
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnLoginClicked -> handleLoginClick()
 
@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
                 copy(
                     password = action.password,
                     isLoginButtonEnabled = checkLoginButtonState(email, action.password),
-                    )
+                )
             }
 
             is UiAction.OnEmailTextFieldFocusChange -> setState {
@@ -68,12 +68,16 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun login() = viewModelScope.launch {
+        setState { copy(isLoading = true) }
         userRepository.loginUser(
             email = uiState.value.email,
             password = uiState.value.password,
         ).fold(
             onSuccess = { setEffect(UiEffect.NavigateToHomePage) },
-            onFailure = { setEffect(UiEffect.ShowToast(it.message.orEmpty())) }
+            onFailure = {
+                setState { copy(isLoading = false) }
+                setEffect(UiEffect.ShowToast(it.message.orEmpty()))
+            }
         )
 
     }

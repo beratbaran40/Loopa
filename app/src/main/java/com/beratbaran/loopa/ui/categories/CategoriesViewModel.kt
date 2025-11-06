@@ -16,7 +16,7 @@ class CategoriesViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
         }
     }
 
-    override suspend fun handleAction(action: UiAction) {
+    override fun handleAction(action: UiAction) {
         when (action) {
             UiAction.OnCategoryClick -> {
                 setEffect(UiEffect.NavigateToCategoryDetails)
