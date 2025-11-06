@@ -47,7 +47,7 @@ fun NavGraph(
             OnboardingScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
                 onNavigateToRegister = {
                     navController.navigate(Screen.Register) {
                         popUpTo(Screen.Onboarding) {
@@ -74,7 +74,7 @@ fun NavGraph(
             RegisterScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
                 onNavigateToHomepage = {
                     navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.Register) {
@@ -101,7 +101,7 @@ fun NavGraph(
             LoginScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
                 onNavigateToHomepage = {
                     navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.Login) {
@@ -128,7 +128,7 @@ fun NavGraph(
             HomepageScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToDetails = {
                     navController.navigate(Screen.DetailsScreen) {
@@ -157,7 +157,7 @@ fun NavGraph(
             DetailsScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
                 onNavigateToBack = {
                     navController.navigate(Screen.Homepage) {
                         popUpTo(Screen.DetailsScreen) {
@@ -184,7 +184,7 @@ fun NavGraph(
             FavoritesScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToDetails = {
                     navController.navigate(Screen.DetailsScreen) {
@@ -204,7 +204,7 @@ fun NavGraph(
             CategoryDetailsScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToDetails = {
                     navController.navigate(Screen.DetailsScreen) {
@@ -233,7 +233,7 @@ fun NavGraph(
             CategoriesScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToCategoryDetails = {
                     navController.navigate(Screen.CategoryDetailsScreen) {
@@ -253,7 +253,7 @@ fun NavGraph(
             CategoryDetailsScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToDetails = {
                     navController.navigate(Screen.DetailsScreen) {
@@ -281,7 +281,7 @@ fun NavGraph(
             SearchScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToDetails = {
                     navController.navigate(Screen.DetailsScreen) {
@@ -310,7 +310,7 @@ fun NavGraph(
             ProfileScreen(
                 uiState = uiState,
                 uiEffect = viewModel.uiEffect,
-                onAction = viewModel.uiAction,
+                onAction = viewModel::handleAction,
 
                 onNavigateToOnboarding = {
                     navController.navigate(Screen.Onboarding) {
