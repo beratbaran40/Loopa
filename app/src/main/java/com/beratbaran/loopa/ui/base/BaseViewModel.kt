@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,16 +21,7 @@ abstract class BaseViewModel<S : Any, A : Any, E : Any>(initialState: S) : ViewM
         _uiState.update { it.reducer() }
     }
 
-    private val _uiAction = MutableSharedFlow<A>()
-    val uiAction: MutableSharedFlow<A> = _uiAction
-
-    init {
-        viewModelScope.launch {
-            _uiAction.collect { handleAction(it) }
-        }
-    }
-
-    protected abstract suspend fun handleAction(action: A)
+    abstract fun handleAction(action: A)
 
     private val _uiEffect = Channel<E>(capacity = Channel.BUFFERED)
     val uiEffect: Flow<E> = _uiEffect.receiveAsFlow()
