@@ -21,30 +21,19 @@ fun LoopaBottomBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val homeRoute = Screen.Homepage::class.qualifiedName
-    val categoriesRoute = Screen.CategoriesScreen::class.qualifiedName
-    val searchRoute = Screen.SearchScreen::class.qualifiedName
-    val favoritesRoute = Screen.FavoritesScreen::class.qualifiedName
-    val profileRoute = Screen.ProfileScreen::class.qualifiedName
     val items = AppDestination.bottomBarItems
-    val topLevelRoutes = mapOf(
-        "Home" to homeRoute,
-        "Categories" to categoriesRoute,
-        "Search" to searchRoute,
-        "Favorites" to favoritesRoute,
-        "Profile" to profileRoute
-    )
-    val topLevelRoutesSet = topLevelRoutes.values.toSet()
-    val showBottomBar = currentDestination?.hierarchy?.any {
-        it.route?.substringBefore('?') in topLevelRoutesSet
+    val topLevelRoutes = items.map { it.route }.toSet()
+    val showBottomBar = currentDestination?.hierarchy?.any { dest ->
+        dest.route in topLevelRoutes
     } == true
 
     if (!showBottomBar) return
+
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         items.forEach { screen ->
+            val screenRoute = screen.route
             val selected = currentDestination?.hierarchy?.any { dest ->
-                val targetTab = topLevelRoutes[screen.route] ?: return@any false
-                dest.route?.substringBefore('?') == targetTab
+                dest.route == screenRoute
             } == true
 
             NavigationBarItem(
@@ -56,7 +45,13 @@ fun LoopaBottomBar(
                 ),
                 onClick = {
                     if (selected) return@NavigationBarItem
-                    navigateTopLevel(navController, screen.route)
+                    navController.navigate(screenRoute) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 },
                 icon = {
                     val iconId = if (selected) screen.selectedIcon else screen.icon
@@ -68,31 +63,6 @@ fun LoopaBottomBar(
                 label = { Text(text = stringResource(id = screen.title)) },
                 alwaysShowLabel = false
             )
-        }
-    }
-}
-
-private fun navigateTopLevel(navController: NavHostController, routeKey: String) {
-    when (routeKey) {
-        "Home" -> navController.navigate(Screen.Homepage) {
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true; restoreState = true
-        }
-        "Categories" -> navController.navigate(Screen.CategoriesScreen) {
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true; restoreState = true
-        }
-        "Search" -> navController.navigate(Screen.SearchScreen) {
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true; restoreState = true
-        }
-        "Favorites" -> navController.navigate(Screen.FavoritesScreen) {
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true; restoreState = true
-        }
-        "Profile" -> navController.navigate(Screen.ProfileScreen) {
-            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-            launchSingleTop = true; restoreState = true
         }
     }
 }
