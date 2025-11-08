@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +34,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -60,13 +58,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.common.showToast
-import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.register.RegisterContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
+import com.beratbaran.loopa.ui.theme.registerScreenButtonColors
+import com.beratbaran.loopa.ui.theme.registerScreenTextFieldColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -195,21 +193,7 @@ fun RegisterScreen(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+            colors = registerScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextName.isNotEmpty()) {
                     Text(
@@ -260,22 +244,7 @@ fun RegisterScreen(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
+            colors = registerScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextSurname.isNotEmpty()) {
                     Text(
@@ -328,22 +297,7 @@ fun RegisterScreen(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
+            colors = registerScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextEmail.isNotEmpty()) {
                     Text(
@@ -412,21 +366,7 @@ fun RegisterScreen(
                 }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+            colors = registerScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextPassword.isNotEmpty()) {
                     Text(
@@ -467,12 +407,7 @@ fun RegisterScreen(
                 .height(56.dp),
             onClick = { onAction(UiAction.OnRegisterClick) },
             shape = RoundedCornerShape(28.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.background,
-                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                disabledContentColor = MaterialTheme.colorScheme.background,
-            ),
+            colors = registerScreenButtonColors(),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 3.dp,
                 pressedElevation = 6.dp,
@@ -483,7 +418,7 @@ fun RegisterScreen(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(22.dp)
-                        .background(MaterialTheme.colorScheme.background),
+                        .background(Color.Transparent),
                     strokeWidth = 2.dp,
                 )
             } else {
@@ -495,56 +430,6 @@ fun RegisterScreen(
         }
     }
 
-    if (uiState.errorMessage.isNotBlank()) {
-        Dialog(
-            onDismissRequest = {},
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(
-                        color = MaterialTheme.colorScheme.background,
-                        shape = RoundedCornerShape(12.dp),
-                    )
-                    .padding(24.dp),
-            ) {
-                Text(
-                    text = uiState.errorMessage,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = MaterialTheme.colorScheme.error.copy(alpha = 0.12f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 12.dp, vertical = 12.dp),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    onClick = { onAction(UiAction.OnRegisterClick) },
-                    shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(R.string.registerScreen_registerButton_text),
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                }
-            }
-        }
-    }
-    if (uiState.isLoading) LoadingBar()
 }
 
 @PreviewLightDark
