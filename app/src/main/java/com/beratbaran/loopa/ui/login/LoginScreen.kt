@@ -32,7 +32,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -42,7 +41,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -63,6 +61,8 @@ import com.beratbaran.loopa.common.showToast
 import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.login.LoginContract.UiAction
 import com.beratbaran.loopa.ui.theme.LoopaTheme
+import com.beratbaran.loopa.ui.theme.loginScreenButtonColors
+import com.beratbaran.loopa.ui.theme.loginScreenTextFieldColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -190,22 +190,7 @@ fun LoginScreen(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+            colors = loginScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextEmail.isNotEmpty()) {
                     Text(
@@ -270,21 +255,7 @@ fun LoginScreen(
                 }
             ),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                focusedContainerColor = MaterialTheme.colorScheme.background,
-                focusedLabelColor = MaterialTheme.colorScheme.primary,
-                unfocusedContainerColor = Color.Transparent,
-                errorContainerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent,
-                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-                cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+            colors = loginScreenTextFieldColors(),
             supportingText = {
                 if (uiState.supportingTextPassword.isNotEmpty()) {
                     Text(
@@ -304,12 +275,7 @@ fun LoginScreen(
                 .height(56.dp),
             onClick = { onAction(UiAction.OnLoginClicked) },
             shape = RoundedCornerShape(28.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.background,
-                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                disabledContentColor = MaterialTheme.colorScheme.background,
-            ),
+            colors = loginScreenButtonColors(),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 3.dp,
                 pressedElevation = 6.dp,
