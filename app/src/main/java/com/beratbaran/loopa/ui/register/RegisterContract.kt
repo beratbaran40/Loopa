@@ -19,7 +19,6 @@ object RegisterContract {
         val isSurnameTextFieldFocused: Boolean = false,
         val isEmailTextFieldFocused: Boolean = false,
         val isPasswordTextFieldFocused: Boolean = false,
-        val errorMessage: String = "",
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
     )
