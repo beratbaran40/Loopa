@@ -91,8 +91,10 @@ class RegisterViewModel @Inject constructor(
             password = currentUiState.password,
         ).fold(
             onSuccess = { setEffect(UiEffect.NavigateToHomePage) },
-            onFailure = { setState {copy(isLoading = false) }
-                setEffect(UiEffect.ShowToast(it.message.orEmpty())) },
+            onFailure = {
+                setState { copy(isLoading = false) }
+                setEffect(UiEffect.ShowToast(it.message.orEmpty()))
+            },
         )
     }
 
