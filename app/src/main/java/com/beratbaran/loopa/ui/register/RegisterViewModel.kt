@@ -83,6 +83,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun register() = viewModelScope.launch {
+        setState { copy(isLoading = true) }
         userRepository.registerUser(
             name = currentUiState.name,
             surname = currentUiState.surname,
@@ -90,7 +91,8 @@ class RegisterViewModel @Inject constructor(
             password = currentUiState.password,
         ).fold(
             onSuccess = { setEffect(UiEffect.NavigateToHomePage) },
-            onFailure = { setEffect(UiEffect.ShowToast(it.message.orEmpty())) },
+            onFailure = { setState {copy(isLoading = false) }
+                setEffect(UiEffect.ShowToast(it.message.orEmpty())) },
         )
     }
 
