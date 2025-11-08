@@ -74,8 +74,7 @@ class LoginViewModel @Inject constructor(
             password = uiState.value.password,
         ).fold(
             onSuccess = { setEffect(UiEffect.NavigateToHomePage) },
-            onFailure = {
-                setState { copy(isLoading = false) }
+            onFailure = { setState { copy(isLoading = false) }
                 setEffect(UiEffect.ShowToast(it.message.orEmpty()))
             }
         )
