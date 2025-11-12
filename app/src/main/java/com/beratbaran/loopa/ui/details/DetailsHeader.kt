@@ -77,7 +77,7 @@ fun DetailsHeader(
                     .size(24.dp),
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = stringResource(R.string.details_screen_component_descriptions_back_button),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                tint = MaterialTheme.colorScheme.onBackground,
             )
         }
 
