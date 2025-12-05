@@ -39,7 +39,7 @@ fun TopPlaceItem(
     name: String,
     location: String,
     imageUrl: String,
-    rating: String,
+    rating: Double,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
@@ -65,7 +65,6 @@ fun TopPlaceItem(
                     model = imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    placeholder = painterResource(R.drawable.top_place_item_img),
                 )
 
                 IconButton(
@@ -100,6 +99,7 @@ fun TopPlaceItem(
             )
 
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
@@ -112,9 +112,12 @@ fun TopPlaceItem(
 
                 Text(
                     text = location,
+                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
 
                 Spacer(modifier = Modifier.width(6.dp))
@@ -128,7 +131,7 @@ fun TopPlaceItem(
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = rating,
+                    text = rating.toString(),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -144,7 +147,7 @@ fun TopPlaceItemPreview(
     name: String = "Bryce Canyon National Park",
     location: String = "Location",
     imageUrl: String = "Image",
-    rating: String = "4.5",
+    rating: Double = 4.5,
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
