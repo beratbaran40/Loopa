@@ -47,17 +47,16 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private const val ENTER_MS = 250
-private const val EXIT_MS = 200
-private const val EXIT_DELAY_MS = EXIT_MS + 20
-private const val INDICATOR_SCROLLED_MS = 300
+private const val ENTER_MS = 180
+private const val EXIT_MS = 120
+private const val EXIT_DELAY_MS = 120
+private const val INDICATOR_SCROLLED_MS = 250
 
 @Composable
 fun DetailsGrid(
     uiState: DetailsContract.UiState,
     onImageSelected: (index: Int?) -> Unit,
 ) {
-
     val images = listOf(
         R.drawable.details_screen_grid_img_1,
         R.drawable.details_screen_grid_img_2,
@@ -138,7 +137,7 @@ fun DetailsGrid(
         if (uiState.selectedIndex != null) {
             GalleryDialog(
                 images = images,
-                initialIndex = uiState.selectedIndex!!,
+                initialIndex = uiState.selectedIndex,
                 onClose = { onImageSelected(null) },
             )
         }
