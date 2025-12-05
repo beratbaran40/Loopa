@@ -4,8 +4,10 @@ import com.beratbaran.loopa.ui.base.BaseViewModel
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiAction
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiEffect
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiState
+import javax.inject.Inject
 
-class CategoriesViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
+class CategoriesViewModel @Inject constructor(
+) : BaseViewModel<UiState, UiAction, UiEffect>(
     initialState = UiState()
 ) {
     init {
@@ -18,8 +20,8 @@ class CategoriesViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
 
     override fun handleAction(action: UiAction) {
         when (action) {
-            UiAction.OnCategoryClick -> {
-                setEffect(UiEffect.NavigateToCategoryDetails)
+            is UiAction.OnCategoryClick -> {
+                setEffect(UiEffect.NavigateToCategoryDetails(action.categoryId))
             }
         }
     }
