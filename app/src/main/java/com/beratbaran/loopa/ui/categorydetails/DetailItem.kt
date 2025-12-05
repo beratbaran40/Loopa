@@ -148,7 +148,7 @@ fun DetailItem(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = place.rating,
+                        text = place.rating.toString(),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -165,7 +165,7 @@ fun TopPlaceItemPreview(
     name: String = "Bryce Canyon National Park",
     location: String = "Location",
     imageUrl: String = "Image",
-    rating: String = "4.5",
+    rating: Double = 4.5,
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
@@ -177,6 +177,8 @@ fun TopPlaceItemPreview(
                 imageUrl = imageUrl,
                 rating = rating,
                 isFavorite = isFavorite,
+                description = "Description",
+                categoryId = 1
             ),
             onFavoriteClick = {},
             onDetailsClick = {},
