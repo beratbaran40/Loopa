@@ -7,17 +7,18 @@ object CategoryDetailsContract {
         val isLoading: Boolean = false,
         val isFavorite: Boolean = false,
         val places: List<PlaceModel> = emptyList(),
-        val numberOfPlaces: Int = 0,
+        val numberOfPlaces: Int =  0
+        ,
     )
 
     sealed interface UiAction {
-        data object OnDetailsClick : UiAction
+        data class OnDetailsClick(val placeId: Int) : UiAction
         data object OnBackClick : UiAction
         data object OnToggleFavorite : UiAction
     }
 
     sealed interface UiEffect {
-        data object NavigateToDetails : UiEffect
+        data class NavigateToDetails(val placeId: Int) : UiEffect
         data object NavigateToBack : UiEffect
     }
 }
