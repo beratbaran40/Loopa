@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.ui.homepage
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,12 +27,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
@@ -40,7 +43,7 @@ fun LookItem(
     name: String,
     location: String,
     imageUrl: String,
-    rating: String,
+    rating: Double,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
@@ -61,10 +64,21 @@ fun LookItem(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(120.dp),
-                model = imageUrl,
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .placeholder(
+                        drawableResId = R.drawable.top_place_item_img
+                    )
+                    .data(imageUrl).crossfade(true).listener(
+                        onSuccess = { _, _ ->
+                            Log.d("LookItem", "Image loaded: $imageUrl")
+                        },
+                        onError = { _, result ->
+                            Log.d("LookItem", "Image error: ${result.throwable}")
+                        }
+                    )
+                    .build(),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.look_item_img),
             )
 
             Column(
@@ -146,7 +160,7 @@ fun LookItem(
                     Spacer(modifier = Modifier.width(4.dp))
 
                     Text(
-                        text = rating,
+                        text = rating.toString(),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -163,7 +177,7 @@ fun LookItemPreview(
     name: String = "Look Item",
     location: String = "Location",
     imageUrl: String = "Image",
-    rating: String = "4.1",
+    rating: Double = 4.1,
     isFavorite: Boolean = true,
 ) {
     LoopaTheme {
