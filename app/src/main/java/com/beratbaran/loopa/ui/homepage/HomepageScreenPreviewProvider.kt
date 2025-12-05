@@ -16,85 +16,107 @@ class HomepageScreenPreviewProvider : PreviewParameterProvider<HomepageContract.
                         name = "Bryce Canyon National Park",
                         location = "Beyoğlu, İstanbul",
                         imageUrl = "",
-                        rating = "4.7",
+                        rating = 4.7,
                         isFavorite = false,
-                        id = 1
+                        id = 1,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Maiden’s Tower",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "",
-                        rating = "4.6",
+                        rating = 4.6,
                         isFavorite = true,
-                        id = 2
+                        id = 2,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Yerebatan Sarnıcı",
                         location = "Fatih, İstanbul",
                         imageUrl = "",
-                        rating = "4.8",
+                        rating = 4.8,
                         isFavorite = false,
-                        id = 3
+                        id = 3,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Grand Canyon",
                         location = "Arizona, USA",
                         imageUrl = "",
-                        rating = "4.9",
+                        rating = 4.9,
                         isFavorite = false,
-                        id = 4
+                        id = 4,
+                        description = "açıklama",
+                        categoryId = 1
+
                     ),
                     PlaceModel(
                         name = "Mısır Çarşısı",
                         location = "Fatih, İstanbul",
                         imageUrl = "",
-                        rating = "3.6",
+                        rating = 3.6,
                         isFavorite = true,
-                        id = 5
+                        id = 5,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                 ),
-                wannaLookPlaces = listOf(
+                wantToLookPlaces = listOf(
                     PlaceModel(
                         name = "Bryce Canyon National Park",
                         location = "Beyoğlu, İstanbul",
                         imageUrl = "",
-                        rating = "4.7",
+                        rating = 4.7,
                         isFavorite = false,
-                        id = 1
+                        id = 1,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Maiden’s Tower",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "",
-                        rating = "4.6",
+                        rating = 4.6,
                         isFavorite = true,
-                        id = 2
+                        id = 2,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Yerebatan Sarnıcı",
                         location = "Fatih, İstanbul",
                         imageUrl = "",
-                        rating = "4.8",
+                        rating = 4.8,
                         isFavorite = false,
-                        id = 3
+                        id = 3,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Grand Canyon",
                         location = "Arizona, USA",
                         imageUrl = "",
-                        rating = "4.9",
+                        rating = 4.9,
                         isFavorite = false,
-                        id = 4
+                        id = 4,
+                        description = "açıklama",
+                        categoryId = 1
+
                     ),
                     PlaceModel(
                         name = "Mısır Çarşısı",
                         location = "Fatih, İstanbul",
                         imageUrl = "",
-                        rating = "3.6",
+                        rating = 3.6,
                         isFavorite = true,
-                        id = 5
+                        id = 5,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
-                )
+                ),
             ),
         )
 }
