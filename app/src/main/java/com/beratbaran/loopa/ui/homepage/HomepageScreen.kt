@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.ui.homepage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -40,12 +41,12 @@ fun HomepageScreen(
     uiState: HomepageContract.UiState,
     uiEffect: Flow<HomepageContract.UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToDetails: () -> Unit,
+    onNavigateToDetails: (Int) -> Unit,
     onNavigateToFavorites: () -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            HomepageContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
+            is HomepageContract.UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
             HomepageContract.UiEffect.NavigateToFavorites -> onNavigateToFavorites()
         }
     }
@@ -59,6 +60,7 @@ fun HomepageScreen(
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
     ) {
+
         Image(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -94,11 +96,12 @@ fun HomepageScreen(
                 TopPlaceItem(
                     name = place.name,
                     location = place.location,
-                    imageUrl = place.imageUrl,
+                    imageUrl = place.imageUrl ?: "",
                     rating = place.rating,
                     isFavorite = place.isFavorite,
                     onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
-                    onDetailsClick = { onAction(UiAction.OnDetailsClick) }
+                    onDetailsClick = { Log.d("HomePage", "CLICK place.id = ${place.id}")
+                        onAction(UiAction.OnDetailsClick(place.id)) }
                 )
             }
         }
@@ -114,17 +117,17 @@ fun HomepageScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        uiState.wannaLookPlaces.forEachIndexed { index, place ->
+        uiState.wantToLookPlaces.forEachIndexed { index, place ->
             LookItem(
                 name = place.name,
                 location = place.location,
-                imageUrl = place.imageUrl,
+                imageUrl = place.imageUrl ?: "",
                 rating = place.rating,
                 isFavorite = place.isFavorite,
                 onFavoriteClick = { onAction(UiAction.ToggleFavorite) },
-                onDetailsClick = { onAction(UiAction.OnDetailsClick) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id)) },
             )
-            if (index != uiState.wannaLookPlaces.lastIndex) {
+            if (index != uiState.wantToLookPlaces.lastIndex) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
