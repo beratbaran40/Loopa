@@ -1,22 +1,29 @@
 package com.beratbaran.loopa.ui.profile
 
 import android.widget.Toast
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -39,6 +46,16 @@ fun ProfileScreen(
     onNavigateToOnboarding: () -> Unit,
 ) {
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
+    val passwordFocusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(uiState.isInEditMode) {
+        if (uiState.isInEditMode) {
+            passwordFocusRequester.requestFocus()
+            keyboardController?.show()
+        }
+    }
 
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
@@ -52,27 +69,41 @@ fun ProfileScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-            .statusBarsPadding()
-            .navigationBarsPadding()
+            .imePadding()
             .verticalScroll(rememberScrollState())
-            .padding(top = 24.dp),
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         ProfileHeader(
-            onAction = onAction,
-            isInEditMode = uiState.isInEditMode,
-            areFieldsEmpty = uiState.areFieldsEmpty,
         )
         ProfileAvatar(
-            imageUrl = uiState.imageUrl,
+            uiState = uiState
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
         ProfileTextFields(
             onAction = onAction,
             uiState = uiState,
+            passwordFocusRequester = passwordFocusRequester,
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         ProfileBottomButtons(
             onAction = onAction,
+            isInEditMode = uiState.isInEditMode,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         )
     }
 
@@ -89,23 +120,6 @@ fun ProfileScreen(
             dismissButton = {
                 TextButton(onClick = { onAction(UiAction.OnLogoutDismissClick) }) {
                     Text(text = stringResource(id = R.string.profile_screen_logout_dialog_dismiss_button))
-                }
-            }
-        )
-    }
-    if (uiState.showDeleteAccountDialog) {
-        AlertDialog(
-            onDismissRequest = { onAction(UiAction.OnDeleteAccountDismissClick) },
-            title = { Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_title)) },
-            text = { Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_text)) },
-            confirmButton = {
-                TextButton(onClick = { onAction(UiAction.OnDeleteAccountConfirmClick) }) {
-                    Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_confirm_button))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(UiAction.OnDeleteAccountDismissClick) }) {
-                    Text(text = stringResource(id = R.string.profile_screen_delete_account_dialog_dismiss_button))
                 }
             }
         )
