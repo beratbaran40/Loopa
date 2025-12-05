@@ -1,18 +1,9 @@
 package com.beratbaran.loopa.ui.profile
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,13 +15,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,201 +36,46 @@ import com.beratbaran.loopa.ui.profile.ProfileContract.UiAction
 import com.beratbaran.loopa.ui.register.toProgress
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import com.beratbaran.loopa.ui.theme.profileTextFieldColors
-import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileTextFields(
     onAction: (UiAction) -> Unit,
     uiState: ProfileContract.UiState,
+    passwordFocusRequester: FocusRequester,
 ) {
-    val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val coroutineScope = rememberCoroutineScope()
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val canInteract = !uiState.isLoading && uiState.isInEditMode
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .imePadding()
-            .padding(24.dp)
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {
-                focusManager.clearFocus()
-                keyboardController?.hide()
-            },
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp)
-                .bringIntoViewRequester(bringIntoViewRequester)
-                .onFocusEvent { event ->
-                    if (event.isFocused) {
-                        coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
-                    }
-                    onAction(UiAction.OnNameTextFieldFocusChange(event.isFocused))
-
-                },
+        ReadOnlyFields(
             value = uiState.name,
-            onValueChange = { onAction(UiAction.OnNameChange(it)) },
-            label = { Text(text = stringResource(R.string.registerScreen_name_text)) },
-            singleLine = true,
-            enabled = !uiState.isLoading && uiState.isInEditMode,
-            readOnly = !uiState.isInEditMode,
-            isError = uiState.supportingTextName.isNotEmpty(),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_name),
-                    contentDescription = null,
-                    tint = when {
-                        uiState.supportingTextName.isNotEmpty() -> MaterialTheme.colorScheme.error
-                        uiState.isNameTextFieldFocused -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    if (canInteract) {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                }
-            ),
-            shape = RoundedCornerShape(12.dp),
-            colors = profileTextFieldColors(),
-            supportingText = {
-                if (uiState.supportingTextName.isNotEmpty()) {
-                    Text(
-                        text = uiState.supportingTextName,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
+            label = stringResource(R.string.registerScreen_name_text),
+            leadingIcon = R.drawable.ic_name,
+        )
+
+        ReadOnlyFields(
+            value = uiState.surname,
+            label = stringResource(R.string.registerScreen_surname_text),
+            leadingIcon = R.drawable.ic_name,
+        )
+
+        ReadOnlyFields(
+            value = uiState.email,
+            label = stringResource(R.string.login_label_mail_text),
+            leadingIcon = R.drawable.ic_email,
         )
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
-                .bringIntoViewRequester(bringIntoViewRequester)
+                .focusRequester(passwordFocusRequester)
                 .onFocusEvent { event ->
-                    if (event.isFocused) {
-                        coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
-                    }
-                    onAction(UiAction.OnSurnameTextFieldFocusChange(event.isFocused))
-                },
-            value = uiState.surname,
-            onValueChange = { onAction(UiAction.OnSurnameChange(it)) },
-            label = { Text(text = stringResource(R.string.registerScreen_surname_text)) },
-            singleLine = true,
-            enabled = !uiState.isLoading && uiState.isInEditMode,
-            readOnly = !uiState.isInEditMode,
-            isError = uiState.supportingTextSurname.isNotEmpty(),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_name),
-                    contentDescription = null,
-                    tint = when {
-                        uiState.supportingTextSurname.isNotEmpty() -> MaterialTheme.colorScheme.error
-                        uiState.isSurnameTextFieldFocused -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    if (canInteract) {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                }
-            ),
-            shape = RoundedCornerShape(12.dp),
-            colors = profileTextFieldColors(),
-            supportingText = {
-                if (uiState.supportingTextSurname.isNotEmpty()) {
-                    Text(
-                        text = uiState.supportingTextSurname,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 12.dp)
-                .bringIntoViewRequester(bringIntoViewRequester)
-                .onFocusEvent { event ->
-                    if (event.isFocused) {
-                        coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
-                    }
-                    onAction(UiAction.OnEmailTextFieldFocusChange(event.isFocused))
-                },
-            value = uiState.email,
-            onValueChange = { onAction(UiAction.OnEmailChange(it)) },
-            label = { Text(text = stringResource(R.string.login_label_mail_text)) },
-            singleLine = true,
-            enabled = !uiState.isLoading && uiState.isInEditMode,
-            readOnly = !uiState.isInEditMode,
-            isError = uiState.supportingTextEmail.isNotEmpty(),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_email),
-                    contentDescription = null,
-                    tint = when {
-                        uiState.supportingTextEmail.isNotEmpty() -> MaterialTheme.colorScheme.error
-                        uiState.isEmailTextFieldFocused -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    if (canInteract) {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                }
-            ),
-            shape = RoundedCornerShape(12.dp),
-            colors = profileTextFieldColors(),
-            supportingText = {
-                if (uiState.supportingTextEmail.isNotEmpty()) {
-                    Text(
-                        text = uiState.supportingTextEmail,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-            }
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 4.dp)
-                .bringIntoViewRequester(bringIntoViewRequester)
-                .onFocusEvent { event ->
-                    if (event.isFocused) {
-                        coroutineScope.launch { bringIntoViewRequester.bringIntoView() }
-                    }
                     onAction(UiAction.OnPasswordTextFieldFocusChange(event.isFocused))
                 },
             value = uiState.password,
@@ -274,6 +109,11 @@ fun ProfileTextFields(
                             else R.drawable.ic_visibility_off
                         ),
                         contentDescription = stringResource(R.string.login_register_screen_toggle_password),
+                        tint = when {
+                            uiState.supportingTextPassword.isNotEmpty() -> MaterialTheme.colorScheme.error
+                            uiState.isPasswordTextFieldFocused -> MaterialTheme.colorScheme.primary
+                            else -> MaterialTheme.colorScheme.onSurfaceVariant
+                        }
                     )
                 }
             },
@@ -323,13 +163,45 @@ fun ProfileTextFields(
     }
 }
 
+@Composable
+private fun ReadOnlyFields(
+    value: String,
+    label: String,
+    leadingIcon: Int,
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        value = value,
+        onValueChange = {},
+        label = { Text(text = label) },
+        singleLine = true,
+        enabled = false,
+        readOnly = true,
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = leadingIcon),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        shape = RoundedCornerShape(12.dp),
+        colors = profileTextFieldColors(),
+    )
+}
+
 @PreviewLightDark
 @Composable
 fun ProfileTextFieldsPreview() {
     LoopaTheme {
+
+        val passwordFocusRequester = remember { FocusRequester() }
+
         ProfileTextFields(
             onAction = {},
             uiState = ProfileContract.UiState(),
+            passwordFocusRequester = passwordFocusRequester,
         )
     }
 }
