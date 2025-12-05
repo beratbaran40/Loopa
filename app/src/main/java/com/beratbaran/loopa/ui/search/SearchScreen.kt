@@ -38,13 +38,13 @@ fun SearchScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToDetails: () -> Unit,
-    onNavigateToRandomPlace: () -> Unit,
+    onNavigateToDetails: (Int) -> Unit,
+    onNavigateToRandomPlace: (Int) -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            UiEffect.NavigateToDetails -> onNavigateToDetails()
-            UiEffect.NavigateToRandomPlace -> onNavigateToRandomPlace()
+            is UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
+            is UiEffect.NavigateToRandomPlace -> onNavigateToRandomPlace(effect.placeId)
         }
     }
     Column(
@@ -82,7 +82,7 @@ fun SearchScreen(
             )
 
             RandomPlaceButton(
-                onClick = { onAction(UiAction.OnRandomPlaceClick("")) },
+                onClick = { onAction(UiAction.OnRandomPlaceClick(placeId = 0)) },
             )
         }
 
@@ -105,8 +105,8 @@ fun SearchScreen(
         uiState.places.forEachIndexed { index, place ->
             SearchDetailItem(
                 place = place,
-                onFavoriteClick = { onAction(UiAction.ToggleFavorite(place.id.toString())) },
-                onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id.toString())) },
+                onFavoriteClick = { onAction(UiAction.ToggleFavorite(place.id)) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id)) },
             )
 
             if (index != uiState.places.lastIndex)
