@@ -18,48 +18,60 @@ class CategoryDetailsScreenPreviewProvider :
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = false
+                        rating = 4.2,
+                        isFavorite = false,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         id = 1,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = true
+                        rating = 4.2,
+                        isFavorite = true,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         id = 2,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = false
+                        rating = 4.2,
+                        isFavorite = false,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         id = 3,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = true
+                        rating = 4.2,
+                        isFavorite = true,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         id = 4,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = false
+                        rating = 4.2,
+                        isFavorite = false,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         id = 5,
                         name = "Kız Kulesi",
                         location = "Üsküdar, İstanbul",
                         imageUrl = "imageUrl",
-                        rating = "4.2",
-                        isFavorite = true
+                        rating = 4.2,
+                        isFavorite = true,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                 )
             )
