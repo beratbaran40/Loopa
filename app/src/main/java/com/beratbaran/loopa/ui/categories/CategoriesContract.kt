@@ -2,15 +2,15 @@ package com.beratbaran.loopa.ui.categories
 
 object CategoriesContract {
     data class UiState(
-        val categories: List<CategoryModel> = emptyList(),
+        val categories: List<CategoryUiModel> = emptyList(),
         val isLoading: Boolean = false,
     )
 
     sealed interface UiAction {
-        data object OnCategoryClick : UiAction
+        data class OnCategoryClick(val categoryId: Int) : UiAction
     }
 
     sealed interface UiEffect {
-        data object NavigateToCategoryDetails : UiEffect
+        data class NavigateToCategoryDetails(val categoryId: Int) : UiEffect
     }
 }
