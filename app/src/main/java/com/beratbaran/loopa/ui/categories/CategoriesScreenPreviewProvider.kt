@@ -12,43 +12,53 @@ class CategoriesScreenPreviewProvider : PreviewParameterProvider<CategoriesContr
             CategoriesContract.UiState(
                 isLoading = false,
                 categories = listOf(
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 1,
                         category = "Wildlife",
                         categoryIconRes = R.drawable.ic_wildlife,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 2,
                         category = "City Landmark",
                         categoryIconRes = R.drawable.ic_landmark,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 3,
                         category = "Mountain",
                         categoryIconRes = R.drawable.ic_mountain,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 4,
                         category = "Island/Beach",
                         categoryIconRes = R.drawable.ic_island,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 5,
                         category = "Religious Site",
                         categoryIconRes = R.drawable.ic_religious_site,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 6,
                         category = "Historical Site",
                         categoryIconRes = R.drawable.ic_historical_site,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 7,
                         category = "National Park",
                         categoryIconRes = R.drawable.ic_national_park,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 8,
                         category = "Natural Wonder",
                         categoryIconRes = R.drawable.ic_natural_wonder,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 9,
                         category = "Cultural Heritage",
                         categoryIconRes = R.drawable.ic_cultural_heritage,
                     ),
-                    CategoryModel(
+                    CategoryUiModel(
+                        categoryId = 10,
                         category = "Archaeological Site",
                         categoryIconRes = R.drawable.ic_archaeological_site,
                     ),
