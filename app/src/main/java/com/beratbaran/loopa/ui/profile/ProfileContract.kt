@@ -7,6 +7,7 @@ object ProfileContract {
     data class UiState(
         val isLoading: Boolean = false,
         val imageUrl: String = "",
+        val fullName: String = "",
         val name: String = "",
         val surname: String = "",
         val email: String = "",
@@ -31,23 +32,14 @@ object ProfileContract {
 
     sealed interface UiAction {
         data object OnConfirmChangesClick : UiAction
-        data class OnNameChange(val name: String) : UiAction
-        data class OnSurnameChange(val surname: String) : UiAction
-        data class OnEmailChange(val email: String) : UiAction
         data class OnPasswordChange(val password: String) : UiAction
-        data class OnNameTextFieldFocusChange(val isFocused: Boolean) : UiAction
-        data class OnSurnameTextFieldFocusChange(val isFocused: Boolean) : UiAction
-        data class OnEmailTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
         data object OnToggleShowPassword : UiAction
-        data object OnEditProfileClick : UiAction
+        data object OnEditPasswordClick : UiAction
         data object OnCancelChangesClick : UiAction
         data object OnLogoutClick : UiAction
         data object OnLogoutConfirmClick : UiAction
         data object OnLogoutDismissClick : UiAction
-        data object OnDeleteAccountClick : UiAction
-        data object OnDeleteAccountConfirmClick : UiAction
-        data object OnDeleteAccountDismissClick : UiAction
     }
 
     sealed interface UiEffect {
