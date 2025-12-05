@@ -33,11 +33,13 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.ui.homepage.PlaceModel
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun FavoriteItem(
-    item: FavoritesModel,
+    place: PlaceModel,
+    //item: FavoritesModel,
     onUnFavoriteClick: () -> Unit,
     onDetailsClick: () -> Unit,
 ) {
@@ -58,7 +60,7 @@ fun FavoriteItem(
             Box {
                 AsyncImage(
                     modifier = Modifier.height(140.dp),
-                    model = item.imageUrl,
+                    model = place.imageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(R.drawable.top_place_item_img),
@@ -86,7 +88,7 @@ fun FavoriteItem(
 
             Text(
                 modifier = Modifier.padding(horizontal = 12.dp),
-                text = item.name,
+                text = place.name,
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -101,14 +103,14 @@ fun FavoriteItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BottomInfo(
-                    text = item.location,
+                    text = place.location,
                     icon = R.drawable.ic_location,
                 )
 
                 Spacer(modifier = Modifier.width(6.dp))
 
                 BottomInfo(
-                    text = item.rating,
+                    text = place.rating.toString(),
                     icon = R.drawable.ic_star,
                     iconTint = MaterialTheme.colorScheme.secondary,
                 )
@@ -148,17 +150,20 @@ fun FavoriteItemPreview(
     name: String = "Eiffel Tower",
     location: String = "Location",
     imageUrl: String = "Image",
-    rating: String = "4.5",
+    rating: Double = 4.5,
     isFavorite: Boolean = false,
 ) {
     LoopaTheme {
         FavoriteItem(
-            item = FavoritesModel(
+            place = PlaceModel(
                 name = name,
                 location = location,
                 imageUrl = imageUrl,
                 rating = rating,
                 isFavorite = isFavorite,
+                id = 0,
+                description = "Description",
+                categoryId = 1,
             ),
             onUnFavoriteClick = {},
             onDetailsClick = {},
