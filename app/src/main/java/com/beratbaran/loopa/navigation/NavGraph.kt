@@ -130,11 +130,8 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
 
-                onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
-                        popUpTo(Screen.Homepage) {
-                            inclusive = true
-                        }
+                onNavigateToDetails = { placeId ->
+                    navController.navigate(Screen.DetailsScreen(placeId)) {
                         launchSingleTop = true
                     }
                 },
@@ -159,12 +156,7 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
                 onNavigateToBack = {
-                    navController.navigate(Screen.Homepage) {
-                        popUpTo(Screen.DetailsScreen) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.popBackStack()
                 },
                 onNavigateToMaps = {
                     navController.navigate(Screen.Homepage) {
@@ -186,11 +178,8 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
 
-                onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
-                        popUpTo(Screen.FavoritesScreen) {
-                            inclusive = true
-                        }
+                onNavigateToDetails = { placeId ->
+                    navController.navigate(Screen.DetailsScreen(placeId)) {
                         launchSingleTop = true
                     }
                 }
@@ -206,20 +195,14 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
 
-                onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
-                        popUpTo(Screen.CategoryDetailsScreen) {
-                            inclusive = true
-                        }
+                onNavigateToDetails = { placeId ->
+                    navController.navigate(Screen.DetailsScreen(placeId)) {
                         launchSingleTop = true
                     }
                 },
 
                 onNavigateToBack = {
-                    navController.navigate(Screen.Homepage) {
-                        popUpTo(Screen.CategoryDetailsScreen) {
-                            inclusive = true
-                        }
+                    navController.navigate(Screen.CategoriesScreen) {
                         launchSingleTop = true
                     }
                 },
@@ -235,42 +218,11 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
 
-                onNavigateToCategoryDetails = {
-                    navController.navigate(Screen.CategoryDetailsScreen) {
-                        popUpTo(Screen.CategoriesScreen) {
-                            inclusive = true
-                        }
+                onNavigateToCategoryDetails = { categoryId ->
+                    navController.navigate(Screen.CategoryDetailsScreen(categoryId)) {
                         launchSingleTop = true
                     }
                 },
-            )
-        }
-
-        composable<Screen.CategoryDetailsScreen> {
-            val viewModel = hiltViewModel<CategoryDetailsViewModel>()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-            CategoryDetailsScreen(
-                uiState = uiState,
-                uiEffect = viewModel.uiEffect,
-                onAction = viewModel::handleAction,
-
-                onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
-                        popUpTo(Screen.CategoryDetailsScreen) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateToBack = {
-                    navController.navigate(Screen.CategoriesScreen) {
-                        popUpTo(Screen.CategoryDetailsScreen) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
             )
         }
 
@@ -283,8 +235,8 @@ fun NavGraph(
                 uiEffect = viewModel.uiEffect,
                 onAction = viewModel::handleAction,
 
-                onNavigateToDetails = {
-                    navController.navigate(Screen.DetailsScreen) {
+                onNavigateToDetails = { placeId ->
+                    navController.navigate(Screen.DetailsScreen(placeId)) {
                         popUpTo(Screen.SearchScreen) {
                             inclusive = true
                         }
@@ -292,8 +244,8 @@ fun NavGraph(
                     }
                 },
 
-                onNavigateToRandomPlace = {
-                    navController.navigate(Screen.DetailsScreen) {
+                onNavigateToRandomPlace = { placeId ->
+                    navController.navigate(Screen.DetailsScreen(placeId)) {
                         popUpTo(Screen.SearchScreen) {
                             inclusive = true
                         }
