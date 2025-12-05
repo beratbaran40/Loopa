@@ -64,8 +64,6 @@ fun OnboardingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .navigationBarsPadding(),
     ) {
         val bgImages = listOf(
             R.drawable.onboarding_img1,
@@ -92,25 +90,32 @@ fun OnboardingScreen(
                 .background(color = Color.Black.copy(alpha = 0.5f)),
         )
 
-        Image(
+        Box(
             modifier = Modifier
-                .align(Alignment.TopCenter)
-                .height(300.dp)
-                .aspectRatio(1f)
-                .padding(top = 16.dp),
-            painter = painterResource(id = R.drawable.loopa),
-            contentDescription = null,
-        )
+                .fillMaxSize()
+                .statusBarsPadding()
+        ) {
 
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 16.dp, start = 16.dp),
-            text = stringResource(R.string.app_name),
-            style = MaterialTheme.typography.displaySmall.copy(
-                color = MaterialTheme.colorScheme.primary,
+            Image(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .height(300.dp)
+                    .aspectRatio(1f)
+                    .padding(top = 16.dp),
+                painter = painterResource(id = R.drawable.loopa),
+                contentDescription = null,
             )
-        )
+
+            Text(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 16.dp, start = 16.dp),
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.displaySmall.copy(
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -145,6 +150,7 @@ fun OnboardingScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
