@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -60,49 +61,57 @@ fun DetailsHeader(
             placeholder = painterResource(R.drawable.details_screen_grid_img_4)
         )
 
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
-                    shape = CircleShape,
-                )
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()) {
 
-            onClick = { onNavigateToBack() },
-        ) {
-            Icon(
+            IconButton(
                 modifier = Modifier
-                    .size(24.dp),
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = stringResource(R.string.details_screen_component_descriptions_back_button),
-                tint = MaterialTheme.colorScheme.onBackground,
-            )
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
+                        shape = CircleShape,
+                    )
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape),
+
+                onClick = { onNavigateToBack() },
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = stringResource(R.string.details_screen_component_descriptions_back_button),
+                    tint = MaterialTheme.colorScheme.onBackground,
+                )
+            }
+
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
+                        shape = CircleShape
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        shape = CircleShape
+                    ),
+                onClick = { onFavoriteClick() }
+            ) {
+                Icon(
+                    painter = painterResource(
+                        id = if (isFavorite) R.drawable.ic_selected_favorite
+                        else R.drawable.ic_favorite
+                    ),
+                    contentDescription = stringResource(R.string.details_screen_component_descriptions_favorite_button),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
         }
 
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.40f),
-                    shape = CircleShape)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = CircleShape),
-            onClick = { onFavoriteClick() }
-        ) {
-            Icon(
-                painter = painterResource(
-                    id = if (isFavorite) R.drawable.ic_selected_favorite
-                    else R.drawable.ic_favorite
-                ),
-                contentDescription = stringResource(R.string.details_screen_component_descriptions_favorite_button),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
 
         Box(
             modifier = Modifier
