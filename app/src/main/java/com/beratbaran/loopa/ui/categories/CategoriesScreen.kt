@@ -26,6 +26,7 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiAction
+import com.beratbaran.loopa.ui.categories.CategoriesContract.UiAction.OnCategoryClick
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiEffect
 import com.beratbaran.loopa.ui.categories.CategoriesContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
@@ -37,11 +38,13 @@ fun CategoriesScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToCategoryDetails: () -> Unit,
+    onNavigateToCategoryDetails: (Int) -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            UiEffect.NavigateToCategoryDetails -> onNavigateToCategoryDetails()
+            is UiEffect.NavigateToCategoryDetails -> {
+                onNavigateToCategoryDetails(effect.categoryId)
+            }
         }
     }
     Column(
@@ -70,7 +73,7 @@ fun CategoriesScreen(
                 Box {
                     CategoryItem(
                         category = item,
-                        onCategoryClick = { onAction(UiAction.OnCategoryClick) },
+                        onCategoryClick = { onAction(OnCategoryClick(item.categoryId)) },
                     )
                 }
             }
