@@ -13,10 +13,10 @@ class SearchViewModel :
         when (action) {
 
             is UiAction.OnRandomPlaceClick ->
-                setEffect(UiEffect.NavigateToRandomPlace)
+                setEffect(UiEffect.NavigateToRandomPlace(action.placeId))
 
             is UiAction.OnDetailsClick ->
-                setEffect(UiEffect.NavigateToDetails)
+                setEffect(UiEffect.NavigateToDetails(action.placeId))
 
             is UiAction.ToggleFavorite ->
                 setState { copy(isFavorite = !isFavorite) }
