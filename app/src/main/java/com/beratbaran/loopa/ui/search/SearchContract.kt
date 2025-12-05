@@ -13,15 +13,15 @@ object SearchContract {
     )
 
     sealed interface UiAction {
-        data class OnDetailsClick(val placeId: String) : UiAction
-        data class OnRandomPlaceClick(val placeId: String) : UiAction
-        data class ToggleFavorite(val placeId: String) : UiAction
+        data class OnDetailsClick(val placeId: Int) : UiAction
+        data class OnRandomPlaceClick(val placeId: Int) : UiAction
+        data class ToggleFavorite(val placeId: Int) : UiAction
         data class OnQueryChange(val query: String) : UiAction
         data object ClearQuery : UiAction
     }
 
     sealed interface UiEffect {
-        data object NavigateToDetails : UiEffect
-        data object NavigateToRandomPlace : UiEffect
+        data class NavigateToDetails(val placeId: Int) : UiEffect
+        data class NavigateToRandomPlace(val placeId: Int) : UiEffect
     }
 }
