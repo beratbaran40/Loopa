@@ -12,7 +12,8 @@ object DetailsContract {
         val placeImageUrl: String = "",
         val isFavorite: Boolean = false,
         val isLoading: Boolean = false,
-        var selectedIndex : Int? = null
+        val selectedIndex : Int? = null,
+        val images: List<String> = emptyList(),
 
     )
 
