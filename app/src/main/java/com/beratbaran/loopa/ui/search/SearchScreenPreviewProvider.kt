@@ -16,33 +16,42 @@ class SearchScreenPreviewProvider : PreviewParameterProvider<SearchContract.UiSt
                         name = "Bryce Canyon National Park",
                         location = "Location",
                         imageUrl = "Image",
-                        rating = "4.5",
+                        rating = 4.5,
                         isFavorite = false,
-                        id = 1
+                        id = 1,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Bryce Canyon National Park",
                         location = "Location",
                         imageUrl = "Image",
-                        rating = "4.5",
+                        rating = 4.5,
                         isFavorite = true,
-                        id = 2
+                        id = 2,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Bryce Canyon National Park",
                         location = "Location",
                         imageUrl = "Image",
-                        rating = "4.5",
+                        rating = 4.5,
                         isFavorite = false,
-                        id = 3
+                        id = 3,
+                        description = "açıklama",
+                        categoryId = 1
                     ),
                     PlaceModel(
                         name = "Bryce Canyon National Park",
                         location = "Location",
                         imageUrl = "Image",
-                        rating = "4.5",
+                        rating = 4.5,
                         isFavorite = true,
-                        id = 4
+                        id = 4,
+                        description = "açıklama",
+                        categoryId = 1
+
                     ),
                 )
             )
