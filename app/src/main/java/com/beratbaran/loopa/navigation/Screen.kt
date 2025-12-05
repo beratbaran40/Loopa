@@ -16,7 +16,7 @@ sealed interface Screen {
     data object Homepage : Screen
 
     @Serializable
-    data object DetailsScreen : Screen
+    data class DetailsScreen(val placeId: Int) : Screen
 
     @Serializable
     data object FavoritesScreen : Screen
@@ -25,7 +25,7 @@ sealed interface Screen {
     data object CategoriesScreen : Screen
 
     @Serializable
-    data object CategoryDetailsScreen : Screen
+    data class CategoryDetailsScreen(val categoryId: Int) : Screen
 
     @Serializable
     data object ProfileScreen : Screen
