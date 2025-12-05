@@ -31,7 +31,7 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun CategoryItem(
-    category: CategoryModel,
+    category: CategoryUiModel,
     onCategoryClick: () -> Unit,
 ) {
     Card(
@@ -91,7 +91,8 @@ fun CategoryItemPreview(
 ) {
     LoopaTheme {
         CategoryItem(
-            category = CategoryModel(
+            category = CategoryUiModel(
+                categoryId = 1,
                 category = categories,
                 categoryIconRes = categoryIcon,
             ),
