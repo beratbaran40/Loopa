@@ -43,12 +43,12 @@ fun CategoryDetailsScreen(
     uiState: UiState,
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToDetails: () -> Unit,
+    onNavigateToDetails: (Int) -> Unit,
     onNavigateToBack: () -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            UiEffect.NavigateToDetails -> onNavigateToDetails()
+            is UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
             UiEffect.NavigateToBack -> onNavigateToBack()
         }
     }
@@ -111,7 +111,7 @@ fun CategoryDetailsScreen(
             DetailItem(
                 place = place,
                 onFavoriteClick = { onAction(UiAction.OnToggleFavorite) },
-                onDetailsClick = { onAction(UiAction.OnDetailsClick) },
+                onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id)) },
             )
 
             if (index != uiState.places.lastIndex) {
