@@ -35,11 +35,11 @@ fun FavoritesScreen(
     uiState: FavoritesContract.UiState,
     uiEffect: Flow<FavoritesContract.UiEffect>,
     onAction: (UiAction) -> Unit,
-    onNavigateToDetails: () -> Unit,
+    onNavigateToDetails: (Int) -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            FavoritesContract.UiEffect.NavigateToDetails -> onNavigateToDetails()
+            is FavoritesContract.UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
         }
     }
 
@@ -67,11 +67,12 @@ fun FavoritesScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(uiState.favorites) { item ->
+            items(uiState.favorites) { place ->
                 FavoriteItem(
-                    item = item,
+                    place = place,
+                    //item = item,
                     onUnFavoriteClick = { onAction(UiAction.OnUnFavoriteClick) },
-                    onDetailsClick = { onAction(UiAction.OnDetailsClick) }
+                    onDetailsClick = { onAction(UiAction.OnDetailsClick(place.id)) }
                 )
             }
         }
