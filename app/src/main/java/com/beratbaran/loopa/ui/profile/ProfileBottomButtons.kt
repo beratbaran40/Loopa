@@ -1,9 +1,11 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,12 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,6 +36,8 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 @Composable
 fun ProfileBottomButtons(
     onAction: (UiAction) -> Unit,
+    isInEditMode: Boolean,
+    modifier: Modifier,
 ) {
     Box(
         modifier = Modifier
@@ -42,20 +47,84 @@ fun ProfileBottomButtons(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .padding(start= 24.dp, end = 24.dp,bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Row(
+                modifier = Modifier
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                    onClick = {
+                        if (!isInEditMode) {
+                            onAction(UiAction.OnEditPasswordClick)
+                        } else {
+                            onAction(UiAction.OnConfirmChangesClick)
+                        }
+                    },
+                    shape = RoundedCornerShape(28.dp),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.background,
+                    ),
+                ) {
+                    Text(
+                        text = if (!isInEditMode)
+                            stringResource(R.string.profile_screen_change_password_profile_text)
+                        else
+                            stringResource(R.string.profile_screen_save_changes_text),
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Icon(
+                        painter = (if (!isInEditMode)
+                            painterResource(R.drawable.ic_edit_profile)
+                        else
+                            painterResource(R.drawable.ic_done_changes)),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                if (isInEditMode) {
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    IconButton(
+                        onClick = { onAction(UiAction.OnCancelChangesClick) },
+                        modifier = Modifier
+                            .size(56.dp)
+                            .clip(RoundedCornerShape(25.dp))
+                            .background(color = MaterialTheme.colorScheme.error),
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_cancel),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.background,
+                        )
+                    }
+                }
+            }
+
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
                 onClick = { onAction(UiAction.OnLogoutClick) },
                 shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.error,
                 ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.error,
+                )
             ) {
                 Text(
                     text = stringResource(R.string.profile_screen_logout_text),
@@ -70,34 +139,6 @@ fun ProfileBottomButtons(
                     modifier = Modifier.size(24.dp)
                 )
             }
-            OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                onClick = { onAction(UiAction.OnDeleteAccountClick) },
-                shape = RoundedCornerShape(28.dp),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.error,
-                ),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.profile_screen_delete_your_account_text),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_delete_your_account),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
         }
     }
 }
@@ -108,6 +149,8 @@ fun ProfileBottomButtonsPreview() {
     LoopaTheme {
         ProfileBottomButtons(
             onAction = {},
+            isInEditMode = true,
+            modifier = Modifier
         )
     }
 }
