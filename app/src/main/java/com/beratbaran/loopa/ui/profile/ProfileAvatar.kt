@@ -1,5 +1,6 @@
 package com.beratbaran.loopa.ui.profile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,16 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.beratbaran.loopa.R
+import com.beratbaran.loopa.ui.profile.ProfileContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 
 @Composable
 fun ProfileAvatar(
-    imageUrl: String,
+    uiState: UiState,
 ) {
     Column(
         modifier = Modifier
@@ -38,14 +38,12 @@ fun ProfileAvatar(
                 .align(Alignment.CenterHorizontally)
                 .clickable { }
         ) {
-            AsyncImage(
+            Image(
+                painter = painterResource(R.drawable.ic_avatar),
+                contentDescription = "Profile Avatar",
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape),
-                model = imageUrl,
-                contentDescription = null,
-                placeholder = painterResource(R.drawable.ic_avatar),
-                error = painterResource(R.drawable.ic_error),
                 contentScale = ContentScale.Crop,
             )
         }
@@ -53,7 +51,7 @@ fun ProfileAvatar(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = stringResource(R.string.profile_screen_profile_name),
+            text = uiState.fullName,
             style = MaterialTheme.typography.displayLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -68,7 +66,7 @@ fun ProfileAvatarPreview(
 ) {
     LoopaTheme {
         ProfileAvatar(
-            imageUrl = imageUrl,
+            uiState = UiState()
         )
     }
 }
