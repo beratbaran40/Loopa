@@ -11,8 +11,8 @@ class FavoritesViewModel : BaseViewModel<UiState, UiAction, UiEffect>(
 ) {
     override fun handleAction(action: UiAction) {
         when (action) {
-            UiAction.OnDetailsClick -> {
-                setEffect(UiEffect.NavigateToDetails)
+            is UiAction.OnDetailsClick -> {
+                setEffect(UiEffect.NavigateToDetails(action.placeId))
             }
 
             UiAction.OnUnFavoriteClick -> Unit
