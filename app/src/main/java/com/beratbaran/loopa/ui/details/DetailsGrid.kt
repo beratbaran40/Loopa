@@ -58,11 +58,11 @@ fun DetailsGrid(
     onImageSelected: (index: Int?) -> Unit,
 ) {
     val images = listOf(
-        R.drawable.details_screen_grid_img_1,
-        R.drawable.details_screen_grid_img_2,
-        R.drawable.details_screen_grid_img_3,
-        R.drawable.details_screen_grid_img_4,
-    )
+        R.drawable.details_screen_grid_img,
+        R.drawable.details_screen_grid_img,
+        R.drawable.details_screen_grid_img,
+        R.drawable.details_screen_grid_img,
+        )
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -81,7 +81,7 @@ fun DetailsGrid(
                     .clickable {
                         onImageSelected(0)
                     },
-                painter = painterResource(R.drawable.details_screen_grid_img_1),
+                painter = painterResource(R.drawable.details_screen_grid_img),
                 contentDescription = stringResource(R.string.details_screen_grid_images_description_1_4),
                 contentScale = ContentScale.Crop,
             )
@@ -95,7 +95,7 @@ fun DetailsGrid(
                     .clickable {
                         onImageSelected(1)
                     },
-                painter = painterResource(R.drawable.details_screen_grid_img_2),
+                painter = painterResource(R.drawable.details_screen_grid_img),
                 contentDescription = stringResource(R.string.details_screen_grid_images_description_2_4),
                 contentScale = ContentScale.Crop,
             )
@@ -114,7 +114,7 @@ fun DetailsGrid(
                     .clickable {
                         onImageSelected(2)
                     },
-                painter = painterResource(R.drawable.details_screen_grid_img_3),
+                painter = painterResource(R.drawable.details_screen_grid_img),
                 contentDescription = stringResource(R.string.details_screen_grid_images_description_3_4),
                 contentScale = ContentScale.Crop,
             )
@@ -128,7 +128,7 @@ fun DetailsGrid(
                     .clickable {
                         onImageSelected(3)
                     },
-                painter = painterResource(R.drawable.details_screen_grid_img_4),
+                painter = painterResource(R.drawable.details_screen_grid_img),
                 contentDescription = stringResource(R.string.details_screen_grid_images_description_4_4),
                 contentScale = ContentScale.Crop,
             )
