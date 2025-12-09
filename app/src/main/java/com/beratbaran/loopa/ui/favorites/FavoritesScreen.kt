@@ -49,8 +49,7 @@ fun FavoritesScreen(
             .background(color = MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(24.dp)
-            .padding(top = 24.dp),
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
