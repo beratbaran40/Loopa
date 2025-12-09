@@ -22,7 +22,6 @@ interface LoopaApi {
     @GET("users")
     suspend fun getUser(@Query("uid") uid: String): UserResponseDto
 
-
     @GET("places/{placeId}")
     suspend fun getPlaceDetail(
         @Path("placeId") placeId: Int,
