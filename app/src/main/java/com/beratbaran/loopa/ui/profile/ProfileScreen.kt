@@ -80,7 +80,6 @@ fun ProfileScreen(
             },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
 
         ProfileHeader(
         )
