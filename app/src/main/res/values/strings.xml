@@ -16,7 +16,7 @@
     <string name="register_password_strength_WEAK">Your password is too weak</string>
     <string name="register_password_strength_MEDIUM">Your password is medium</string>
     <string name="register_password_strength_STRONG">Your password is strong</string>
-    <string name="homepage_top_salute_message">Your Journey Starts Here, %s</string>
+    <string name="homepage_top_salute_message">Your Journey Starts Here, %s </string>
     <string name="homepage_top_places">Top Places</string>
     <string name="homepage_you_might_wanna_look">You Might Want to Look</string>
     <string name="login_register_screen_toggle_password">Toggle password visibility</string>
@@ -34,6 +34,7 @@
     <string name="profile_screen_logout_text">Logout</string>
     <string name="profile_screen_change_password_profile_text">Change Your Password</string>
     <string name="profile_screen_page_name">Profile</string>
+    <string name="change_password_screen_page_name">Change Your Password</string>
     <string name="profile_screen_profile_name">Profile Name</string>
     <string name="profile_screen_toast_message_text">Changes Saved !</string>
     <string name="profile_screen_logout_dialog_title">Logout ?</string>
