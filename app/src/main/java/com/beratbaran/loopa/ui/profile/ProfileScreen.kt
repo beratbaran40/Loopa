@@ -44,6 +44,7 @@ fun ProfileScreen(
     uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToOnboarding: () -> Unit,
+    onNavigateToChangePassword: () -> Unit,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -59,11 +60,13 @@ fun ProfileScreen(
 
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
+            UiEffect.NavigateToChangePassword -> onNavigateToChangePassword()
             UiEffect.NavigateToOnboarding -> onNavigateToOnboarding()
             UiEffect.ShowPasswordDoneToast -> Toast.makeText(
                 context, context.getString(R.string.profile_screen_toast_message_text),
                 Toast.LENGTH_SHORT
             ).show()
+
         }
     }
     Column(
@@ -90,16 +93,13 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(4.dp))
 
         ProfileTextFields(
-            onAction = onAction,
             uiState = uiState,
-            passwordFocusRequester = passwordFocusRequester,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         ProfileBottomButtons(
             onAction = onAction,
-            isInEditMode = uiState.isInEditMode,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -137,6 +137,7 @@ fun ProfileScreenPreview(
             uiEffect = emptyFlow(),
             onAction = {},
             onNavigateToOnboarding = {},
+            onNavigateToChangePassword = {},
         )
     }
 }
