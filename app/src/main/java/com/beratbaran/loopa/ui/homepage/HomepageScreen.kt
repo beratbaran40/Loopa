@@ -32,22 +32,24 @@ import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.components.LoadingBar
 import com.beratbaran.loopa.ui.homepage.HomepageContract.UiAction
+import com.beratbaran.loopa.ui.homepage.HomepageContract.UiEffect
+import com.beratbaran.loopa.ui.homepage.HomepageContract.UiState
 import com.beratbaran.loopa.ui.theme.LoopaTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun HomepageScreen(
-    uiState: HomepageContract.UiState,
-    uiEffect: Flow<HomepageContract.UiEffect>,
+    uiState: UiState,
+    uiEffect: Flow<UiEffect>,
     onAction: (UiAction) -> Unit,
     onNavigateToDetails: (Int) -> Unit,
     onNavigateToFavorites: () -> Unit,
 ) {
     uiEffect.CollectWithLifecycle { effect ->
         when (effect) {
-            is HomepageContract.UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
-            HomepageContract.UiEffect.NavigateToFavorites -> onNavigateToFavorites()
+            is UiEffect.NavigateToDetails -> onNavigateToDetails(effect.placeId)
+            UiEffect.NavigateToFavorites -> onNavigateToFavorites()
         }
     }
 
@@ -138,7 +140,7 @@ fun HomepageScreen(
 @PreviewLightDark
 @Composable
 fun HomepageScreenPreview(
-    @PreviewParameter(HomepageScreenPreviewProvider::class) uiState: HomepageContract.UiState,
+    @PreviewParameter(HomepageScreenPreviewProvider::class) uiState: UiState,
 ) {
     LoopaTheme {
         HomepageScreen(
