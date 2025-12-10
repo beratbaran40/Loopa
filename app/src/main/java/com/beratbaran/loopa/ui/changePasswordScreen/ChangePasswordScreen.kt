@@ -85,9 +85,7 @@ fun ChangePasswordScreen(
 
         ChangePasswordButton(
             onAction = onAction,
-            isInEditMode = uiState.isInEditMode,
-            onCancelChangesClick = { onAction(UiAction.OnCancelChangesClick) },
-            areTextFieldsEmpty = uiState.areFieldsEmpty,
+            isInEditMode = uiState.isInEditMode
         )
     }
 }
