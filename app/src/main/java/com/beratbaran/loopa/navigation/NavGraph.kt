@@ -12,6 +12,8 @@ import com.beratbaran.loopa.ui.categories.CategoriesScreen
 import com.beratbaran.loopa.ui.categories.CategoriesViewModel
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsScreen
 import com.beratbaran.loopa.ui.categorydetails.CategoryDetailsViewModel
+import com.beratbaran.loopa.ui.changePasswordScreen.ChangePasswordScreen
+import com.beratbaran.loopa.ui.changePasswordScreen.ChangePasswordViewModel
 import com.beratbaran.loopa.ui.details.DetailsScreen
 import com.beratbaran.loopa.ui.details.DetailsViewModel
 import com.beratbaran.loopa.ui.favorites.FavoritesScreen
@@ -267,6 +269,33 @@ fun NavGraph(
                 onNavigateToOnboarding = {
                     navController.navigate(Screen.Onboarding) {
                         popUpTo(Screen.ProfileScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToChangePassword = {
+                    navController.navigate(Screen.ChangePasswordScreen) {
+                        popUpTo(Screen.ProfileScreen) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable<Screen.ChangePasswordScreen> {
+            val viewModel = hiltViewModel<ChangePasswordViewModel>()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            ChangePasswordScreen(
+                uiState = uiState,
+                uiEffect = viewModel.uiEffect,
+                onAction = viewModel::handleAction,
+                onNavigateToProfileScreen = {
+                    navController.navigate(Screen.ProfileScreen) {
+                        popUpTo(Screen.ChangePasswordScreen) {
                             inclusive = true
                         }
                         launchSingleTop = true
