@@ -1,7 +1,6 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +16,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,7 +33,6 @@ import com.beratbaran.loopa.ui.theme.LoopaTheme
 @Composable
 fun ProfileBottomButtons(
     onAction: (UiAction) -> Unit,
-    isInEditMode: Boolean,
     modifier: Modifier,
 ) {
     Box(
@@ -47,7 +43,7 @@ fun ProfileBottomButtons(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(start= 24.dp, end = 24.dp,bottom = 20.dp),
+                .padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -60,13 +56,7 @@ fun ProfileBottomButtons(
                     modifier = Modifier
                         .weight(1f)
                         .height(56.dp),
-                    onClick = {
-                        if (!isInEditMode) {
-                            onAction(UiAction.OnEditPasswordClick)
-                        } else {
-                            onAction(UiAction.OnConfirmChangesClick)
-                        }
-                    },
+                    onClick = { onAction(UiAction.OnEditPasswordClick) },
                     shape = RoundedCornerShape(28.dp),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -74,40 +64,17 @@ fun ProfileBottomButtons(
                     ),
                 ) {
                     Text(
-                        text = if (!isInEditMode)
-                            stringResource(R.string.profile_screen_change_password_profile_text)
-                        else
-                            stringResource(R.string.profile_screen_save_changes_text),
+                        text = stringResource(R.string.profile_screen_change_password_profile_text),
                         style = MaterialTheme.typography.bodyLarge,
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Icon(
-                        painter = (if (!isInEditMode)
-                            painterResource(R.drawable.ic_edit_profile)
-                        else
-                            painterResource(R.drawable.ic_done_changes)),
+                        painter = painterResource(R.drawable.ic_edit_profile),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
-                }
-                if (isInEditMode) {
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    IconButton(
-                        onClick = { onAction(UiAction.OnCancelChangesClick) },
-                        modifier = Modifier
-                            .size(56.dp)
-                            .clip(RoundedCornerShape(25.dp))
-                            .background(color = MaterialTheme.colorScheme.error),
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_cancel),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.background,
-                        )
-                    }
                 }
             }
 
@@ -149,7 +116,6 @@ fun ProfileBottomButtonsPreview() {
     LoopaTheme {
         ProfileBottomButtons(
             onAction = {},
-            isInEditMode = true,
             modifier = Modifier
         )
     }
