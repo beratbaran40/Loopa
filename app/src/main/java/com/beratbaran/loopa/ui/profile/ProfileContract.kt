@@ -20,7 +20,6 @@ object ProfileContract {
         val isSurnameTextFieldFocused: Boolean = false,
         val isEmailTextFieldFocused: Boolean = false,
         val isPasswordTextFieldFocused: Boolean = false,
-        val errorMessage: String = "",
         val showPassword: Boolean = false,
         val passwordStrength: PasswordStrength? = null,
         val isInEditMode: Boolean = false,
@@ -31,19 +30,15 @@ object ProfileContract {
     )
 
     sealed interface UiAction {
-        data object OnConfirmChangesClick : UiAction
-        data class OnPasswordChange(val password: String) : UiAction
-        data class OnPasswordTextFieldFocusChange(val isFocused: Boolean) : UiAction
-        data object OnToggleShowPassword : UiAction
         data object OnEditPasswordClick : UiAction
-        data object OnCancelChangesClick : UiAction
         data object OnLogoutClick : UiAction
         data object OnLogoutConfirmClick : UiAction
         data object OnLogoutDismissClick : UiAction
     }
 
     sealed interface UiEffect {
-        data object NavigateToOnboarding : UiEffect
         data object ShowPasswordDoneToast : UiEffect
+        data object NavigateToOnboarding : UiEffect
+        data object NavigateToChangePassword : UiEffect
     }
 }
