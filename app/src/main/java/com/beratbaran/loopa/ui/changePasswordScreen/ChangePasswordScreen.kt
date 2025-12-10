@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.beratbaran.loopa.R
 import com.beratbaran.loopa.common.CollectWithLifecycle
 import com.beratbaran.loopa.ui.changePasswordScreen.ChangePasswordContract.UiAction
@@ -80,7 +81,7 @@ fun ChangePasswordScreen(
             passwordFocusRequester = passwordFocusRequester,
         )
 
-        // Eski şifreyi de gösteren bir textField ekle (şimdilik backend şifre döndürmüyor olsa da)
+        // Eski şifreyi de gösteren bir textField eklenecek (şimdilik backend şifre döndürmüyor olsa da)
 
         ChangePasswordButton(
             onAction = onAction,
@@ -90,10 +91,11 @@ fun ChangePasswordScreen(
         )
     }
 }
-
 @PreviewLightDark
 @Composable
-fun ChangePasswordScreenPreview() {
+fun ChangePasswordScreenPreview(
+    @PreviewParameter(ChangePasswordPreviewProvider::class) uiState: UiState,
+) {
     LoopaTheme {
         ChangePasswordScreen(
             uiState = UiState(),
