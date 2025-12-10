@@ -58,7 +58,7 @@ fun DetailsHeader(
             model = imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.details_screen_grid_img_4)
+            placeholder = painterResource(R.drawable.details_screen_grid_img)
         )
 
         Box(modifier = Modifier
