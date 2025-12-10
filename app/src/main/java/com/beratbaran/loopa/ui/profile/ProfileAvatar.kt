@@ -1,14 +1,11 @@
 package com.beratbaran.loopa.ui.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,38 +24,32 @@ fun ProfileAvatar(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 32.dp, start = 16.dp, end = 16.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Image(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clickable { }
-        ) {
-            Image(
-                modifier = Modifier
-                    .height(240.dp)
-                    .aspectRatio(1f),
-                painter = painterResource(id = R.drawable.loopa),
-                contentDescription = null,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+                .height(180.dp)
+                .aspectRatio(1f),
+            painter = painterResource(id = R.drawable.loopa),
+            contentDescription = null,
+        )
 
         Text(
             text = uiState.fullName,
             style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
 @PreviewLightDark
 @Composable
 fun ProfileAvatarPreview(
-    imageUrl: String = "Profile Avatar",
+    imageUrl: String = "Avatar",
 ) {
     LoopaTheme {
         ProfileAvatar(
