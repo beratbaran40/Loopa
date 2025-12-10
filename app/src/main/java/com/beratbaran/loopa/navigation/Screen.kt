@@ -32,4 +32,7 @@ sealed interface Screen {
 
     @Serializable
     data object SearchScreen : Screen
+
+    @Serializable
+    data object ChangePasswordScreen : Screen
 }
