@@ -1,6 +1,9 @@
 package com.beratbaran.loopa.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
@@ -30,9 +33,11 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.beratbaran.loopa.R
-import com.beratbaran.loopa.ui.theme.registerScreenTextFieldColors
+import com.beratbaran.loopa.ui.theme.LoopaTheme
+import com.beratbaran.loopa.ui.theme.textFieldColors
 import kotlinx.coroutines.launch
 
 @Composable
@@ -81,7 +86,7 @@ fun LoopaTextFields(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         shape = RoundedCornerShape(12.dp),
-        colors = registerScreenTextFieldColors(),
+        colors = textFieldColors(),
         supportingText = {
             if (!supportingText.isNullOrEmpty()) {
                 Text(
@@ -333,4 +338,44 @@ fun PasswordTextFieldBase(
             onFocusChange?.invoke(isFocusedState)
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TextFieldPreview() {
+    LoopaTheme {
+        Column {
+            NameTextFieldBase(
+                value = "John",
+                onValueChange = {},
+                label = "Name",
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            SurnameTextFieldBase(
+                value = "Doe",
+                onValueChange = {},
+                label = "Surname",
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            EmailTextFieldBase(
+                value = "johndoe@hotmail.com",
+                onValueChange = {},
+                label = "Email",
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            PasswordTextFieldBase(
+                value = "password",
+                onValueChange = {},
+                label = "Password",
+                isPasswordVisible = false,
+                onTogglePasswordVisibility = {},
+            )
+        }
+    }
 }
