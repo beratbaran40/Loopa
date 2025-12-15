@@ -9,27 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun loginScreenTextFieldColors(): TextFieldColors {
-    return OutlinedTextFieldDefaults.colors(
-        focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-        focusedContainerColor = MaterialTheme.colorScheme.background,
-        focusedLabelColor = MaterialTheme.colorScheme.primary,
-        unfocusedContainerColor = Color.Transparent,
-        errorContainerColor = Color.Transparent,
-        disabledContainerColor = Color.Transparent,
-        disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        disabledBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
-        cursorColor = MaterialTheme.colorScheme.primary,
-    )
-}
-
-@Composable
-fun registerScreenTextFieldColors(): TextFieldColors {
+fun textFieldColors(): TextFieldColors {
     return OutlinedTextFieldDefaults.colors(
         focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
         focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
