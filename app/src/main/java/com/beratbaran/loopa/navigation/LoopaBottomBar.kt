@@ -29,7 +29,9 @@ fun LoopaBottomBar(
 
     if (!showBottomBar) return
 
-    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.background
+    ) {
         items.forEach { screen ->
             val screenRoute = screen.route
             val selected = currentDestination?.hierarchy?.any { dest ->
